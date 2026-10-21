@@ -44,25 +44,48 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
     }
   }, [isDropdownOpen]);
 
-  const handleDownloadDefault = () => {
-    if (formats.length > 0) {
-      const url = formats[0].url;
+  const triggerDownload = async (url: string, filename: string) => {
+    try {
+      const response = await fetch(url, {
+        mode: 'cors',
+        credentials: 'omit',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Download failed, trying direct URL method:', error);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${title}.${formats[0].ext}`;
+      link.download = filename;
+      link.target = '_blank';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     }
   };
 
-  const handleDownloadFormat = (format: Format) => {
-    const link = document.createElement('a');
-    link.href = format.url;
-    link.download = `${title}.${format.ext}`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownloadDefault = async () => {
+    if (formats.length > 0) {
+      const filename = `${title}.${formats[0].ext}`;
+      await triggerDownload(formats[0].url, filename);
+    }
+  };
+
+  const handleDownloadFormat = async (format: Format) => {
+    const filename = `${title}.${format.ext}`;
+    await triggerDownload(format.url, filename);
     setIsDropdownOpen(false);
   };
 
