@@ -26,7 +26,8 @@ export default function Home() {
     setResult(null);
 
     try {
-      const response = await fetch('http://localhost:8000/api/parse', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://snagaclip.com';
+      const response = await fetch(`${apiUrl}/api/parse`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
