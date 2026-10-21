@@ -45,20 +45,20 @@ export default function FaqAccordion() {
             자주 묻는 질문
           </span>
         </h2>
-        <p className="text-zinc-400">궁금한 점이 있으신가요? 여기서 답변을 찾아보세요.</p>
+        <p className="text-zinc-400 dark:text-zinc-400 light:text-gray-600">궁금한 점이 있으신가요? 여기서 답변을 찾아보세요.</p>
       </div>
 
       <div className="space-y-4">
         {faqs.map((faq, index) => (
           <div
             key={index}
-            className="bg-zinc-900/50 border border-zinc-800 rounded-lg backdrop-blur-sm overflow-hidden transition-all"
+            className="bg-zinc-900/50 dark:bg-zinc-900/50 light:bg-gray-100/50 border border-zinc-800 dark:border-zinc-800 light:border-gray-200 rounded-lg backdrop-blur-sm overflow-hidden transition-all"
           >
             <button
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
-              className="w-full px-6 py-4 flex items-center justify-between hover:bg-zinc-800/50 transition-colors"
+              className="w-full px-6 py-4 flex items-center justify-between hover:bg-zinc-800/50 dark:hover:bg-zinc-800/50 light:hover:bg-gray-200/30 transition-colors"
             >
-              <span className="font-semibold text-white text-left">{faq.question}</span>
+              <span className="font-semibold text-white dark:text-white light:text-gray-900 text-left">{faq.question}</span>
               <svg
                 className={`w-5 h-5 text-cyan-400 flex-shrink-0 transition-transform ${
                   openIndex === index ? 'rotate-180' : ''
@@ -72,7 +72,7 @@ export default function FaqAccordion() {
             </button>
 
             {openIndex === index && (
-              <div className="px-6 py-4 bg-zinc-800/30 border-t border-zinc-800 text-zinc-300 text-sm leading-relaxed">
+              <div className="px-6 py-4 bg-zinc-800/30 dark:bg-zinc-800/30 light:bg-gray-200/20 border-t border-zinc-800 dark:border-zinc-800 light:border-gray-200 text-zinc-300 dark:text-zinc-300 light:text-gray-700 text-sm leading-relaxed">
                 {faq.answer}
               </div>
             )}

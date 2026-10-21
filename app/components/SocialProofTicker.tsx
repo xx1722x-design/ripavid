@@ -46,8 +46,8 @@ export default function SocialProofTicker() {
 
   return (
     <div className="mt-16 w-full max-w-2xl mx-auto">
-      <p className="text-center text-zinc-400 text-sm mb-6 font-semibold uppercase tracking-wider">🔥 실시간 활동</p>
-      <div className="bg-zinc-900/40 border border-zinc-800 rounded-lg p-6 backdrop-blur-sm overflow-hidden max-h-72">
+      <p className="text-center text-zinc-400 dark:text-zinc-400 light:text-gray-600 text-sm mb-6 font-semibold uppercase tracking-wider">🔥 실시간 활동</p>
+      <div className="bg-zinc-900/40 dark:bg-zinc-900/40 light:bg-gray-100/50 border border-zinc-800 dark:border-zinc-800 light:border-gray-200 rounded-lg p-6 backdrop-blur-sm overflow-hidden max-h-72">
         <div className="space-y-3">
           {activities.map((activity, index) => (
             <div
@@ -59,13 +59,13 @@ export default function SocialProofTicker() {
                 animation: index === 0 ? 'slideIn 0.3s ease-out' : 'none',
               }}
             >
-              <div className="w-2 h-2 bg-cyan-400 rounded-full flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-cyan-400 dark:bg-cyan-400 light:bg-cyan-500 rounded-full flex-shrink-0"></div>
               <div className="flex-1">
-                <span className="text-zinc-300 font-medium">{activity.user}</span>
-                <span className="text-zinc-500 mx-2">•</span>
-                <span className="text-zinc-400">{activity.country}</span>
+                <span className="text-zinc-300 dark:text-zinc-300 light:text-gray-700 font-medium">{activity.user}</span>
+                <span className="text-zinc-500 dark:text-zinc-500 light:text-gray-400 mx-2">•</span>
+                <span className="text-zinc-400 dark:text-zinc-400 light:text-gray-600">{activity.country}</span>
               </div>
-              <span className="text-zinc-500 text-xs whitespace-nowrap">{activity.timestamp}</span>
+              <span className="text-zinc-500 dark:text-zinc-500 light:text-gray-500 text-xs whitespace-nowrap">{activity.timestamp}</span>
             </div>
           ))}
         </div>

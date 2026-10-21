@@ -8,6 +8,7 @@ import QuickTutorial from './components/QuickTutorial';
 import FeaturesGrid from './components/FeaturesGrid';
 import FaqAccordion from './components/FaqAccordion';
 import Footer from './components/Footer';
+import ThemeToggle from './components/ThemeToggle';
 
 interface Format {
   quality: string;
@@ -55,12 +56,17 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black text-white overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black dark:from-black dark:via-zinc-900 dark:to-black light:from-white light:via-gray-50 light:to-gray-100 text-white dark:text-white light:text-gray-900 overflow-hidden transition-colors">
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl opacity-20"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl opacity-20"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 dark:bg-cyan-500/10 light:bg-cyan-500/5 rounded-full blur-3xl opacity-20"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/10 light:bg-blue-500/5 rounded-full blur-3xl opacity-20"></div>
       </div>
+
+      {/* Header with Theme Toggle */}
+      <header className="fixed top-0 right-0 z-50 pr-4 sm:pr-8 pt-4 sm:pt-6">
+        <ThemeToggle />
+      </header>
 
       <main className="relative z-10 flex flex-col items-center justify-start min-h-full px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 md:pt-32 pb-0">
         {/* Logo / Branding */}
@@ -80,12 +86,12 @@ export default function Home() {
               모든 영상을 쉽게
             </span>
             {' '}
-            <span className="text-white">다운로드하세요</span>
+            <span className="text-white dark:text-white light:text-gray-900">다운로드하세요</span>
           </h1>
-          <p className="text-lg sm:text-xl text-zinc-400 mb-2">
+          <p className="text-lg sm:text-xl text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-2">
             도우인, 샤오홍슈, 유튜브 등에서 몇 초 만에 영상을 다운로드하세요
           </p>
-          <p className="text-sm sm:text-base text-zinc-500">
+          <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-500 light:text-gray-500">
             빠르고 간단하며 완전히 무료입니다. 가입 불필요.
           </p>
         </div>

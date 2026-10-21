@@ -42,18 +42,18 @@ export default function FeaturesGrid() {
             왜 RipAVid를 선택할까?
           </span>
         </h2>
-        <p className="text-zinc-400">다른 다운로더와 달리, 우리는 간단함과 속도를 우선시합니다.</p>
+        <p className="text-zinc-400 dark:text-zinc-400 light:text-gray-600">다른 다운로더와 달리, 우리는 간단함과 속도를 우선시합니다.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {features.map((feature, index) => (
           <div
             key={index}
-            className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-6 backdrop-blur-sm hover:border-zinc-700 transition-all hover:shadow-lg hover:shadow-cyan-500/10 group"
+            className="bg-zinc-900/50 dark:bg-zinc-900/50 light:bg-gray-100/50 border border-zinc-800 dark:border-zinc-800 light:border-gray-200 rounded-lg p-6 backdrop-blur-sm hover:border-zinc-700 dark:hover:border-zinc-700 light:hover:border-gray-300 transition-all hover:shadow-lg hover:shadow-cyan-500/10 group"
           >
             <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{feature.icon}</div>
-            <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
-            <p className="text-zinc-400 text-sm">{feature.description}</p>
+            <h3 className="text-lg font-semibold text-white dark:text-white light:text-gray-900 mb-2">{feature.title}</h3>
+            <p className="text-zinc-400 dark:text-zinc-400 light:text-gray-600 text-sm">{feature.description}</p>
           </div>
         ))}
       </div>

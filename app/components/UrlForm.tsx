@@ -50,7 +50,7 @@ export default function UrlForm({ onSubmit, isLoading }: UrlFormProps) {
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
               platform === key
                 ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/50'
-                : 'bg-zinc-800/50 border border-zinc-700 text-zinc-300 hover:border-zinc-600'
+                : 'bg-zinc-800/50 dark:bg-zinc-800/50 light:bg-gray-200/50 border border-zinc-700 dark:border-zinc-700 light:border-gray-300 text-zinc-300 dark:text-zinc-300 light:text-gray-700 hover:border-zinc-600 dark:hover:border-zinc-600 light:hover:border-gray-400'
             }`}
           >
             <span className="mr-1">{value.icon}</span>
@@ -67,7 +67,7 @@ export default function UrlForm({ onSubmit, isLoading }: UrlFormProps) {
             onChange={(e) => setUrl(e.target.value)}
             placeholder={PLATFORMS[platform].placeholder}
             disabled={isLoading}
-            className="flex-1 px-6 py-4 bg-zinc-900 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-6 py-4 bg-zinc-900 dark:bg-zinc-900 light:bg-white border border-zinc-700 dark:border-zinc-700 light:border-gray-300 rounded-lg text-white dark:text-white light:text-gray-900 placeholder-zinc-500 dark:placeholder-zinc-500 light:placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           />
           <button
             type="submit"
@@ -94,7 +94,7 @@ export default function UrlForm({ onSubmit, isLoading }: UrlFormProps) {
         </div>
 
         {error && (
-          <div className="bg-red-900/20 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg flex items-start gap-3">
+          <div className="bg-red-900/20 dark:bg-red-900/20 light:bg-red-100/50 border border-red-500/50 dark:border-red-500/50 light:border-red-300 text-red-200 dark:text-red-200 light:text-red-700 px-4 py-3 rounded-lg flex items-start gap-3">
             <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
             </svg>
