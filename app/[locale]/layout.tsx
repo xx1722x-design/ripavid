@@ -1,14 +1,9 @@
 import { ReactNode } from "react";
 
-interface LocaleLayoutProps {
-  children: ReactNode;
-  params: Promise<{ locale: string }>;
-}
-
-export default async function LocaleLayout({
+export default function LocaleLayout({
   children,
-  params,
-}: LocaleLayoutProps) {
-  const { locale } = await params;
+}: {
+  children: ReactNode;
+}) {
   return children;
 }
