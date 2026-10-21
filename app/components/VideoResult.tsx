@@ -46,24 +46,17 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
 
   const handleDownloadDefault = () => {
     if (formats.length > 0) {
-      const link = document.createElement('a');
-      link.href = formats[0].url;
-      link.download = `${title}.${formats[0].ext}`;
-      link.target = '_blank';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const videoUrl = formats[0].url;
+      if (videoUrl) {
+        window.location.href = videoUrl;
+      }
     }
   };
 
   const handleDownloadFormat = (format: Format) => {
-    const link = document.createElement('a');
-    link.href = format.url;
-    link.download = `${title}.${format.ext}`;
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (format.url) {
+      window.location.href = format.url;
+    }
     setIsDropdownOpen(false);
   };
 
