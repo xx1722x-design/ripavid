@@ -9,6 +9,7 @@ import FeaturesGrid from './components/FeaturesGrid';
 import FaqAccordion from './components/FaqAccordion';
 import Footer from './components/Footer';
 import ThemeToggle from './components/ThemeToggle';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 interface Format {
   quality: string;
@@ -63,8 +64,9 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/10 light:bg-blue-500/5 rounded-full blur-3xl opacity-20"></div>
       </div>
 
-      {/* Header with Theme Toggle */}
-      <header className="fixed top-0 right-0 z-50 pr-4 sm:pr-8 pt-4 sm:pt-6">
+      {/* Header with Theme Toggle and Language Switcher */}
+      <header className="fixed top-0 right-0 z-50 pr-4 sm:pr-8 pt-4 sm:pt-6 flex gap-3">
+        <LanguageSwitcher />
         <ThemeToggle />
       </header>
 

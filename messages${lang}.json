@@ -1,0 +1,12 @@
+{
+  "brand": {"name": "RipAVid", "tagline": "Fast and simple video downloader"},
+  "hero": {"title1": "Download", "title2": "Any Video", "title3": "Instantly", "subtitle": "Download videos from major platforms in seconds", "description": "Fast, simple, and completely free. No sign-up required."},
+  "platforms": {"auto": "Auto-Detect", "douyin": "Douyin/TikTok", "xiaohongshu": "Xiaohongshu", "youtube": "YouTube", "instagram": "Instagram"},
+  "form": {"placeholder": "Paste your video link...", "buttonDownload": "Download", "buttonDownloading": "Downloading...", "errorTitle": "Error", "enterValidUrl": "Please enter a valid URL"},
+  "socialProof": {"title": "🔥 Live Activity"},
+  "tutorial": {"title": "Get Started in 3 Steps", "subtitle": "It's simple. Just paste the link.", "step1": "Copy Link", "step1Description": "Copy the video link", "step2": "Paste", "step2Description": "Paste the link in the input field", "step3": "Download", "step3Description": "Click the button and get the download link"},
+  "features": {"title": "Why Choose RipAVid?", "subtitle": "We prioritize simplicity and speed.", "lightning": "Lightning Fast", "lightningDesc": "Download in seconds", "free": "Completely Free", "freeDesc": "No hidden fees", "nosignup": "No Sign-up", "nosignupDesc": "Start immediately", "multiplatform": "Multi-Platform", "multiplatformDesc": "Multiple platforms supported", "nowatermark": "No Watermark", "nowatermarkDesc": "Clean videos", "alldevices": "All Devices", "alldevicesDesc": "Works on all devices"},
+  "faq": {"title": "FAQ", "subtitle": "Have a question?", "q1": "Is it free?", "a1": "Yes, completely free.", "q2": "What platforms?", "a2": "Multiple platforms supported.", "q3": "Watermarks?", "a3": "No watermarks.", "q4": "How long?", "a4": "3-10 seconds typically.", "q5": "Sign up needed?", "a5": "No sign-up required.", "q6": "Limits?", "a6": "No limits."},
+  "footer": {"tagline": "Fast video downloader", "product": "Product", "features": "Features", "download": "Download", "tips": "Tips", "legal": "Legal", "terms": "Terms", "privacy": "Privacy", "dmca": "DMCA", "contact": "Contact", "email": "support@ripavid.com", "bugReport": "Bug Report", "featureRequest": "Feature Request", "copyright": "© 2025 RipAVid", "twitter": "Twitter", "github": "GitHub", "discord": "Discord"},
+  "videoResult": {"ready": "Video Ready", "formatsAvailable": "format", "formatsAvailablePlural": "formats", "availableFormats": "Available Formats", "best": "Best"}
+}

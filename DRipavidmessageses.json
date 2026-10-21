@@ -1,0 +1,93 @@
+{
+  "brand": {"name": "RipAVid", "tagline": "Descargador de vídeos rápido y simple"},
+  "hero": {
+    "title1": "Descargar",
+    "title2": "Cualquier vídeo",
+    "title3": "Al instante",
+    "subtitle": "Descarga vídeos de Douyin, Xiaohongshu, YouTube y más en segundos",
+    "description": "Rápido, simple y completamente gratuito. Sin registro requerido."
+  },
+  "platforms": {
+    "auto": "Detección automática",
+    "douyin": "Douyin/TikTok",
+    "xiaohongshu": "Xiaohongshu",
+    "youtube": "YouTube",
+    "instagram": "Instagram"
+  },
+  "form": {
+    "placeholder": "Pega tu enlace de vídeo...",
+    "buttonDownload": "Descargar",
+    "buttonDownloading": "Descargando...",
+    "errorTitle": "Error",
+    "enterValidUrl": "Por favor ingresa una URL válida"
+  },
+  "socialProof": {"title": "🔥 Actividad en vivo"},
+  "tutorial": {
+    "title": "Comienza en 3 pasos",
+    "subtitle": "Es simple. Solo pega el enlace.",
+    "step1": "Copiar enlace",
+    "step1Description": "Copia el enlace del vídeo de Douyin, Xiaohongshu, YouTube y más",
+    "step2": "Pegar",
+    "step2Description": "Pega el enlace en el campo de entrada anterior",
+    "step3": "Descargar",
+    "step3Description": "Haz clic en el botón y obtén el enlace de descarga en segundos"
+  },
+  "features": {
+    "title": "¿Por qué elegir RipAVid?",
+    "subtitle": "A diferencia de otros descargadores, priorizamos la simplicidad y la velocidad.",
+    "lightning": "Velocidad de rayo",
+    "lightningDesc": "Descarga vídeos en segundos, no en minutos",
+    "free": "Completamente gratis",
+    "freeDesc": "Sin cargos ocultos, sin planes premium",
+    "nosignup": "Sin registro",
+    "nosignupDesc": "Comienza a descargar inmediatamente",
+    "multiplatform": "Múltiples plataformas",
+    "multiplatformDesc": "Compatible con Douyin, Xiaohongshu, YouTube y más",
+    "nowatermark": "Sin marca de agua",
+    "nowatermarkDesc": "Obtén vídeos limpios",
+    "alldevices": "Todos los dispositivos",
+    "alldevicesDesc": "Funciona en PC, móvil y tablet"
+  },
+  "faq": {
+    "title": "Preguntas frecuentes",
+    "subtitle": "¿Tienes una pregunta? Encuentra la respuesta aquí.",
+    "q1": "¿RipAVid es realmente gratis?",
+    "a1": "Sí, completamente gratis. Sin costos ocultos ni suscripciones premium. Nuestro objetivo es ayudar a todos a descargar vídeos fácilmente.",
+    "q2": "¿Qué plataformas de vídeo admiten?",
+    "a2": "Admitimos Douyin, Xiaohongshu, YouTube, Instagram y principales plataformas de redes sociales. Continuamos agregando más compatibilidad de plataforma.",
+    "q3": "¿El vídeo descargado tiene marcas de agua?",
+    "a3": "No, absolutamente no. RipAVid proporciona vídeos limpios sin marcas de agua.",
+    "q4": "¿Cuánto tiempo tarda la descarga?",
+    "a4": "La mayoría de los vídeos se procesan en 3-10 segundos. Depende de la duración y calidad del vídeo.",
+    "q5": "¿Necesito registrarme?",
+    "a5": "No se requiere registro en absoluto. Solo pega el enlace y descarga.",
+    "q6": "¿Hay límites de descarga?",
+    "a6": "Sin límites. Puedes descargar tantos vídeos como quieras."
+  },
+  "footer": {
+    "tagline": "Descargador de vídeos rápido y simple",
+    "product": "Producto",
+    "features": "Características",
+    "download": "Descargar",
+    "tips": "Consejos y guías",
+    "legal": "Legal",
+    "terms": "Términos de servicio",
+    "privacy": "Política de privacidad",
+    "dmca": "DMCA",
+    "contact": "Contacto",
+    "email": "support@ripavid.com",
+    "bugReport": "Reportar error",
+    "featureRequest": "Solicitar función",
+    "copyright": "© 2025 RipAVid. Todos los derechos reservados.",
+    "twitter": "Twitter",
+    "github": "GitHub",
+    "discord": "Discord"
+  },
+  "videoResult": {
+    "ready": "Vídeo listo",
+    "formatsAvailable": "formato disponible",
+    "formatsAvailablePlural": "formatos disponibles",
+    "availableFormats": "Formatos disponibles:",
+    "best": "Mejor"
+  }
+}

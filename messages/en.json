@@ -1,0 +1,98 @@
+{
+  "brand": {
+    "name": "RipAVid",
+    "tagline": "Fast and simple video downloader"
+  },
+  "hero": {
+    "title1": "Download",
+    "title2": "Any Video",
+    "title3": "Instantly",
+    "subtitle": "Download videos from Douyin, Xiaohongshu, YouTube and more in seconds",
+    "description": "Fast, simple, and completely free. No sign-up required."
+  },
+  "platforms": {
+    "auto": "Auto-Detect",
+    "douyin": "Douyin/TikTok",
+    "xiaohongshu": "Xiaohongshu",
+    "youtube": "YouTube",
+    "instagram": "Instagram"
+  },
+  "form": {
+    "placeholder": "Paste your video link...",
+    "buttonDownload": "Download",
+    "buttonDownloading": "Downloading...",
+    "errorTitle": "Error",
+    "enterValidUrl": "Please enter a valid URL"
+  },
+  "socialProof": {
+    "title": "🔥 Live Activity"
+  },
+  "tutorial": {
+    "title": "Get Started in 3 Steps",
+    "subtitle": "It's simple. Just paste the link.",
+    "step1": "Copy Link",
+    "step1Description": "Copy the video link from Douyin, Xiaohongshu, YouTube and more",
+    "step2": "Paste",
+    "step2Description": "Paste the link in the input field above",
+    "step3": "Download",
+    "step3Description": "Click the button and get the download link in seconds"
+  },
+  "features": {
+    "title": "Why Choose RipAVid?",
+    "subtitle": "Unlike other downloaders, we prioritize simplicity and speed.",
+    "lightning": "Lightning Fast",
+    "lightningDesc": "Download videos in seconds, not minutes",
+    "free": "Completely Free",
+    "freeDesc": "No hidden fees, no premium plans",
+    "nosignup": "No Sign-up",
+    "nosignupDesc": "Start downloading immediately",
+    "multiplatform": "Multi-Platform",
+    "multiplatformDesc": "Support for Douyin, Xiaohongshu, YouTube and more",
+    "nowatermark": "No Watermark",
+    "nowatermarkDesc": "Get clean videos",
+    "alldevices": "All Devices",
+    "alldevicesDesc": "Works on PC, mobile, and tablet"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Have a question? Find the answer here.",
+    "q1": "Is RipAVid really free?",
+    "a1": "Yes, completely free. No hidden costs or premium subscriptions. Our goal is to help everyone download videos easily.",
+    "q2": "What video platforms do you support?",
+    "a2": "We support Douyin (抖音), Xiaohongshu (小红书), YouTube, Instagram and major social media platforms. We continue to add more platform support.",
+    "q3": "Does the downloaded video have watermarks?",
+    "a3": "No, absolutely not. RipAVid provides clean videos without watermarks.",
+    "q4": "How long does it take to download?",
+    "a4": "Most videos are processed within 3-10 seconds. It depends on video length and quality.",
+    "q5": "Do I need to sign up?",
+    "a5": "No sign-up required at all. Just paste the link and download.",
+    "q6": "Are there download limits?",
+    "a6": "No limits. You can download as many videos as you want."
+  },
+  "footer": {
+    "tagline": "Fast and simple video downloader",
+    "product": "Product",
+    "features": "Features",
+    "download": "Download",
+    "tips": "Tips & Guides",
+    "legal": "Legal",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "dmca": "DMCA",
+    "contact": "Contact",
+    "email": "support@ripavid.com",
+    "bugReport": "Bug Report",
+    "featureRequest": "Feature Request",
+    "copyright": "© 2025 RipAVid. All rights reserved.",
+    "twitter": "Twitter",
+    "github": "GitHub",
+    "discord": "Discord"
+  },
+  "videoResult": {
+    "ready": "Video Ready",
+    "formatsAvailable": "format available",
+    "formatsAvailablePlural": "formats available",
+    "availableFormats": "Available Formats:",
+    "best": "Best"
+  }
+}
