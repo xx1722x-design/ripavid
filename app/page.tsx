@@ -47,10 +47,6 @@ export default function Home() {
       }
 
       const data: VideoData = await response.json();
-      console.log('[page.tsx] Backend response:', data);
-      console.log('[page.tsx] Formats:', data.formats);
-      console.log('[page.tsx] First format:', data.formats[0]);
-      console.log('[page.tsx] First format URL:', data.formats[0]?.url);
       setResult(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to rip video. Please try again.');

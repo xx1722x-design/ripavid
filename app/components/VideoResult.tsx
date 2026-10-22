@@ -24,13 +24,6 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Debug: Log incoming data
-  useEffect(() => {
-    console.log('[VideoResult] Received props:', { title, formats });
-    console.log('[VideoResult] First format:', formats[0]);
-    console.log('[VideoResult] First format URL:', formats[0]?.url);
-  }, [title, formats]);
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -77,16 +70,14 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
           {/* Download Link (Left) - Direct HTML anchor tag */}
           {formats.length > 0 && (
             <a
-              href={formats[0].url}
+              href={formats[0].url || '#'}
               target="_blank"
               rel="noopener noreferrer"
-              download={`video.${formats[0].ext}`}
-              data-url={formats[0].url}
-              data-debug="main-download-button"
               onClick={(e) => {
-                console.log('[Main Download Button] Clicked');
-                console.log('[Main Download Button] href:', e.currentTarget.href);
-                console.log('[Main Download Button] URL:', formats[0].url);
+                if (!formats[0]?.url) {
+                  e.preventDefault();
+                  alert('Error: No video URL provided by backend!');
+                }
               }}
               className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold py-4 px-6 rounded-l-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg active:scale-95 no-underline"
             >
@@ -124,16 +115,14 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
               {formats.map((format, index) => (
                 <a
                   key={index}
-                  href={format.url}
+                  href={format.url || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  download={`video.${format.ext}`}
-                  data-url={format.url}
-                  data-debug={`format-${index}`}
                   onClick={(e) => {
-                    console.log(`[Format ${index}] Clicked`);
-                    console.log(`[Format ${index}] href:`, e.currentTarget.href);
-                    console.log(`[Format ${index}] URL:`, format.url);
+                    if (!format?.url) {
+                      e.preventDefault();
+                      alert(`Error: No video URL for ${format.ext.toUpperCase()}!`);
+                    }
                   }}
                   className="w-full px-6 py-3 text-left hover:bg-zinc-700 transition-colors flex items-center justify-between group border-b border-zinc-700 last:border-b-0 no-underline"
                 >
