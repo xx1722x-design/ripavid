@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "./components/ThemeProvider";
-import { LanguageProvider } from "./context/LanguageContext";
 import "./globals.css";
 import { ReactNode } from "react";
 
@@ -28,11 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-white dark:bg-[#0B0F19] text-gray-900 dark:text-gray-100 transition-colors duration-300">
-        <Providers>
-          <LanguageProvider>
-            {children}
-          </LanguageProvider>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
