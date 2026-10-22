@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UrlForm from './components/UrlForm';
 import VideoResult from './components/VideoResult';
 import SocialProofTicker from './components/SocialProofTicker';
