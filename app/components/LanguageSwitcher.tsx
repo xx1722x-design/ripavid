@@ -79,7 +79,7 @@ export default function LanguageSwitcher() {
   const menuContent = (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="bg-[#0f172a] border border-zinc-700 rounded-lg shadow-2xl min-w-[280px] max-h-96 overflow-y-auto"
+      className="bg-[#0f172a] border border-zinc-700 rounded-lg shadow-2xl min-w-[280px] max-h-96 overflow-y-auto pointer-events-auto"
       style={{
         position: 'fixed',
         top: `${position.top}px`,
@@ -95,7 +95,7 @@ export default function LanguageSwitcher() {
             e.stopPropagation();
             handleLanguageChange(lang.code);
           }}
-          className={`w-full px-6 py-3 text-left hover:bg-zinc-800 transition-colors flex items-center justify-between border-b border-zinc-700 last:border-b-0 select-none ${
+          className={`w-full px-6 py-3 text-left hover:bg-zinc-800 transition-colors flex items-center justify-between border-b border-zinc-700 last:border-b-0 select-none pointer-events-auto ${
             lang.code === language
               ? 'bg-blue-900/30 text-blue-200'
               : 'text-gray-200 hover:text-white'
@@ -114,7 +114,7 @@ export default function LanguageSwitcher() {
         ref={buttonRef}
         type="button"
         onClick={handleOpen}
-        className="relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-blue-400 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors select-none"
+        className="relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-blue-400 hover:bg-zinc-300 dark:hover:bg-zinc-700 transition-colors select-none pointer-events-auto"
         aria-label="Change language"
       >
         <Globe className="w-5 h-5" />
