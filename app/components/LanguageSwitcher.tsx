@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Globe } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
 
 const LANGUAGES = [
   { code: 'en', name: 'English', countryCode: 'US' },
@@ -30,9 +29,9 @@ const LANGUAGES = [
 ];
 
 export default function LanguageSwitcher() {
-  const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, right: 0 });
+  const [language, setLanguage] = useState('en');
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -41,7 +40,7 @@ export default function LanguageSwitcher() {
   }, []);
 
   const handleLanguageChange = (code: string) => {
-    setLanguage(code as any);
+    setLanguage(code);
     setIsOpen(false);
   };
 
