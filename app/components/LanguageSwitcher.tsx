@@ -45,7 +45,9 @@ export default function LanguageSwitcher() {
     setLanguage(code);
     localStorage.setItem('selectedLanguage', code);
     setIsOpen(false);
-    window.dispatchEvent(new Event('languagechange'));
+    setTimeout(() => {
+      window.dispatchEvent(new Event('languagechange'));
+    }, 0);
   };
 
   const handleOpen = () => {
