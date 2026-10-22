@@ -59,19 +59,16 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<VideoData | null>(null);
   const [error, setError] = useState('');
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('selectedLanguage') || 'en';
+    }
+    return 'en';
+  });
 
   useEffect(() => {
     const saved = localStorage.getItem('selectedLanguage') || 'en';
     setLanguage(saved);
-
-    const handleLanguageChange = () => {
-      const updated = localStorage.getItem('selectedLanguage') || 'en';
-      setLanguage(updated);
-    };
-
-    window.addEventListener('languagechange', handleLanguageChange);
-    return () => window.removeEventListener('languagechange', handleLanguageChange);
   }, []);
 
   const handleRipVideo = async (url: string) => {

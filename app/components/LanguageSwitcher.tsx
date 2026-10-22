@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { Globe } from 'lucide-react';
 
@@ -29,6 +30,7 @@ const LANGUAGES = [
 ];
 
 export default function LanguageSwitcher() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, right: 0 });
   const [language, setLanguage] = useState('en');
@@ -45,9 +47,7 @@ export default function LanguageSwitcher() {
     setLanguage(code);
     localStorage.setItem('selectedLanguage', code);
     setIsOpen(false);
-    setTimeout(() => {
-      window.dispatchEvent(new Event('languagechange'));
-    }, 0);
+    router.refresh();
   };
 
   const handleOpen = () => {
