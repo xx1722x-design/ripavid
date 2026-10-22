@@ -68,9 +68,9 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
       <div className="relative inline-block w-full">
         <div className="flex gap-0">
           {/* Download Button (Left) - Pure HTML anchor tag */}
-          {formats.length > 0 && (
+          {formats.length > 0 && formats[0]?.url && (
             <a
-              href={formats[0]?.url || '#'}
+              href={formats[0].url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold py-4 px-6 rounded-l-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg active:scale-95 no-underline inline-flex"
@@ -106,10 +106,10 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
             className="absolute top-full left-0 right-0 mt-2 bg-zinc-800 border border-zinc-600 rounded-lg shadow-2xl overflow-hidden z-50"
           >
             <div className="max-h-64 overflow-y-auto">
-              {formats.map((format, index) => (
+              {formats.map((format, index) => format.url ? (
                 <a
                   key={index}
-                  href={format?.url || '#'}
+                  href={format.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full px-6 py-3 text-left hover:bg-zinc-700 transition-colors flex items-center justify-between group border-b border-zinc-700 last:border-b-0 no-underline block"
@@ -129,7 +129,8 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
                     </span>
                   )}
                 </a>
-              ))}
+              ) : null
+              )}
             </div>
           </div>
         )}
