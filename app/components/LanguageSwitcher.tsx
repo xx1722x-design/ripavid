@@ -37,11 +37,15 @@ export default function LanguageSwitcher() {
 
   useEffect(() => {
     setIsMounted(true);
+    const saved = localStorage.getItem('selectedLanguage') || 'en';
+    setLanguage(saved);
   }, []);
 
   const handleLanguageChange = (code: string) => {
     setLanguage(code);
+    localStorage.setItem('selectedLanguage', code);
     setIsOpen(false);
+    window.dispatchEvent(new Event('languagechange'));
   };
 
   const handleOpen = () => {

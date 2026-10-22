@@ -22,10 +22,57 @@ interface VideoData {
   formats: Format[];
 }
 
+const translations: { [key: string]: { [key: string]: string } } = {
+  en: {
+    title: 'Download Videos Easily',
+    subtitle: 'Download videos from Douyin, Xiaohongshu, YouTube and more in seconds',
+    subtext: 'Fast, simple, and completely free. No sign-up required.',
+  },
+  ko: {
+    title: '모든 영상을 쉽게 다운로드하세요',
+    subtitle: '도우인, 샤오홍슈, 유튜브 등에서 몇 초 만에 영상을 다운로드하세요',
+    subtext: '빠르고 간단하며 완전히 무료입니다. 가입 불필요.',
+  },
+  'zh-CN': {
+    title: '轻松下载所有视频',
+    subtitle: '从抖音、小红书、YouTube 等多个平台在几秒内下载视频',
+    subtext: '快速、简单、完全免费。无需注册。',
+  },
+  es: {
+    title: 'Descarga videos fácilmente',
+    subtitle: 'Descarga videos de Douyin, Xiaohongshu, YouTube y más en segundos',
+    subtext: 'Rápido, simple y completamente gratis. Sin necesidad de registro.',
+  },
+  fr: {
+    title: 'Téléchargez facilement tous les vidéos',
+    subtitle: 'Téléchargez des vidéos de Douyin, Xiaohongshu, YouTube et plus en quelques secondes',
+    subtext: 'Rapide, simple et complètement gratuit. Aucune inscription requise.',
+  },
+  ja: {
+    title: 'すべての動画を簡単にダウンロード',
+    subtitle: 'Douyin、Xiaohongshu、YouTubeなどから数秒で動画をダウンロード',
+    subtext: '高速、シンプル、完全無料。登録不要。',
+  },
+};
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<VideoData | null>(null);
   const [error, setError] = useState('');
+  const [language, setLanguage] = useState('en');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('selectedLanguage') || 'en';
+    setLanguage(saved);
+
+    const handleLanguageChange = () => {
+      const updated = localStorage.getItem('selectedLanguage') || 'en';
+      setLanguage(updated);
+    };
+
+    window.addEventListener('languagechange', handleLanguageChange);
+    return () => window.removeEventListener('languagechange', handleLanguageChange);
+  }, []);
 
   const handleRipVideo = async (url: string) => {
     setIsLoading(true);
@@ -87,16 +134,14 @@ export default function Home() {
         <div className="text-center mb-12 max-w-3xl">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-              모든 영상을 쉽게
+              {translations[language]?.title || translations['en'].title}
             </span>
-            {' '}
-            <span className="text-white dark:text-white light:text-gray-900">다운로드하세요</span>
           </h1>
           <p className="text-lg sm:text-xl text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-2">
-            도우인, 샤오홍슈, 유튜브 등에서 몇 초 만에 영상을 다운로드하세요
+            {translations[language]?.subtitle || translations['en'].subtitle}
           </p>
           <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-500 light:text-gray-500">
-            빠르고 간단하며 완전히 무료입니다. 가입 불필요.
+            {translations[language]?.subtext || translations['en'].subtext}
           </p>
         </div>
 
