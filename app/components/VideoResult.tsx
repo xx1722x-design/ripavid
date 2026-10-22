@@ -70,15 +70,9 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
           {/* Download Link (Left) - Direct HTML anchor tag */}
           {formats.length > 0 && (
             <a
-              href={formats[0].url || '#'}
+              href={formats[0].url}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={(e) => {
-                if (!formats[0]?.url) {
-                  e.preventDefault();
-                  alert('Error: No video URL provided by backend!');
-                }
-              }}
               className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-400 hover:to-emerald-400 text-white font-bold py-4 px-6 rounded-l-lg transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg active:scale-95 no-underline"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,15 +109,9 @@ export default function VideoResult({ title, formats, onClose }: VideoResultProp
               {formats.map((format, index) => (
                 <a
                   key={index}
-                  href={format.url || '#'}
+                  href={format.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={(e) => {
-                    if (!format?.url) {
-                      e.preventDefault();
-                      alert(`Error: No video URL for ${format.ext.toUpperCase()}!`);
-                    }
-                  }}
                   className="w-full px-6 py-3 text-left hover:bg-zinc-700 transition-colors flex items-center justify-between group border-b border-zinc-700 last:border-b-0 no-underline"
                 >
                   <div className="flex items-center gap-3">
