@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Globe } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const LANGUAGES = [
   { code: 'en', name: 'English', countryCode: 'US' },
@@ -29,21 +30,18 @@ const LANGUAGES = [
 ];
 
 export default function LanguageSwitcher() {
+  const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, right: 0 });
-  const [currentLanguage, setCurrentLanguage] = useState('en');
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    const saved = localStorage.getItem('language') || 'en';
-    setCurrentLanguage(saved);
   }, []);
 
   const handleLanguageChange = (code: string) => {
-    setCurrentLanguage(code);
-    localStorage.setItem('language', code);
+    setLanguage(code as any);
     setIsOpen(false);
   };
 
@@ -94,7 +92,7 @@ export default function LanguageSwitcher() {
           key={lang.code}
           onClick={() => handleLanguageChange(lang.code)}
           className={`w-full px-6 py-3 text-left hover:bg-zinc-800 transition-colors flex items-center justify-between border-b border-zinc-700 last:border-b-0 ${
-            lang.code === currentLanguage
+            lang.code === language
               ? 'bg-blue-900/30 text-blue-200'
               : 'text-gray-200 hover:text-white'
           }`}

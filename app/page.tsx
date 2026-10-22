@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from './context/LanguageContext';
 import UrlForm from './components/UrlForm';
 import VideoResult from './components/VideoResult';
 import SocialProofTicker from './components/SocialProofTicker';
@@ -23,6 +24,7 @@ interface VideoData {
 }
 
 export default function Home() {
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<VideoData | null>(null);
   const [error, setError] = useState('');
@@ -57,7 +59,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black dark:from-black dark:via-zinc-900 dark:to-black light:from-white light:via-gray-50 light:to-gray-100 text-white dark:text-white light:text-gray-900 overflow-hidden transition-colors">
+    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black dark:from-black dark:via-zinc-900 dark:to-black light:from-white light:via-gray-50 light:to-gray-100 text-gray-900 dark:text-white light:text-gray-900 overflow-hidden transition-colors">
       {/* Animated background elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 dark:bg-cyan-500/10 light:bg-cyan-500/5 rounded-full blur-3xl opacity-20"></div>
@@ -87,16 +89,16 @@ export default function Home() {
         <div className="text-center mb-12 max-w-3xl">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-              모든 영상을 쉽게
+              {t('title')}
             </span>
             {' '}
-            <span className="text-white dark:text-white light:text-gray-900">다운로드하세요</span>
+            <span className="text-white dark:text-white light:text-gray-900">{t('titleSub')}</span>
           </h1>
           <p className="text-lg sm:text-xl text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-2">
-            도우인, 샤오홍슈, 유튜브 등에서 몇 초 만에 영상을 다운로드하세요
+            {t('subtitle')}
           </p>
           <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-500 light:text-gray-500">
-            빠르고 간단하며 완전히 무료입니다. 가입 불필요.
+            {t('subtext')}
           </p>
         </div>
 
