@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { Globe } from 'lucide-react';
 
@@ -30,11 +29,11 @@ const LANGUAGES = [
 ];
 
 export default function LanguageSwitcher() {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, right: 0 });
   const [language, setLanguage] = useState('en');
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -52,71 +51,98 @@ export default function LanguageSwitcher() {
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new Event('languageChanged'));
     }
-
-    router.refresh();
   };
 
-  const handleOpen = () => {
+  const calculatePosition = () => {
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
       setPosition({
-        top: rect.bottom + 8,
+        top: rect.bottom + 12,
         right: window.innerWidth - rect.right,
       });
+    }
+  };
+
+  const handleOpen = () => {
+    if (!isOpen) {
+      calculatePosition();
     }
     setIsOpen(!isOpen);
   };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (buttonRef.current && !buttonRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        buttonRef.current &&
+        !buttonRef.current.contains(target) &&
+        menuRef.current &&
+        !menuRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     }
 
     function handleScroll() {
-      setIsOpen(false);
+      if (isOpen) {
+        calculatePosition();
+      }
     }
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      window.addEventListener('scroll', handleScroll);
+      // Delay to ensure event listeners are attached after DOM is ready
+      const timer = setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        window.addEventListener('scroll', handleScroll, true);
+      }, 0);
+
       return () => {
+        clearTimeout(timer);
         document.removeEventListener('mousedown', handleClickOutside);
-        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('scroll', handleScroll, true);
       };
     }
   }, [isOpen]);
 
   const menuContent = (
     <div
+      ref={menuRef}
       onClick={(e) => e.stopPropagation()}
-      className="bg-[#0f172a] border border-zinc-700 rounded-lg shadow-2xl min-w-[280px] max-h-96 overflow-y-auto pointer-events-auto"
+      className="bg-[#0f172a] border border-zinc-700 rounded-xl shadow-2xl min-w-[300px] max-h-[480px] overflow-y-auto pointer-events-auto backdrop-filter-none"
       style={{
         position: 'fixed',
         top: `${position.top}px`,
         right: `${position.right}px`,
-        zIndex: 9999,
+        zIndex: 99999,
+        backdropFilter: 'none',
       }}
     >
-      {LANGUAGES.map((lang) => (
-        <button
-          key={lang.code}
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleLanguageChange(lang.code);
-          }}
-          className={`w-full px-6 py-3 text-left hover:bg-zinc-800 transition-colors flex items-center justify-between border-b border-zinc-700 last:border-b-0 select-none pointer-events-auto ${
-            lang.code === language
-              ? 'bg-blue-900/30 text-blue-200'
-              : 'text-gray-200 hover:text-white'
-          }`}
-        >
-          <span className="font-semibold text-sm w-8">{lang.countryCode}</span>
-          <span className="text-sm flex-1 text-right">{lang.name}</span>
-        </button>
-      ))}
+      <div className="sticky top-0 bg-[#0f172a] border-b border-zinc-700 px-6 py-3 z-10">
+        <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wide">Select Language</p>
+      </div>
+      <div className="divide-y divide-zinc-700">
+        {LANGUAGES.map((lang) => (
+          <button
+            key={lang.code}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLanguageChange(lang.code);
+            }}
+            className={`w-full px-6 py-3 text-left transition-all duration-150 flex items-center justify-between select-none pointer-events-auto hover:bg-zinc-800/80 ${
+              lang.code === language
+                ? 'bg-blue-900/40 text-blue-200 border-l-2 border-blue-500'
+                : 'text-gray-300 hover:text-white'
+            }`}
+          >
+            <span className="font-mono text-xs font-bold w-10 text-zinc-500">{lang.countryCode}</span>
+            <span className="text-sm flex-1 ml-2">{lang.name}</span>
+            {lang.code === language && (
+              <span className="text-blue-400 font-bold text-lg leading-none">✓</span>
+            )}
+          </button>
+        ))}
+      </div>
     </div>
   );
 

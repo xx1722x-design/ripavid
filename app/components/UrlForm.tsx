@@ -59,20 +59,20 @@ export default function UrlForm({ onSubmit, isLoading }: UrlFormProps) {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="w-full">
-        <div className="flex flex-col sm:flex-row gap-3 mb-4">
+      <form onSubmit={handleSubmit} className="w-full max-w-5xl mx-auto">
+        <div className="flex flex-col gap-4 mb-6">
           <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder={PLATFORMS[platform].placeholder}
             disabled={isLoading}
-            className="flex-1 px-6 py-4 bg-zinc-900 dark:bg-zinc-900 light:bg-white border border-zinc-700 dark:border-zinc-700 light:border-gray-300 rounded-lg text-white dark:text-white light:text-gray-900 placeholder-zinc-500 dark:placeholder-zinc-500 light:placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-8 py-6 bg-zinc-900 dark:bg-zinc-900 light:bg-white border-2 border-zinc-700 dark:border-zinc-700 light:border-gray-300 rounded-xl text-lg md:text-xl dark:text-white light:text-gray-900 placeholder-zinc-500 dark:placeholder-zinc-500 light:placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           />
           <button
             type="submit"
             disabled={isLoading}
-            className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
+            className="w-full px-8 py-6 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold text-lg rounded-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
           >
             {isLoading ? (
               <>
