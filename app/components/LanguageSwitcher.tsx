@@ -47,6 +47,12 @@ export default function LanguageSwitcher() {
     setLanguage(code);
     localStorage.setItem('selectedLanguage', code);
     setIsOpen(false);
+
+    // Dispatch custom event for language change
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('languageChanged'));
+    }
+
     router.refresh();
   };
 

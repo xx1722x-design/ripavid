@@ -10,6 +10,8 @@ import FaqAccordion from './components/FaqAccordion';
 import Footer from './components/Footer';
 import ThemeToggle from './components/ThemeToggle';
 import LanguageSwitcher from './components/LanguageSwitcher';
+import PlatformSelector from './components/PlatformSelector';
+import MarketingCopy from './components/MarketingCopy';
 
 interface Format {
   quality: string;
@@ -22,36 +24,112 @@ interface VideoData {
   formats: Format[];
 }
 
-const translations: { [key: string]: { [key: string]: string } } = {
+interface TranslationContent {
+  title: string;
+  subtitle: string;
+  subtext: string;
+  youtube: string;
+  instagram: string;
+  tiktok: string;
+  douyin: string;
+  xiaohongshu: string;
+  kuaishou: string;
+  bilibili: string;
+  weibo: string;
+  baidu: string;
+  pinduoduo: string;
+}
+
+const translations: { [key: string]: TranslationContent } = {
   en: {
     title: 'Download Videos Easily',
-    subtitle: 'Download videos from Douyin, Xiaohongshu, YouTube and more in seconds',
+    subtitle: 'Download videos from YouTube, TikTok, Instagram and more in seconds',
     subtext: 'Fast, simple, and completely free. No sign-up required.',
+    youtube: 'Download YouTube Videos & Music in HD',
+    instagram: 'Download Instagram Photos & Videos Instantly',
+    tiktok: 'Download TikTok Videos Without Watermark',
+    douyin: 'Download Douyin Videos Easily',
+    xiaohongshu: 'Download Xiaohongshu Photos & Videos',
+    kuaishou: 'Download Kuaishou Videos Online',
+    bilibili: 'Download Bilibili Videos in HD',
+    weibo: 'Download Weibo Videos & Photos',
+    baidu: 'Download Baidu Videos & Content',
+    pinduoduo: 'Download Pinduoduo Content Easily',
   },
   ko: {
     title: '모든 영상을 쉽게 다운로드하세요',
-    subtitle: '도우인, 샤오홍슈, 유튜브 등에서 몇 초 만에 영상을 다운로드하세요',
+    subtitle: '유튜브, 틱톡, 인스타그램 등에서 몇 초 만에 영상을 다운로드하세요',
     subtext: '빠르고 간단하며 완전히 무료입니다. 가입 불필요.',
+    youtube: 'YouTube 영상 & 음악을 HD로 다운로드',
+    instagram: '인스타그램 사진 & 영상 즉시 다운로드',
+    tiktok: '틱톡 영상을 워터마크 없이 다운로드',
+    douyin: '도우인 영상을 쉽게 다운로드',
+    xiaohongshu: '샤오홍슈 사진 & 영상 다운로드',
+    kuaishou: '콰이쇼우 영상을 온라인으로 다운로드',
+    bilibili: '빌리빌리 영상을 HD로 다운로드',
+    weibo: '웨이보 영상 & 사진 다운로드',
+    baidu: '바이두 영상 & 콘텐츠 다운로드',
+    pinduoduo: '핀둬둬 콘텐츠를 쉽게 다운로드',
   },
   'zh-CN': {
     title: '轻松下载所有视频',
-    subtitle: '从抖音、小红书、YouTube 等多个平台在几秒内下载视频',
+    subtitle: '从YouTube、TikTok、Instagram等多个平台在几秒内下载视频',
     subtext: '快速、简单、完全免费。无需注册。',
+    youtube: '下载YouTube视频及音乐（高清）',
+    instagram: '即时下载Instagram照片及视频',
+    tiktok: '无水印下载TikTok视频',
+    douyin: '轻松下载抖音视频',
+    xiaohongshu: '下载小红书照片及视频',
+    kuaishou: '在线下载快手视频',
+    bilibili: '下载B站视频（高清）',
+    weibo: '下载微博视频及照片',
+    baidu: '下载百度视频及内容',
+    pinduoduo: '轻松下载拼多多内容',
   },
   es: {
     title: 'Descarga videos fácilmente',
-    subtitle: 'Descarga videos de Douyin, Xiaohongshu, YouTube y más en segundos',
+    subtitle: 'Descarga videos de YouTube, TikTok, Instagram y más en segundos',
     subtext: 'Rápido, simple y completamente gratis. Sin necesidad de registro.',
+    youtube: 'Descarga videos y música de YouTube en HD',
+    instagram: 'Descarga fotos y videos de Instagram al instante',
+    tiktok: 'Descarga videos de TikTok sin marca de agua',
+    douyin: 'Descarga videos de Douyin fácilmente',
+    xiaohongshu: 'Descarga fotos y videos de Xiaohongshu',
+    kuaishou: 'Descarga videos de Kuaishou en línea',
+    bilibili: 'Descarga videos de Bilibili en HD',
+    weibo: 'Descarga videos y fotos de Weibo',
+    baidu: 'Descarga videos y contenido de Baidu',
+    pinduoduo: 'Descarga contenido de Pinduoduo fácilmente',
   },
   fr: {
     title: 'Téléchargez facilement tous les vidéos',
-    subtitle: 'Téléchargez des vidéos de Douyin, Xiaohongshu, YouTube et plus en quelques secondes',
+    subtitle: 'Téléchargez des vidéos de YouTube, TikTok, Instagram et plus en quelques secondes',
     subtext: 'Rapide, simple et complètement gratuit. Aucune inscription requise.',
+    youtube: 'Téléchargez les vidéos et la musique YouTube en HD',
+    instagram: 'Téléchargez les photos et vidéos Instagram instantanément',
+    tiktok: 'Téléchargez les vidéos TikTok sans filigrane',
+    douyin: 'Téléchargez facilement les vidéos Douyin',
+    xiaohongshu: 'Téléchargez les photos et vidéos Xiaohongshu',
+    kuaishou: 'Téléchargez les vidéos Kuaishou en ligne',
+    bilibili: 'Téléchargez les vidéos Bilibili en HD',
+    weibo: 'Téléchargez les vidéos et photos Weibo',
+    baidu: 'Téléchargez les vidéos et le contenu Baidu',
+    pinduoduo: 'Téléchargez facilement le contenu Pinduoduo',
   },
   ja: {
     title: 'すべての動画を簡単にダウンロード',
-    subtitle: 'Douyin、Xiaohongshu、YouTubeなどから数秒で動画をダウンロード',
+    subtitle: 'YouTube、TikTok、Instagramなどから数秒で動画をダウンロード',
     subtext: '高速、シンプル、完全無料。登録不要。',
+    youtube: 'YouTubeの動画と音楽をHDでダウンロード',
+    instagram: 'Instagramの写真と動画を即座にダウンロード',
+    tiktok: 'TikTokの動画をウォーターマークなしでダウンロード',
+    douyin: 'Douyinの動画を簡単にダウンロード',
+    xiaohongshu: '小红书の写真と動画をダウンロード',
+    kuaishou: 'Kuaishouの動画をオンラインでダウンロード',
+    bilibili: 'BilibiliビデオをHDでダウンロード',
+    weibo: 'Weiboの動画と写真をダウンロード',
+    baidu: 'Baiduの動画とコンテンツをダウンロード',
+    pinduoduo: 'Pinduoduoのコンテンツを簡単にダウンロード',
   },
 };
 
@@ -59,6 +137,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<VideoData | null>(null);
   const [error, setError] = useState('');
+  const [selectedPlatform, setSelectedPlatform] = useState('');
   const [language, setLanguage] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('selectedLanguage') || 'en';
@@ -69,6 +148,15 @@ export default function Home() {
   useEffect(() => {
     const saved = localStorage.getItem('selectedLanguage') || 'en';
     setLanguage(saved);
+
+    // Listen for language changes from LanguageSwitcher
+    const handleStorageChange = () => {
+      const updated = localStorage.getItem('selectedLanguage') || 'en';
+      setLanguage(updated);
+    };
+
+    window.addEventListener('languageChanged', handleStorageChange);
+    return () => window.removeEventListener('languageChanged', handleStorageChange);
   }, []);
 
   const handleRipVideo = async (url: string) => {
@@ -128,10 +216,12 @@ export default function Home() {
         </div>
 
         {/* Hero Section */}
-        <div className="text-center mb-12 max-w-3xl">
+        <div className="text-center mb-8 max-w-3xl">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-              {translations[language]?.title || translations['en'].title}
+              {selectedPlatform && (translations[language]?.[selectedPlatform as keyof TranslationContent] as string)
+                ? (translations[language]?.[selectedPlatform as keyof TranslationContent] as string)
+                : translations[language]?.title || translations['en'].title}
             </span>
           </h1>
           <p className="text-lg sm:text-xl text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-2">
@@ -141,6 +231,13 @@ export default function Home() {
             {translations[language]?.subtext || translations['en'].subtext}
           </p>
         </div>
+
+        {/* Platform Selector */}
+        <PlatformSelector
+          selectedPlatform={selectedPlatform}
+          onSelectPlatform={setSelectedPlatform}
+          showLabel={true}
+        />
 
         {/* URL Input Form */}
         <UrlForm onSubmit={handleRipVideo} isLoading={isLoading} />
@@ -186,6 +283,9 @@ export default function Home() {
 
         {/* FAQ Accordion */}
         {!result && <FaqAccordion />}
+
+        {/* Marketing Copy & Social Sharing */}
+        {!result && <MarketingCopy language={language} />}
       </main>
 
       {/* Footer */}
