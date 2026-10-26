@@ -67,6 +67,9 @@ export const koTranslations = {
   footerBugReportLink: '버그 리포팅',
   footerFeatureSuggestLink: '기능 제안',
   footerCopyright: '© 2025 RipAVid. 모든 권리 보유.',
+  downloadWaitTitle: '영상을 준비 중입니다...',
+  downloadWaitMaxTime: '최대 90초',
+  downloadWaitWarning: '창을 닫지 마세요!',
   downloadTip: '💡 다운로드 방법: 영상 우측 하단의 [점 3개 아이콘]을 눌러 \"다운로드\"를 선택하거나, 영상 화면을 마우스 우클릭하여 \"동영상을 다른 이름으로 저장\"을 누르세요. 파일은 90초 이내에 기본 다운로드 폴더에 저장됩니다. (브라우저 우측 상단 다운로드 진행 상태를 확인해 주세요)',
   codecWarning: '⚠️ 주의: 1080p 이상 고화질이나 WEBM 파일에서 \"지원되지 않는 인코딩\" 오류가 발생하면, 호환성이 가장 높은 \"720p MP4\"를 다운로드하시거나 VLC 미디어 플레이어를 사용해 주세요.',
 };

@@ -67,6 +67,9 @@ export const esTranslations = {
   footerBugReportLink: 'Reportar error',
   footerFeatureSuggestLink: 'Sugerir característica',
   footerCopyright: '© 2025 RipAVid. Todos los derechos reservados.',
+  downloadWaitTitle: 'Preparando tu video...',
+  downloadWaitMaxTime: 'Hasta 90 segundos',
+  downloadWaitWarning: '¡No cierre esta ventana!',
   downloadTip: '💡 Download Method: Click the [Three Dots Icon] at the bottom right of the video and select "Download", or right-click on the video and choose "Save video as". The file will be saved to your default download folder within 90 seconds. (Check the download progress in the top right corner of your browser)',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
 };

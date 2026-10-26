@@ -67,6 +67,9 @@ export const trTranslations = {
   footerBugReportLink: 'Hata Bildir',
   footerFeatureSuggestLink: 'Özellik Öner',
   footerCopyright: '© 2025 RipAVid. Tüm hakları saklıdır.',
+  downloadWaitTitle: 'Video hazırlanıyor...',
+  downloadWaitMaxTime: '90 saniyeye kadar',
+  downloadWaitWarning: 'Bu pencereyi kapatmayın!',
   downloadTip: '💡 Download Method: Click the [Three Dots Icon] at the bottom right of the video and select "Download", or right-click on the video and choose "Save video as". The file will be saved to your default download folder within 90 seconds. (Check the download progress in the top right corner of your browser)',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
 };

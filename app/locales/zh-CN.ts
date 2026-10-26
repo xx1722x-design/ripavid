@@ -67,6 +67,9 @@ export const zhCNTranslations = {
   footerBugReportLink: '错误报告',
   footerFeatureSuggestLink: '功能建议',
   footerCopyright: '© 2025 RipAVid。版权所有。',
+  downloadWaitTitle: '正在准备视频...',
+  downloadWaitMaxTime: '最多90秒',
+  downloadWaitWarning: '请勿关闭此窗口!',
   downloadTip: '💡 Download Method: Click the [Three Dots Icon] at the bottom right of the video and select "Download", or right-click on the video and choose "Save video as". The file will be saved to your default download folder within 90 seconds. (Check the download progress in the top right corner of your browser)',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
 };

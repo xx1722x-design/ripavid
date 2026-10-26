@@ -182,7 +182,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         {/* Download Time Warning - HUGE TEXT TO PREVENT ABANDONMENT */}
         <div className="p-6 bg-blue-900/30 dark:bg-blue-900/30 light:bg-blue-100/70 border-2 border-blue-500/50 dark:border-blue-500/50 light:border-blue-400 rounded-lg shadow-lg">
           <p className="text-lg lg:text-xl font-bold text-blue-200 dark:text-blue-200 light:text-blue-800 leading-relaxed whitespace-pre-wrap">
-            ⏱️ <span className="text-red-400 dark:text-red-400 light:text-red-600 animate-pulse">최대 90초 대기</span> - <span className="text-yellow-300 dark:text-yellow-300 light:text-yellow-600 font-extrabold">창을 닫지 마세요!</span>
+            ⏱️ <span className="text-red-400 dark:text-red-400 light:text-red-600 animate-pulse">{t.downloadWaitMaxTime}</span> - <span className="text-yellow-300 dark:text-yellow-300 light:text-yellow-600 font-extrabold">{t.downloadWaitWarning}</span>
           </p>
           <p className="text-base lg:text-lg font-semibold text-blue-200 dark:text-blue-200 light:text-blue-700 leading-relaxed mt-3">
             {t.downloadTip}

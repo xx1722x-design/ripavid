@@ -67,6 +67,9 @@ export const viTranslations = {
   footerBugReportLink: 'Báo cáo lỗi',
   footerFeatureSuggestLink: 'Đề xuất tính năng',
   footerCopyright: '© 2025 RipAVid. Bảo lưu mọi quyền.',
+  downloadWaitTitle: 'Đang chuẩn bị video...',
+  downloadWaitMaxTime: 'Tối đa 90 giây',
+  downloadWaitWarning: 'Đừng đóng cửa sổ này!',
   downloadTip: '💡 Download Method: Click the [Three Dots Icon] at the bottom right of the video and select "Download", or right-click on the video and choose "Save video as". The file will be saved to your default download folder within 90 seconds. (Check the download progress in the top right corner of your browser)',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
 };
