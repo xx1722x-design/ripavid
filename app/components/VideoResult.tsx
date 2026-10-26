@@ -1,6 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { translations } from '../locales';
+import TipSlider from './TipSlider';
+import AffiliateBanner from './AffiliateBanner';
 
 interface Format {
   quality?: string;
@@ -55,6 +58,9 @@ const parseResolution = (resolution?: string, quality?: string): string => {
 };
 
 export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en', originalUrl = '' }: VideoResultProps) {
+  const [isWaiting, setIsWaiting] = useState(false);
+  const [waitingHeight, setWaitingHeight] = useState(720);
+
   const t = translations[language as keyof typeof translations] || translations['en'];
   const allFormats = [...formats.free, ...formats.premium];
 
@@ -62,6 +68,17 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const getHeightFromResolution = (res: string): number => {
     const match = res.match(/(\d+)p?/);
     return match ? parseInt(match[1], 10) : 720;
+  };
+
+  const handleDownloadClick = (height: number) => {
+    setIsWaiting(true);
+    setWaitingHeight(height);
+    // 302 리다이렉트로 다운로드 시작
+    const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
+    window.location.href = targetUrl;
+
+    // 백업: 10초 후 대기 상태 해제
+    setTimeout(() => setIsWaiting(false), 10000);
   };
 
   return (
@@ -93,19 +110,18 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
             {formats.free.map((format, index) => {
               const resolution = parseResolution(format.resolution, format.quality);
               const height = getHeightFromResolution(resolution);
-              const proxyUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
               return (
-                <a
+                <button
                   key={`free-${index}`}
-                  href={proxyUrl}
-                  download
-                  className="text-xs font-bold bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white px-5 py-2 rounded-full transition-all cursor-pointer flex items-center gap-2 shadow-md hover:shadow-lg transform hover:scale-105"
+                  onClick={() => handleDownloadClick(height)}
+                  disabled={isWaiting}
+                  className="text-xs font-bold bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-5 py-2 rounded-full transition-all cursor-pointer flex items-center gap-2 shadow-md hover:shadow-lg transform hover:scale-105 disabled:hover:scale-100"
                 >
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                   </svg>
                   {resolution}
-                </a>
+                </button>
               );
             })}
           </div>
@@ -121,27 +137,48 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
             {formats.premium.map((format, index) => {
               const resolution = parseResolution(format.resolution, format.quality);
               const height = getHeightFromResolution(resolution);
-              const proxyUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
               return (
-                <a
+                <button
                   key={`premium-${index}`}
-                  href={proxyUrl}
-                  download
-                  className="text-xs bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-full transition-colors cursor-pointer flex items-center gap-2 font-medium opacity-75"
+                  onClick={() => handleDownloadClick(height)}
+                  disabled={isWaiting}
+                  className="text-xs bg-red-700 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-full transition-colors cursor-pointer flex items-center gap-2 font-medium opacity-75"
                 >
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1V4a1 1 0 011-1h5a1 1 0 011 1v1m5-1a1 1 0 011 1v1m0 0a1 1 0 001 1h1a1 1 0 001-1m-1-1v-4a1 1 0 00-1-1h-4.586a1 1 0 00-.707.293l-3.414 3.414a1 1 0 00-.293.707V15a1 1 0 001 1h1m8-1a1 1 0 01-1 1m0 0H9m3 0a1 1 0 01-1-1" />
                   </svg>
                   {resolution}
-                </a>
+                </button>
               );
             })}
           </div>
         </div>
       )}
 
+      {/* 대기 상태 UI */}
+      {isWaiting && (
+        <div className="w-full max-w-2xl mx-auto mt-6 p-6 bg-blue-950/40 border-2 border-blue-500/50 rounded-xl shadow-lg">
+          <div className="text-center mb-4">
+            <div className="inline-block p-3 bg-blue-900/60 rounded-full mb-3">
+              <svg className="w-8 h-8 text-blue-400 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </div>
+            <p className="text-lg font-bold text-blue-300 mb-2">⏳ 영상 준비 중입니다...</p>
+            <p className="text-sm text-blue-200">(최대 1~2분 소요, 창을 닫지 마세요)</p>
+          </div>
+
+          {/* 가치 제공형 슬라이드 */}
+          <TipSlider />
+
+          {/* 제휴 배너 */}
+          <AffiliateBanner />
+        </div>
+      )}
+
       {/* Info & Tips Box - DRAMATICALLY ENLARGED FOR CUSTOMER RETENTION */}
-      <div className="space-y-4">
+      {!isWaiting && (
+        <div className="space-y-4">
         {/* Download Time Warning - HUGE TEXT TO PREVENT ABANDONMENT */}
         <div className="p-6 bg-blue-900/30 dark:bg-blue-900/30 light:bg-blue-100/70 border-2 border-blue-500/50 dark:border-blue-500/50 light:border-blue-400 rounded-lg shadow-lg">
           <p className="text-lg lg:text-xl font-bold text-blue-200 dark:text-blue-200 light:text-blue-800 leading-relaxed whitespace-pre-wrap">
@@ -159,6 +196,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           </p>
         </div>
       </div>
+      )}
     </div>
   );
 }
