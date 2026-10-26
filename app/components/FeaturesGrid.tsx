@@ -1,36 +1,44 @@
 'use client';
 
-export default function FeaturesGrid() {
+import { translations } from '../locales';
+
+interface FeaturesGridProps {
+  language: string;
+}
+
+export default function FeaturesGrid({ language }: FeaturesGridProps) {
+  const t = translations[language as keyof typeof translations] || translations['en'];
+
   const features = [
     {
       icon: '⚡',
-      title: '번개 같은 속도',
-      description: '초 단위로 영상을 다운로드하세요',
+      title: t.featureFastTitle,
+      description: t.featureFastDesc,
     },
     {
       icon: '🆓',
-      title: '완전히 무료',
-      description: '숨겨진 비용 없음, 프리미엄 계획 없음',
+      title: t.featureFreeTitle,
+      description: t.featureFreeDesc,
     },
     {
       icon: '🔐',
-      title: '가입 불필요',
-      description: '즉시 다운로드 시작하세요',
+      title: t.featureNoSignupTitle,
+      description: t.featureNoSignupDesc,
     },
     {
       icon: '🎬',
-      title: '다중 플랫폼',
-      description: 'Douyin, Xiaohongshu, YouTube 등 지원',
+      title: t.featureMultiPlatformTitle,
+      description: t.featureMultiPlatformDesc,
     },
     {
       icon: '✨',
-      title: '워터마크 없음',
-      description: '깨끗한 영상을 받으세요',
+      title: t.featureNoWatermarkTitle,
+      description: t.featureNoWatermarkDesc,
     },
     {
       icon: '📱',
-      title: '모든 기기 지원',
-      description: 'PC, 모바일, 태블릿에서 사용 가능',
+      title: t.featureAllDevicesTitle,
+      description: t.featureAllDevicesDesc,
     },
   ];
 
@@ -39,10 +47,10 @@ export default function FeaturesGrid() {
       <div className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-            왜 RipAVid를 선택할까?
+            {t.featuresTitle}
           </span>
         </h2>
-        <p className="text-zinc-400 dark:text-zinc-400 light:text-gray-600">다른 다운로더와 달리, 우리는 간단함과 속도를 우선시합니다.</p>
+        <p className="text-zinc-400 dark:text-zinc-400 light:text-gray-600">{t.featuresDesc}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

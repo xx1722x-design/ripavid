@@ -1,21 +1,29 @@
 'use client';
 
-export default function QuickTutorial() {
+import { translations } from '../locales';
+
+interface QuickTutorialProps {
+  language: string;
+}
+
+export default function QuickTutorial({ language }: QuickTutorialProps) {
+  const t = translations[language as keyof typeof translations] || translations['en'];
+
   const steps = [
     {
       number: '1️⃣',
-      title: '링크 복사',
-      description: 'Douyin, Xiaohongshu, YouTube 등에서 영상 링크를 복사하세요',
+      title: t.step1Title,
+      description: t.step1Desc,
     },
     {
       number: '2️⃣',
-      title: '붙여넣기',
-      description: '위의 입력창에 링크를 붙여넣으세요',
+      title: t.step2Title,
+      description: t.step2Desc,
     },
     {
       number: '3️⃣',
-      title: '다운로드',
-      description: '버튼을 클릭하고 몇 초 내에 다운로드 링크를 받으세요',
+      title: t.step3Title,
+      description: t.step3Desc,
     },
   ];
 
@@ -24,10 +32,10 @@ export default function QuickTutorial() {
       <div className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-            3단계로 시작하기
+            {t.howToUseTitle}
           </span>
         </h2>
-        <p className="text-zinc-400 dark:text-zinc-400 light:text-gray-600">매우 간단합니다. 링크만 붙여넣으세요.</p>
+        <p className="text-zinc-400 dark:text-zinc-400 light:text-gray-600">{t.howToUseDesc}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

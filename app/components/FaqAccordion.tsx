@@ -1,39 +1,45 @@
 'use client';
 
 import { useState } from 'react';
+import { translations } from '../locales';
 
 interface FaqItem {
   question: string;
   answer: string;
 }
 
-export default function FaqAccordion() {
+interface FaqAccordionProps {
+  language: string;
+}
+
+export default function FaqAccordion({ language }: FaqAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const t = translations[language as keyof typeof translations] || translations['en'];
 
   const faqs: FaqItem[] = [
     {
-      question: 'RipAVid는 정말 무료인가요?',
-      answer: '네, 완전히 무료입니다. 숨겨진 비용이나 프리미엄 구독은 없습니다. 우리의 목표는 모든 사용자가 쉽게 영상을 다운로드하도록 돕는 것입니다.',
+      question: t.faq1Question,
+      answer: t.faq1Answer,
     },
     {
-      question: '어떤 영상 플랫폼을 지원하나요?',
-      answer: 'Douyin(抖音), Xiaohongshu(小红书), YouTube, Instagram 등 주요 소셜 미디어 플랫폼을 지원합니다. 더 많은 플랫폼 지원을 계속 추가하고 있습니다.',
+      question: t.faq2Question,
+      answer: t.faq2Answer,
     },
     {
-      question: '다운로드한 영상에 워터마크가 있나요?',
-      answer: '아니오, 절대 아닙니다. RipAVid는 워터마크 없이 깨끗한 영상을 제공합니다.',
+      question: t.faq3Question,
+      answer: t.faq3Answer,
     },
     {
-      question: '다운로드가 얼마나 걸리나요?',
-      answer: '대부분의 영상은 3-10초 내에 처리됩니다. 영상의 길이와 품질에 따라 달라질 수 있습니다.',
+      question: t.faq4Question,
+      answer: t.faq4Answer,
     },
     {
-      question: '가입이 필요한가요?',
-      answer: '아니오, 가입이 전혀 필요하지 않습니다. 바로 링크를 붙여넣고 다운로드하세요.',
+      question: t.faq5Question,
+      answer: t.faq5Answer,
     },
     {
-      question: '다운로드 제한이 있나요?',
-      answer: '아니오, 제한이 없습니다. 원하는 만큼 많은 영상을 다운로드할 수 있습니다.',
+      question: t.faq6Question,
+      answer: t.faq6Answer,
     },
   ];
 
@@ -42,10 +48,10 @@ export default function FaqAccordion() {
       <div className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold mb-4">
           <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-            자주 묻는 질문
+            {t.faqTitle}
           </span>
         </h2>
-        <p className="text-zinc-400 dark:text-zinc-400 light:text-gray-600">궁금한 점이 있으신가요? 여기서 답변을 찾아보세요.</p>
+        <p className="text-zinc-400 dark:text-zinc-400 light:text-gray-600">{t.faqDesc}</p>
       </div>
 
       <div className="space-y-4">
