@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "RipAVid - Download Videos Instantly",
   description: "Fast and simple video downloader for Douyin, Xiaohongshu, and more. No sign-up required.",
   keywords: "video downloader, douyin, xiaohongshu, tiktok, instagram",
+  other: {
+    "monetag": "9cbfb4a387cd0dce13c3dbc35123a72c",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
