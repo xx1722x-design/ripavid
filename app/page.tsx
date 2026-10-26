@@ -12,6 +12,7 @@ import LanguageSwitcher from './components/LanguageSwitcher';
 import PlatformSelector from './components/PlatformSelector';
 import MarketingCopy from './components/MarketingCopy';
 import AdsterraBanner from './components/AdsterraBanner';
+import AffiliateBanners from './components/AffiliateBanners';
 import { translations, getTranslations } from './locales';
 
 interface Format {
@@ -185,6 +186,9 @@ export default function Home() {
             originalUrl={originalUrl}
           />
         )}
+
+        {/* Affiliate Banners (Language-based smart switching) */}
+        <AffiliateBanners language={language} />
 
         {/* Social Proof Ticker */}
         {!result && <SocialProofTicker />}
