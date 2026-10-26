@@ -41,9 +41,9 @@ export default function Footer({ language = 'en' }: FooterProps) {
           <div>
             <h4 className="font-semibold text-white dark:text-white light:text-gray-900 mb-4">{t.footerLegalTitle}</h4>
             <ul className="space-y-2 text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600">
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">{t.footerTermsLink}</a></li>
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">{t.footerPrivacyLink}</a></li>
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">{t.footerDmcaLink}</a></li>
+              <li><a href="/terms" className="hover:text-cyan-400 transition-colors">{t.footerTermsLink}</a></li>
+              <li><a href="/privacy" className="hover:text-cyan-400 transition-colors">{t.footerPrivacyLink}</a></li>
+              <li><a href="/dmca" className="hover:text-cyan-400 transition-colors">{t.footerDmcaLink}</a></li>
             </ul>
           </div>
 
