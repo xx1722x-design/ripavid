@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Readable } from 'stream';
 
-export const maxDuration = 120;
+export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
   try {
@@ -68,7 +67,8 @@ export async function GET(request: NextRequest) {
       headers.set('Content-Length', contentLength);
     }
 
-    // Web ReadableStream → Node.js Readable로 변환해서 메모리 없이 다이렉트 스트리밍
+    // Edge Runtime에서는 response.body (Web ReadableStream)를 직접 전달
+    // Edge 환경에서 0KB 에러 없이 안정적으로 스트리밍됨
     if (!response.body) {
       return NextResponse.json(
         { error: 'Empty response body' },
@@ -76,11 +76,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // response.body (Web ReadableStream)를 Node.js Readable로 변환
-    // 이렇게 하면 메모리에 파일을 올리지 않고 실시간 스트리밍 가능
-    const nodeStream = Readable.from(response.body as any);
-
-    return new NextResponse(nodeStream as any, {
+    return new NextResponse(response.body, {
       status: 200,
       headers: headers
     });
