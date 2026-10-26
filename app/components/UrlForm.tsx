@@ -1,49 +1,66 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import { translations } from '../locales';
 
 interface UrlFormProps {
   onSubmit: (url: string) => Promise<void>;
   isLoading: boolean;
+  language?: string;
 }
 
 type Platform = 'auto' | 'douyin' | 'xiaohongshu' | 'youtube' | 'instagram';
 
-const PLATFORMS: Record<Platform, { label: string; icon: string; placeholder: string }> = {
-  auto: { label: '자동 감지', icon: '🔍', placeholder: '링크를 붙여넣으세요...' },
-  douyin: { label: '도우인/틱톡', icon: '🎵', placeholder: 'Douyin/TikTok 링크를 붙여넣으세요...' },
-  xiaohongshu: { label: '샤오홍슈', icon: '❤️', placeholder: 'Xiaohongshu 링크를 붙여넣으세요...' },
-  youtube: { label: '유튜브', icon: '▶️', placeholder: 'YouTube 링크를 붙여넣으세요...' },
-  instagram: { label: '인스타그램', icon: '📷', placeholder: 'Instagram 링크를 붙여넣으세요...' },
+const PLATFORM_LABELS: Record<Platform, { icon: string }> = {
+  auto: { icon: '🔍' },
+  douyin: { icon: '🎵' },
+  xiaohongshu: { icon: '❤️' },
+  youtube: { icon: '▶️' },
+  instagram: { icon: '📷' },
 };
 
-export default function UrlForm({ onSubmit, isLoading }: UrlFormProps) {
+export default function UrlForm({ onSubmit, isLoading, language = 'en' }: UrlFormProps) {
   const [url, setUrl] = useState('');
   const [error, setError] = useState('');
   const [platform, setPlatform] = useState<Platform>('auto');
-  const [showDropdown, setShowDropdown] = useState(false);
+  const t = translations[language as keyof typeof translations] || translations['en'];
+
+  const PLATFORMS: Record<Platform, string> = {
+    auto: t.autoDetect,
+    douyin: 'Douyin',
+    xiaohongshu: 'Xiaohongshu',
+    youtube: 'YouTube',
+    instagram: 'Instagram',
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
 
     if (!url.trim()) {
-      setError('유효한 URL을 입력하세요');
+      setError(t.error);
+      return;
+    }
+
+    try {
+      new URL(url);
+    } catch {
+      setError('Invalid URL format');
       return;
     }
 
     try {
       await onSubmit(url);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '오류가 발생했습니다');
+      setError(err instanceof Error ? err.message : 'Failed to process video. Please try again.');
     }
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Platform Selector Pills */}
       <div className="flex flex-wrap gap-2 mb-6 justify-center">
-        {Object.entries(PLATFORMS).map(([key, value]) => (
+        {Object.entries(PLATFORMS).map(([key, label]) => (
           <button
             key={key}
             onClick={() => setPlatform(key as Platform)}
@@ -53,21 +70,21 @@ export default function UrlForm({ onSubmit, isLoading }: UrlFormProps) {
                 : 'bg-zinc-800/50 dark:bg-zinc-800/50 light:bg-gray-200/50 border border-zinc-700 dark:border-zinc-700 light:border-gray-300 text-zinc-300 dark:text-zinc-300 light:text-gray-700 hover:border-zinc-600 dark:hover:border-zinc-600 light:hover:border-gray-400'
             }`}
           >
-            <span className="mr-1">{value.icon}</span>
-            {value.label}
+            <span className="mr-1">{PLATFORM_LABELS[key as Platform].icon}</span>
+            {label}
           </button>
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className="w-full max-w-5xl mx-auto">
+      <form onSubmit={handleSubmit} className="w-full">
         <div className="flex flex-col gap-4 mb-6">
           <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder={PLATFORMS[platform].placeholder}
+            placeholder={t.pasteLink}
             disabled={isLoading}
-            className="w-full px-8 py-6 bg-zinc-900 dark:bg-zinc-900 light:bg-white border-2 border-zinc-700 dark:border-zinc-700 light:border-gray-300 rounded-xl text-lg md:text-xl dark:text-white light:text-gray-900 placeholder-zinc-500 dark:placeholder-zinc-500 light:placeholder-gray-400 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+            className="w-full px-6 py-4 sm:px-8 sm:py-6 h-14 sm:h-16 bg-zinc-800 dark:bg-zinc-800 light:bg-white border-2 border-zinc-600 dark:border-zinc-600 light:border-gray-300 rounded-xl text-base sm:text-lg md:text-xl font-semibold text-gray-100 dark:text-white light:text-gray-900 placeholder-gray-500 dark:placeholder-gray-400 light:placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           />
           <button
             type="submit"
@@ -80,14 +97,14 @@ export default function UrlForm({ onSubmit, isLoading }: UrlFormProps) {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                다운로드 중...
+                {t.downloadingText}
               </>
             ) : (
               <>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m0 0l-2-1m2 1v2.5M14 4l-2 1m0 0l-2-1m2 1v2.5" />
                 </svg>
-                다운로드
+                {t.download}
               </>
             )}
           </button>

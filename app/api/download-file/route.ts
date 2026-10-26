@@ -32,11 +32,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // 강제 다운로드 헤더 설정
+    // 강제 다운로드 헤더 설정 (한글 파일명 UTF-8 인코딩)
     const contentType = response.headers.get('content-type') || 'video/mp4';
     const headers = new Headers({
       'Content-Type': contentType,
-      'Content-Disposition': `attachment; filename="${filename}"`,
+      'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`,
       'Cache-Control': 'no-store',
       'Pragma': 'no-cache'
     });
