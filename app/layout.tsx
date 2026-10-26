@@ -48,6 +48,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             __html: `(function(s){s.dataset.zone='12129186',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
           }}
         />
+
+        {/* Adsterra Social Bar Advertisement */}
+        <Script
+          strategy="afterInteractive"
+          src="https://bauval.org/14/017f56454ff625e96576b1b98fe3817e"
+          data-cfasync="false"
+        />
       </body>
     </html>
   );

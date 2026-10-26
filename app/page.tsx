@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import PlatformSelector from './components/PlatformSelector';
 import MarketingCopy from './components/MarketingCopy';
+import AdsterraBanner from './components/AdsterraBanner';
 import { translations, getTranslations } from './locales';
 
 interface Format {
@@ -219,6 +220,9 @@ export default function Home() {
             <MarketingCopy language={language} />
           </>
         )}
+
+        {/* Adsterra Native Banner Advertisement */}
+        <AdsterraBanner />
       </main>
 
       {/* Footer */}
