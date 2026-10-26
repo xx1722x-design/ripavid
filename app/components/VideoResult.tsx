@@ -164,8 +164,8 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
             </div>
-            <p className="text-lg font-bold text-blue-300 mb-2">⏳ 영상 준비 중입니다...</p>
-            <p className="text-sm text-blue-200">(최대 1~2분 소요, 창을 닫지 마세요)</p>
+            <p className="text-lg font-bold text-blue-300 mb-2">⏳ Preparing video...</p>
+            <p className="text-sm text-blue-200">(Takes 1-2 mins, please do not close this window)</p>
           </div>
 
           {/* 가치 제공형 슬라이드 */}
