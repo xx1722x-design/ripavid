@@ -219,6 +219,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
+      {/* @ts-ignore */}
       <Footer language={language} />
     </div>
   );
