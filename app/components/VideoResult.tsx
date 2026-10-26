@@ -21,6 +21,7 @@ interface VideoResultProps {
   };
   onClose: () => void;
   language?: string;
+  originalUrl?: string;
 }
 
 // 해상도 포맷 파싱 함수 (1920x1080 → 1080p, 720 → 720p)
@@ -53,9 +54,15 @@ const parseResolution = (resolution?: string, quality?: string): string => {
   return cleanText || 'Download';
 };
 
-export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en' }: VideoResultProps) {
+export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en', originalUrl = '' }: VideoResultProps) {
   const t = translations[language as keyof typeof translations] || translations['en'];
   const allFormats = [...formats.free, ...formats.premium];
+
+  // Extract numeric height from resolution string (e.g., "720p" -> 720)
+  const getHeightFromResolution = (res: string): number => {
+    const match = res.match(/(\d+)p?/);
+    return match ? parseInt(match[1], 10) : 720;
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-gradient-to-br from-zinc-900 dark:from-zinc-900 light:from-gray-50 to-black dark:to-black light:to-white border border-zinc-700 dark:border-zinc-700 light:border-gray-200 rounded-xl p-8 mt-8 shadow-2xl">
@@ -85,7 +92,8 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           <div className="flex flex-wrap gap-2">
             {formats.free.map((format, index) => {
               const resolution = parseResolution(format.resolution, format.quality);
-              const proxyUrl = `/api/download-stream?url=${encodeURIComponent(format.url)}&title=${encodeURIComponent(title)}&resolution=${encodeURIComponent(resolution)}&ext=${format.ext}`;
+              const height = getHeightFromResolution(resolution);
+              const proxyUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
               return (
                 <a
                   key={`free-${index}`}
@@ -112,7 +120,8 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           <div className="flex flex-wrap gap-2">
             {formats.premium.map((format, index) => {
               const resolution = parseResolution(format.resolution, format.quality);
-              const proxyUrl = `/api/download-stream?url=${encodeURIComponent(format.url)}&title=${encodeURIComponent(title)}&resolution=${encodeURIComponent(resolution)}&ext=${format.ext}`;
+              const height = getHeightFromResolution(resolution);
+              const proxyUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
               return (
                 <a
                   key={`premium-${index}`}

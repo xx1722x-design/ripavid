@@ -40,6 +40,7 @@ export default function Home() {
   const [result, setResult] = useState<VideoData | null>(null);
   const [error, setError] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [originalUrl, setOriginalUrl] = useState('');
   const [language, setLanguage] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('selectedLanguage') || 'en';
@@ -69,6 +70,7 @@ export default function Home() {
     setIsLoading(true);
     setError('');
     setResult(null);
+    setOriginalUrl(url);
 
     try {
       const response = await fetch('/api/download', {
@@ -179,6 +181,7 @@ export default function Home() {
             formats={result.formats as any}
             onClose={() => setResult(null)}
             language={language}
+            originalUrl={originalUrl}
           />
         )}
 
