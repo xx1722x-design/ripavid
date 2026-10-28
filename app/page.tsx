@@ -13,6 +13,7 @@ import PlatformSelector from './components/PlatformSelector';
 import MarketingCopy from './components/MarketingCopy';
 import AdsterraBanner from './components/AdsterraBanner';
 import AffiliateBanners from './components/AffiliateBanners';
+import B2BApiCenter from './components/B2BApiCenter';
 import { translations, getTranslations } from './locales';
 
 interface Format {
@@ -206,6 +207,14 @@ export default function Home() {
           <>
             {/* @ts-ignore */}
             <FeaturesGrid language={language} />
+          </>
+        )}
+
+        {/* B2B API Center */}
+        {!result && (
+          <>
+            {/* @ts-ignore */}
+            <B2BApiCenter language={language} />
           </>
         )}
 

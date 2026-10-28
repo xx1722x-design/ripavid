@@ -72,4 +72,61 @@ export const koTranslations = {
   downloadWaitWarning: '창을 닫지 마세요!',
   downloadTip: '💡 다운로드 방법: 영상 우측 하단의 [점 3개 아이콘]을 눌러 \"다운로드\"를 선택하거나, 영상 화면을 마우스 우클릭하여 \"동영상을 다른 이름으로 저장\"을 누르세요. 파일은 90초 이내에 기본 다운로드 폴더에 저장됩니다. (브라우저 우측 상단 다운로드 진행 상태를 확인해 주세요)',
   codecWarning: '⚠️ 주의: 1080p 이상 고화질이나 WEBM 파일에서 \"지원되지 않는 인코딩\" 오류가 발생하면, 호환성이 가장 높은 \"720p MP4\"를 다운로드하시거나 VLC 미디어 플레이어를 사용해 주세요.',
+
+  // B2B API Center
+  apiBadgeText: '엔터프라이즈 API 솔루션',
+  apiMainTitle: 'RipAVid Enterprise API Gateway',
+  apiMainDesc: '전 세계 개발자와 기업을 위한 고성능 소셜 미디어 영상 파싱 & 다운로드 API',
+
+  // Pricing Plans
+  apiDeveloperPlan: 'Developer Tier',
+  apiDeveloperDesc: '영상 API 통합을 시작하기에 완벽함',
+  apiDevFeature1: '월 5,000회 요청',
+  apiDevFeature2: '기본 API 지원',
+  apiDevFeature3: '커뮤니티 액세스',
+  apiDevFeature4: '표준 응답 시간',
+
+  apiProPlan: 'Pro Tier',
+  apiProDesc: '성장하는 개발자와 애플리케이션을 위함',
+  apiProFeature1: '월 50,000회 요청',
+  apiProFeature2: '우선 API 지원',
+  apiProFeature3: '자동 API Key 발급',
+  apiProFeature4: '100ms 이하 응답 시간',
+  apiProFeature5: '고급 분석 대시보드',
+  apiMostPopular: '가장 인기있음',
+
+  apiEnterprisePlan: 'Enterprise Tier',
+  apiEnterpriseDesc: '대규모 운영 및 엔터프라이즈 조직을 위함',
+  apiEnterpriseFeature1: '무제한 요청',
+  apiEnterpriseFeature2: '24/7 전담 지원',
+  apiEnterpriseFeature3: '맞춤형 크롤링 솔루션',
+  apiEnterpriseFeature4: '99.9% SLA 보장',
+  apiEnterpriseFeature5: '1:1 전담 계정 관리자',
+
+  apiGetApiKey: 'API Key 받기',
+  apiSubscribeNow: '지금 구독',
+  apiContactSales: '영업팀 문의',
+
+  // API Features
+  apiFeaturesTitle: 'API 기능',
+  apiFeaturesDesc: '원활한 통합과 고성능 영상 처리를 위한 모든 것을 제공합니다',
+
+  apiFeature1Title: '번개 같은 속도',
+  apiFeature1Desc: '영상 파싱 및 다운로드 100ms 이하 응답 시간',
+  apiFeature2Title: '엔터프라이즈 보안',
+  apiFeature2Desc: 'SSL/TLS 암호화 및 고급 인증 & 권한 부여',
+  apiFeature3Title: '글로벌 인프라',
+  apiFeature3Desc: '모든 대륙에 서버가 있는 99.9% 업타임 SLA',
+  apiFeature4Title: '개발자 친화적',
+  apiFeature4Desc: '코드 예제가 포함된 완전한 OpenAPI/Swagger 문서',
+  apiFeature5Title: 'Webhook 지원',
+  apiFeature5Desc: '비동기 처리 및 이벤트 알림을 위한 실시간 콜백',
+  apiFeature6Title: '분석 대시보드',
+  apiFeature6Desc: '사용량 모니터링, 요청 추적 및 성능 지표 분석',
+
+  // Integration Section
+  apiIntegrationTitle: '간단한 통합',
+  apiIntegrationDesc: '포괄적인 문서와 JavaScript, Python, Go 등을 위한 공식 SDK로 몇 분 내에 시작하세요',
+  apiReadDocs: '문서 읽기',
+  apiTryRapidapi: 'RapidAPI에서 시도하기',
 };

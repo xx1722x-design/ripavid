@@ -72,4 +72,61 @@ export const enTranslations = {
   downloadWaitWarning: 'Please do not close this window!',
   downloadTip: '💡 Download Method: Click the [Three Dots Icon] at the bottom right of the video and select "Download", or right-click on the video and choose "Save video as". The file will be saved to your default download folder within 90 seconds. (Check the download progress in the top right corner of your browser)',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
+
+  // B2B API Center
+  apiBadgeText: 'Enterprise API Solutions',
+  apiMainTitle: 'RipAVid Enterprise API Gateway',
+  apiMainDesc: 'High-performance social media video parsing & downloading API for global developers and businesses',
+
+  // Pricing Plans
+  apiDeveloperPlan: 'Developer Tier',
+  apiDeveloperDesc: 'Perfect for getting started with video API integration',
+  apiDevFeature1: '5,000 requests/month',
+  apiDevFeature2: 'Basic API support',
+  apiDevFeature3: 'Community access',
+  apiDevFeature4: 'Standard response time',
+
+  apiProPlan: 'Pro Tier',
+  apiProDesc: 'For serious developers and growing applications',
+  apiProFeature1: '50,000 requests/month',
+  apiProFeature2: 'Priority API support',
+  apiProFeature3: 'Auto API Key generation',
+  apiProFeature4: '< 100ms response time',
+  apiProFeature5: 'Advanced analytics dashboard',
+  apiMostPopular: 'MOST POPULAR',
+
+  apiEnterprisePlan: 'Enterprise Tier',
+  apiEnterpriseDesc: 'For large-scale operations and enterprise organizations',
+  apiEnterpriseFeature1: 'Unlimited requests',
+  apiEnterpriseFeature2: '24/7 dedicated support',
+  apiEnterpriseFeature3: 'Custom crawling solutions',
+  apiEnterpriseFeature4: '99.9% SLA guarantee',
+  apiEnterpriseFeature5: '1:1 dedicated account manager',
+
+  apiGetApiKey: 'Get API Key',
+  apiSubscribeNow: 'Subscribe Now',
+  apiContactSales: 'Contact Sales',
+
+  // API Features
+  apiFeaturesTitle: 'API Features',
+  apiFeaturesDesc: 'Everything you need for seamless integration and high-performance video processing',
+
+  apiFeature1Title: 'Lightning Fast',
+  apiFeature1Desc: '<100ms response time for video parsing and downloading',
+  apiFeature2Title: 'Enterprise Security',
+  apiFeature2Desc: 'SSL/TLS encryption with advanced authentication & authorization',
+  apiFeature3Title: 'Global Infrastructure',
+  apiFeature3Desc: '99.9% uptime SLA with servers across all continents',
+  apiFeature4Title: 'Developer Friendly',
+  apiFeature4Desc: 'Complete OpenAPI/Swagger documentation with code examples',
+  apiFeature5Title: 'Webhook Support',
+  apiFeature5Desc: 'Real-time callbacks for async processing and event notifications',
+  apiFeature6Title: 'Analytics Dashboard',
+  apiFeature6Desc: 'Monitor usage, track requests, and analyze performance metrics',
+
+  // Integration Section
+  apiIntegrationTitle: 'Simple Integration',
+  apiIntegrationDesc: 'Get started in minutes with our comprehensive documentation and official SDKs for JavaScript, Python, Go, and more',
+  apiReadDocs: 'Read Documentation',
+  apiTryRapidapi: 'Try on RapidAPI',
 };
