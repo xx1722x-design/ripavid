@@ -119,9 +119,9 @@ export default function Home() {
         <LanguageSwitcher />
       </header>
 
-      <main className="relative z-10 flex flex-col items-center justify-start min-h-full px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 md:pt-32 pb-0">
+      <main className="relative z-10 flex flex-col items-center justify-start min-h-full px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 md:pt-12 pb-0">
         {/* Logo / Branding */}
-        <div className="mb-8 flex items-center gap-2">
+        <div className="mb-3 flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center font-bold">
             ⚡
           </div>
@@ -131,27 +131,27 @@ export default function Home() {
         </div>
 
         {/* Hero Section */}
-        <div className="text-center mb-8 max-w-3xl">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
+        <div className="text-center mb-4 max-w-3xl">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 leading-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
               {selectedPlatform && t[selectedPlatform as keyof typeof t]
                 ? t[selectedPlatform as keyof typeof t]
                 : t.title}
             </span>
           </h1>
-          <p className="text-lg sm:text-xl text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-2">
+          <p className="text-base sm:text-lg text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-1">
             {t.subtitle}
           </p>
-          <p className="text-sm sm:text-base text-zinc-500 dark:text-zinc-500 light:text-gray-500">
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-500 light:text-gray-500">
             {t.subtext}
           </p>
         </div>
 
         {/* API / Enterprise CTA Button - Premium Floating Card */}
-        <div className="mb-12 w-full max-w-3xl">
+        <div className="mb-6 w-full max-w-3xl">
           <button
             onClick={scrollToB2B}
-            className="group w-full relative px-6 sm:px-8 py-4 sm:py-5 rounded-xl transition-all duration-300 overflow-hidden border-2 border-cyan-500/50 dark:border-cyan-500/50 light:border-cyan-400/30 hover:border-cyan-400/80 dark:hover:border-cyan-400/80 light:hover:border-cyan-400/60"
+            className="group w-full relative px-4 sm:px-6 py-3 sm:py-4 rounded-lg transition-all duration-300 overflow-hidden border-2 border-cyan-500/50 dark:border-cyan-500/50 light:border-cyan-400/30 hover:border-cyan-400/80 dark:hover:border-cyan-400/80 light:hover:border-cyan-400/60"
           >
             {/* Animated background gradient */}
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/20 via-blue-900/20 to-cyan-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -160,27 +160,29 @@ export default function Home() {
             <div className="absolute inset-0 rounded-xl blur-xl bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-cyan-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <span className="text-2xl sm:text-3xl">🚀</span>
+            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-2">
+              <span className="text-xl sm:text-2xl">🚀</span>
               <div className="text-center sm:text-left">
-                <div className="text-lg sm:text-xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:via-blue-300 group-hover:to-cyan-300 transition-all">
+                <div className="text-base sm:text-lg font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:via-blue-300 group-hover:to-cyan-300 transition-all">
                   API / Enterprise Solutions
                 </div>
-                <div className="text-xs sm:text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600 mt-1">
-                  Unlimited API access • Global infrastructure • 24/7 support
+                <div className="text-xs text-zinc-400 dark:text-zinc-400 light:text-gray-600 mt-0.5">
+                  Unlimited API • Global infrastructure • 24/7 support
                 </div>
               </div>
-              <span className="text-2xl sm:text-3xl">💼</span>
+              <span className="text-xl sm:text-2xl">💼</span>
             </div>
           </button>
         </div>
 
         {/* Platform Selector */}
-        <PlatformSelector
-          selectedPlatform={selectedPlatform}
-          onSelectPlatform={setSelectedPlatform}
-          showLabel={true}
-        />
+        <div className="mb-3">
+          <PlatformSelector
+            selectedPlatform={selectedPlatform}
+            onSelectPlatform={setSelectedPlatform}
+            showLabel={true}
+          />
+        </div>
 
         {/* URL Input Form */}
         {/* @ts-ignore */}
