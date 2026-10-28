@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import UrlForm from './components/UrlForm';
 import VideoResult from './components/VideoResult';
 import SocialProofTicker from './components/SocialProofTicker';
@@ -35,9 +35,6 @@ interface VideoData {
   };
 }
 
-// Translations are now imported from app/locales/index.ts
-// All 21 languages are centralized there
-
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<VideoData | null>(null);
@@ -50,6 +47,13 @@ export default function Home() {
     }
     return 'en';
   });
+
+  // Ref for B2B API Center section (for smooth scroll)
+  const b2bSectionRef = useRef<HTMLDivElement>(null);
+
+  const scrollToB2B = () => {
+    b2bSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   useEffect(() => {
     // Force dark mode
@@ -143,16 +147,33 @@ export default function Home() {
           </p>
         </div>
 
-        {/* B2B API Center - TOP PRIORITY SECTION */}
-        {!result && (
-          <>
-            {/* @ts-ignore */}
-            <B2BApiCenter language={language} />
-          </>
-        )}
+        {/* API / Enterprise CTA Button - Premium Floating Card */}
+        <div className="mb-12 w-full max-w-3xl">
+          <button
+            onClick={scrollToB2B}
+            className="group w-full relative px-6 sm:px-8 py-4 sm:py-5 rounded-xl transition-all duration-300 overflow-hidden border-2 border-cyan-500/50 dark:border-cyan-500/50 light:border-cyan-400/30 hover:border-cyan-400/80 dark:hover:border-cyan-400/80 light:hover:border-cyan-400/60"
+          >
+            {/* Animated background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/20 via-blue-900/20 to-cyan-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-        {/* Divider */}
-        <div className="w-full max-w-5xl mx-auto my-12 border-t border-zinc-800 dark:border-zinc-800 light:border-gray-200"></div>
+            {/* Glow effect */}
+            <div className="absolute inset-0 rounded-xl blur-xl bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-cyan-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+
+            {/* Content */}
+            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <span className="text-2xl sm:text-3xl">🚀</span>
+              <div className="text-center sm:text-left">
+                <div className="text-lg sm:text-xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:via-blue-300 group-hover:to-cyan-300 transition-all">
+                  API / Enterprise Solutions
+                </div>
+                <div className="text-xs sm:text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600 mt-1">
+                  Unlimited API access • Global infrastructure • 24/7 support
+                </div>
+              </div>
+              <span className="text-2xl sm:text-3xl">💼</span>
+            </div>
+          </button>
+        </div>
 
         {/* Platform Selector */}
         <PlatformSelector
@@ -219,6 +240,19 @@ export default function Home() {
             {/* @ts-ignore */}
             <FeaturesGrid language={language} />
           </>
+        )}
+
+        {/* Divider */}
+        {!result && (
+          <div className="w-full max-w-5xl mx-auto my-16 border-t border-zinc-800 dark:border-zinc-800 light:border-gray-200"></div>
+        )}
+
+        {/* B2B API Center Section - Scrolled Target */}
+        {!result && (
+          <div ref={b2bSectionRef} className="w-full">
+            {/* @ts-ignore */}
+            <B2BApiCenter language={language} />
+          </div>
         )}
 
         {/* FAQ Accordion */}
