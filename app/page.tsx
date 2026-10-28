@@ -14,6 +14,7 @@ import MarketingCopy from './components/MarketingCopy';
 import AdsterraBanner from './components/AdsterraBanner';
 import AffiliateBanners from './components/AffiliateBanners';
 import B2BApiCenter from './components/B2BApiCenter';
+import SocialShareBar from './components/SocialShareBar';
 import { translations, getTranslations } from './locales';
 
 interface Format {
@@ -220,6 +221,14 @@ export default function Home() {
             language={language}
             originalUrl={originalUrl}
           />
+        )}
+
+        {/* Social Share Bar - Viral Share Promotion */}
+        {!result && (
+          <>
+            {/* @ts-ignore */}
+            <SocialShareBar language={language} />
+          </>
         )}
 
         {/* Affiliate Banners (Language-based smart switching) */}
