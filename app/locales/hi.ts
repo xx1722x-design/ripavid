@@ -70,6 +70,6 @@ export const hiTranslations = {
   downloadWaitTitle: 'आपकी वीडियो तैयार की जा रही है...',
   downloadWaitMaxTime: '90 सेकंड तक',
   downloadWaitWarning: 'इस विंडो को बंद न करें!',
-  downloadTip: '💡 Download Method: Click the [Three Dots Icon] at the bottom right of the video and select "Download", or right-click on the video and choose "Save video as". The file will be saved to your default download folder within 90 seconds. (Check the download progress in the top right corner of your browser)',
+  downloadTip: '💡 Download Method: Click your preferred resolution button (e.g., 720p, 1080p) in the green box above. The download will start automatically or prepare within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
 };
