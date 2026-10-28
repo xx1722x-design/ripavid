@@ -143,6 +143,17 @@ export default function Home() {
           </p>
         </div>
 
+        {/* B2B API Center - TOP PRIORITY SECTION */}
+        {!result && (
+          <>
+            {/* @ts-ignore */}
+            <B2BApiCenter language={language} />
+          </>
+        )}
+
+        {/* Divider */}
+        <div className="w-full max-w-5xl mx-auto my-12 border-t border-zinc-800 dark:border-zinc-800 light:border-gray-200"></div>
+
         {/* Platform Selector */}
         <PlatformSelector
           selectedPlatform={selectedPlatform}
@@ -207,14 +218,6 @@ export default function Home() {
           <>
             {/* @ts-ignore */}
             <FeaturesGrid language={language} />
-          </>
-        )}
-
-        {/* B2B API Center */}
-        {!result && (
-          <>
-            {/* @ts-ignore */}
-            <B2BApiCenter language={language} />
           </>
         )}
 
