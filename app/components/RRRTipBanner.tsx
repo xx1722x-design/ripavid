@@ -22,9 +22,9 @@ export default function RRRTipBanner({ onClick }: RRRTipBannerProps) {
             <span className="text-cyan-400 font-bold mx-1 bg-cyan-950/50 px-1.5 py-0.5 rounded inline-block">
               rrr
             </span>
-            before youtube.com or use
+            before youtube.com (or use
             <span className="text-cyan-400 font-bold mx-1">rrryoutube.com</span>
-            to download instantly!
+            ) to download instantly!
           </span>
           <span className="text-cyan-400 font-bold group-hover:translate-x-1 transition-transform">
             See how it works ✨

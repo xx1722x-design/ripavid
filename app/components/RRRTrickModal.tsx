@@ -57,20 +57,22 @@ export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
         <div className="p-4 sm:p-8">
           {/* Intro text */}
           <div className="text-center mb-8">
-            <h3 className="text-2xl sm:text-3xl font-bold mb-3">
+            <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-white">
               Experience the{' '}
               <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                 "rrr"
               </span>{' '}
               Magic
             </h3>
-            <p className="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto">
+            <p className="text-gray-200 text-sm sm:text-base max-w-xl mx-auto">
               Watch how typing{' '}
               <span className="bg-cyan-950 text-cyan-300 font-bold px-1.5 py-0.5 rounded">
                 rrr
               </span>{' '}
               right before{' '}
-              <span className="text-gray-300 font-mono">youtube.com</span> instantly launches{' '}
+              <span className="text-white font-mono font-semibold">youtube.com</span> (or use{' '}
+              <span className="text-cyan-300 font-mono font-semibold">rrryoutube.com</span>
+              ) instantly launches{' '}
               <span className="text-cyan-400 font-semibold">ripavid.com</span>.
             </p>
           </div>
@@ -120,8 +122,8 @@ export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
                       ▶
                     </div>
                     <div>
-                      <h4 className="text-xs font-semibold text-gray-200">YouTube Video Player</h4>
-                      <p className="text-[10px] text-gray-400">
+                      <h4 className="text-xs font-semibold text-white">YouTube Video Player</h4>
+                      <p className="text-[10px] text-gray-300">
                         Watching Rick Astley - Never Gonna Give You Up
                       </p>
                     </div>
@@ -130,12 +132,12 @@ export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
                     <div className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-white shadow-lg cursor-pointer hover:scale-110 transition">
                       ▶
                     </div>
-                    <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-0.5 rounded text-[10px] text-gray-300">
+                    <div className="absolute bottom-2 right-2 bg-black/70 px-2 py-0.5 rounded text-[10px] text-white">
                       03:32
                     </div>
                   </div>
                 </div>
-                <p className="text-xs text-gray-400 flex items-center gap-1">
+                <p className="text-xs text-gray-100 flex items-center gap-1">
                   <span>Want to download this instantly?</span>
                   <span className="text-cyan-400 font-medium">
                     Just add <b className="underline">rrr</b> in front!
@@ -169,10 +171,10 @@ export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
                       1080P
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h5 className="text-xs font-semibold text-gray-100 truncate">
+                      <h5 className="text-xs font-semibold text-white truncate">
                         Never Gonna Give You Up - Rick Astley
                       </h5>
-                      <p className="text-[10px] text-gray-400">youtube.com • Ready in 1 second</p>
+                      <p className="text-[10px] text-gray-300">youtube.com • Ready in 1 second</p>
                     </div>
                   </div>
 
@@ -217,7 +219,7 @@ export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
 
           {/* Info Box */}
           <div className="mt-6 p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
-            <p className="text-xs sm:text-sm text-cyan-300 text-center">
+            <p className="text-xs sm:text-sm text-white text-center">
               <strong>💡 Pro Tip:</strong> You can use this trick on any video platform! Just add "rrr" before the domain
               name or visit <strong>rrryoutube.com</strong> directly!
             </p>
