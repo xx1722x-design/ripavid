@@ -75,15 +75,44 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
     return match ? parseInt(match[1], 10) : 720;
   };
 
-  const handleDownloadClick = (height: number) => {
+  const handleDownloadClick = async (height: number) => {
+    // Check if height > 720p and user is not Pro
+    if (height > 720 && user?.tier !== 'pro') {
+      setShowPaymentModal(true);
+      return;
+    }
+
+    // For logged-in free users, verify backend tier check
     setIsWaiting(true);
     setWaitingHeight(height);
-    // 302 리다이렉트로 다운로드 시작
-    const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
-    window.location.href = targetUrl;
 
-    // 백업: 10초 후 대기 상태 해제
-    setTimeout(() => setIsWaiting(false), 10000);
+    try {
+      // Verify the download is allowed by making a HEAD request
+      const response = await fetch(
+        `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`,
+        { method: 'HEAD' }
+      ).catch(() => null);
+
+      // If 403, show payment modal
+      if (response?.status === 403) {
+        setIsWaiting(false);
+        setShowPaymentModal(true);
+        return;
+      }
+
+      // Otherwise proceed with download
+      const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
+      window.location.href = targetUrl;
+
+      // Backup: Reset waiting state after 10 seconds
+      setTimeout(() => setIsWaiting(false), 10000);
+    } catch (error) {
+      console.error('Download verification failed:', error);
+      setIsWaiting(false);
+      // Proceed with download anyway as fallback
+      const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
+      window.location.href = targetUrl;
+    }
   };
 
   return (
