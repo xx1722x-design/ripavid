@@ -15,6 +15,8 @@ import AffiliateBanners from './components/AffiliateBanners';
 // import B2BApiCenter from './components/B2BApiCenter';
 // [B2B SECTION DISABLED] - B2C 전환 중
 import SocialShareBar from './components/SocialShareBar';
+import ProHeroBanner from './components/ProHeroBanner';
+import ProPricingSection from './components/ProPricingSection';
 import { translations, getTranslations } from './locales';
 
 interface Format {
@@ -176,6 +178,9 @@ export default function Home() {
         </div>
         */}
 
+        {/* Pro Hero Banner */}
+        <ProHeroBanner />
+
         {/* Platform Selector */}
         <div className="mb-3">
           <PlatformSelector
@@ -277,6 +282,14 @@ export default function Home() {
           <>
             {/* @ts-ignore */}
             <FaqAccordion language={language} />
+          </>
+        )}
+
+        {/* Pro Pricing Section */}
+        {!result && (
+          <>
+            {/* @ts-ignore */}
+            <ProPricingSection language={language} />
           </>
         )}
 
