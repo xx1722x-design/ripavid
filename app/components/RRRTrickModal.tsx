@@ -220,8 +220,8 @@ export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
           {/* Info Box */}
           <div className="mt-6 p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
             <p className="text-xs sm:text-sm text-white text-center">
-              <strong>💡 Pro Tip:</strong> You can use this trick on any video platform! Just add "rrr" before the domain
-              name or visit <strong>rrryoutube.com</strong> directly!
+              <strong>💡 Pro Tip:</strong> You can use this quick trick for YouTube! Just add "rrr" before youtube.com
+              or visit <strong>rrryoutube.com</strong> directly!
             </p>
           </div>
         </div>
