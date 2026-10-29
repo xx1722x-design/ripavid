@@ -33,7 +33,15 @@ async function getGoogleUserInfo(accessToken: string): Promise<GoogleUserInfo> {
 async function exchangeCodeForToken(code: string): Promise<GoogleTokenResponse> {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-  const redirectUri = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/auth/callback`;
+
+  // Determine the correct callback URL based on environment
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  // For production, always use the frontend domain (ripavid.com)
+  // For development, use the local API URL
+  const baseUrl = isProduction ? 'https://www.ripavid.com' : apiUrl;
+  const redirectUri = `${baseUrl}/api/auth/callback`;
 
   const response = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',

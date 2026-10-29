@@ -2,7 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-  const redirectUri = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/auth/callback`;
+
+  // Determine the correct callback URL based on environment
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  // For production, always use the frontend domain (ripavid.com)
+  // For development, use the local API URL
+  const baseUrl = isProduction ? 'https://www.ripavid.com' : apiUrl;
+  const redirectUri = `${baseUrl}/api/auth/callback`;
 
   // Generate random state for CSRF protection
   const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
