@@ -15,6 +15,8 @@ export async function GET(request: NextRequest) {
   // Generate random state for CSRF protection
   const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
+  console.log(`[OAuth] Generated state: ${state.substring(0, 20)}...`);
+
   // Store state in cookie (expires in 10 minutes)
   const response = NextResponse.redirect(
     `https://accounts.google.com/o/oauth2/v2/auth?` +
@@ -25,14 +27,18 @@ export async function GET(request: NextRequest) {
     `&state=${state}`
   );
 
+  // Set state cookie with flexible SameSite handling
   response.cookies.set({
     name: 'oauth_state',
     value: state,
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: 'none', // Changed from 'lax' to 'none' to handle cross-site redirects from Google
     maxAge: 600, // 10 minutes
+    path: '/',
   });
+
+  console.log(`[OAuth] State cookie set: httpOnly=true, secure=${process.env.NODE_ENV === 'production'}, sameSite=none, path=/`);
 
   return response;
 }
