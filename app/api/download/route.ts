@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Explicitly use Node.js runtime
+export const runtime = 'nodejs';
+
 // ⏱️ Vercel 타임아웃 연장 (기본 60초 → 120초)
 export const maxDuration = 120;
 

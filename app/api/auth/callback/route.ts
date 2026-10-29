@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { jwtSign } from '@/lib/jwt';
 import { getUserByGoogleId, createUser } from '@/lib/users';
 
+// Explicitly use Node.js runtime (required for file system access, JWT signing, etc.)
+export const runtime = 'nodejs';
+
 interface GoogleTokenResponse {
   access_token: string;
   token_type: string;

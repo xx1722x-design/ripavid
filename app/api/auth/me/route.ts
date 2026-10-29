@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from '@/lib/jwt';
 import { getUserById } from '@/lib/users';
 
+// Explicitly use Node.js runtime (required for JWT verification and file access)
+export const runtime = 'nodejs';
+
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('auth_token')?.value;

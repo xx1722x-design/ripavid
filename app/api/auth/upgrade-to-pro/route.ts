@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { updateUser } from '@/lib/users';
 
+// Explicitly use Node.js runtime (required for file system access)
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest) {
   try {
     const { userId, subscriptionId } = await request.json();

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { updateUser, getUserByEmail } from '@/lib/users';
 
+// Explicitly use Node.js runtime (required for crypto and file system access)
+export const runtime = 'nodejs';
+
 // Verify Paddle webhook signature
 function verifyWebhookSignature(
   rawBody: string,

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
+// Use Node.js runtime instead of Edge (required for file handling)
+export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest) {
   try {

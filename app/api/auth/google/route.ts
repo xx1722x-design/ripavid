@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Explicitly use Node.js runtime
+export const runtime = 'nodejs';
+
 export async function GET(request: NextRequest) {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 

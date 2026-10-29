@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// Explicitly use Node.js runtime
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest) {
   try {
     const response = NextResponse.json({ success: true });
