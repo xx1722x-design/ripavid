@@ -30,18 +30,9 @@ async function getGoogleUserInfo(accessToken: string): Promise<GoogleUserInfo> {
   return response.json();
 }
 
-async function exchangeCodeForToken(code: string): Promise<GoogleTokenResponse> {
+async function exchangeCodeForToken(code: string, redirectUri: string): Promise<GoogleTokenResponse> {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-
-  // Determine the correct callback URL based on environment
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-  const isProduction = process.env.NODE_ENV === 'production';
-
-  // For production, always use the frontend domain (ripavid.com)
-  // For development, use the local API URL
-  const baseUrl = isProduction ? 'https://www.ripavid.com' : apiUrl;
-  const redirectUri = `${baseUrl}/api/auth/callback`;
 
   const response = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
@@ -80,8 +71,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid state parameter' }, { status: 400 });
     }
 
+    // Get the current request's protocol and host for accurate redirect_uri
+    const protocol = request.headers.get('x-forwarded-proto') || 'https';
+    const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || 'www.ripavid.com';
+    const redirectUri = `${protocol}://${host}/api/auth/callback`;
+
+    console.log(`[OAuth] Callback received, exchanging code with redirect_uri: ${redirectUri}`);
+
     // Exchange code for token
-    const tokenData = await exchangeCodeForToken(code);
+    const tokenData = await exchangeCodeForToken(code, redirectUri);
 
     // Get user info from Google
     const userInfo = await getGoogleUserInfo(tokenData.access_token);

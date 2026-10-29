@@ -3,14 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-  // Determine the correct callback URL based on environment
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-  const isProduction = process.env.NODE_ENV === 'production';
+  // Get the current request's protocol and host for accurate redirect_uri
+  const protocol = request.headers.get('x-forwarded-proto') || 'https';
+  const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || 'www.ripavid.com';
 
-  // For production, always use the frontend domain (ripavid.com)
-  // For development, use the local API URL
-  const baseUrl = isProduction ? 'https://www.ripavid.com' : apiUrl;
-  const redirectUri = `${baseUrl}/api/auth/callback`;
+  // Build redirect_uri from the current request domain
+  const redirectUri = `${protocol}://${host}/api/auth/callback`;
+
+  console.log(`[OAuth] Initiating login with redirect_uri: ${redirectUri}`);
 
   // Generate random state for CSRF protection
   const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
