@@ -6,15 +6,36 @@ import { useAuth } from '@/app/context/AuthContext';
 import { LogOut, User, Crown } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import PaddlePaymentModal from './PaddlePaymentModal';
+import { translations } from '@/app/locales';
 
 export default function Header() {
   const { user, isLoading, logout, isAuthenticated } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [language, setLanguage] = useState('en');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [position, setPosition] = useState({ top: 0, right: 0 });
+
+  // Get current language
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('selectedLanguage') || 'en';
+      setLanguage(saved);
+
+      // Listen for language changes
+      const handleLanguageChange = () => {
+        const updated = localStorage.getItem('selectedLanguage') || 'en';
+        setLanguage(updated);
+      };
+
+      window.addEventListener('languageChanged', handleLanguageChange);
+      return () => window.removeEventListener('languageChanged', handleLanguageChange);
+    }
+  }, []);
+
+  const t = translations[language as keyof typeof translations] || translations['en'];
 
   useEffect(() => {
     setIsMounted(true);
@@ -123,7 +144,7 @@ export default function Header() {
           onClick={handleLoginClick}
           className="relative inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium text-sm hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 pointer-events-auto"
         >
-          🔐 구글로 1초 만에 시작하기
+          🔐 {t.continueWithGoogle}
         </button>
       ) : (
         <button

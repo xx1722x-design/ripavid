@@ -1,4 +1,5 @@
 export const hiTranslations = {
+  continueWithGoogle: 'Google के साथ जारी रखें',
   title: 'वीडियो आसानी से डाउनलोड करें',
   subtitle: 'YouTube, TikTok, Instagram और अधिक से वीडियो को कुछ ही सेकंड में डाउनलोड करें',
   subtext: 'तेज़, सरल और पूरी तरह से मुफ़्त। कोई पंजीकरण आवश्यक नहीं।',

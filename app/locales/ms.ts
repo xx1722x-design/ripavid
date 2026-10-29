@@ -1,4 +1,5 @@
 export const msTranslations = {
+  continueWithGoogle: 'Teruskan dengan Google',
   title: 'Muat Turun Video dengan Mudah',
   subtitle: 'Muat turun video dari YouTube, TikTok, Instagram dan banyak lagi dalam beberapa saat',
   subtext: 'Pantas, mudah, dan sepenuhnya percuma. Tidak perlu mendaftar.',

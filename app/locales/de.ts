@@ -1,4 +1,5 @@
 export const deTranslations = {
+  continueWithGoogle: 'Mit Google fortfahren',
   title: 'Videos ganz einfach herunterladen',
   subtitle: 'Laden Sie Videos von YouTube, TikTok, Instagram und mehr in Sekunden herunter',
   subtext: 'Schnell, einfach und völlig kostenlos. Keine Anmeldung erforderlich.',

@@ -1,4 +1,5 @@
 export const ptTranslations = {
+  continueWithGoogle: 'Continuar com Google',
   title: 'Baixar vídeos facilmente',
   subtitle: 'Baixe vídeos do YouTube, TikTok, Instagram e muito mais em segundos',
   subtext: 'Rápido, simples e completamente grátis. Sem necessidade de inscrição.',

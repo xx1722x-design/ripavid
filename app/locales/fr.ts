@@ -1,4 +1,5 @@
 export const frTranslations = {
+  continueWithGoogle: 'Continuer avec Google',
   title: 'Téléchargez facilement tous les vidéos',
   subtitle: 'Téléchargez des vidéos de YouTube, TikTok, Instagram et plus en quelques secondes',
   subtext: 'Rapide, simple et complètement gratuit. Aucune inscription requise.',

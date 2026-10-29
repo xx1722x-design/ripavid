@@ -1,4 +1,5 @@
 export const plTranslations = {
+  continueWithGoogle: 'Kontynuuj z Google',
   title: 'Pobierz Wideo z Łatwością',
   subtitle: 'Pobierz wideo z YouTube\'a, TikToka, Instagrama i wiele więcej w kilka sekund',
   subtext: 'Szybko, prosto i całkowicie za darmo. Nie jest wymagana rejestracja.',

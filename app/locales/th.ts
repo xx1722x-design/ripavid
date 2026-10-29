@@ -1,4 +1,5 @@
 export const thTranslations = {
+  continueWithGoogle: 'ดำเนินการต่อด้วย Google',
   title: 'ดาวน์โหลดวิดีโออย่างง่ายดาย',
   subtitle: 'ดาวน์โหลดวิดีโอจาก YouTube, TikTok, Instagram และอีกมากมายในเพียงไม่กี่วินาที',
   subtext: 'รวดเร็ว ง่าย และฟรีทั้งหมด ไม่จำเป็นต้องลงทะเบียน',

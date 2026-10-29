@@ -1,4 +1,5 @@
 export const viTranslations = {
+  continueWithGoogle: 'Tiếp tục với Google',
   title: 'Tải xuống video dễ dàng',
   subtitle: 'Tải xuống video từ YouTube, TikTok, Instagram và nhiều hơn nữa trong vài giây',
   subtext: 'Nhanh, đơn giản và hoàn toàn miễn phí. Không cần đăng ký.',

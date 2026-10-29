@@ -1,4 +1,5 @@
 export const zhTWTranslations = {
+  continueWithGoogle: '使用Google繼續',
   title: '輕鬆下載所有影片',
   subtitle: '從YouTube、TikTok、Instagram等多個平台在幾秒內下載影片',
   subtext: '快速、簡單、完全免費。無需註冊。',

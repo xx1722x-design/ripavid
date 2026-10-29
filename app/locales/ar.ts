@@ -1,4 +1,5 @@
 export const arTranslations = {
+  continueWithGoogle: 'متابعة مع Google',
   title: 'تنزيل مقاطع الفيديو بسهولة',
   subtitle: 'قم بتنزيل مقاطع الفيديو من YouTube و TikTok و Instagram والمزيد في ثوان',
   subtext: 'سريع وبسيط وتماما مجاني. لا حاجة للتسجيل.',

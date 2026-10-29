@@ -1,4 +1,5 @@
 export const tlTranslations = {
+  continueWithGoogle: 'Magpatuloy sa Google',
   title: 'I-download ang mga Video nang Madali',
   subtitle: 'I-download ang mga video mula sa YouTube, TikTok, Instagram at marami pang iba sa loob lamang ng ilang segundo',
   subtext: 'Mabilis, simple, at ganap na libre. Walang pangangailangan para mag-sign up.',
