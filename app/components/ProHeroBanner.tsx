@@ -10,7 +10,7 @@ export default function ProHeroBanner() {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+    <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
       <button
         onClick={handleClick}
         className="group w-full relative px-4 sm:px-8 py-6 sm:py-8 rounded-xl transition-all duration-300 overflow-hidden border-2 border-cyan-500/50 hover:border-cyan-400/80"

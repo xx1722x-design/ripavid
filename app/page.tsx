@@ -125,9 +125,9 @@ export default function Home() {
       </div>
 
 
-      <main className="relative z-10 flex flex-col items-center justify-start min-h-full px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 md:pt-12 pb-0">
+      <main className="relative z-10 flex flex-col items-center justify-start min-h-full px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 md:pt-6 pb-0">
         {/* Logo / Branding */}
-        <div className="mb-3 flex items-center gap-2">
+        <div className="mb-2 flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center font-bold">
             ⚡
           </div>
@@ -137,7 +137,7 @@ export default function Home() {
         </div>
 
         {/* Hero Section */}
-        <div className="text-center mb-4 max-w-3xl">
+        <div className="text-center mb-2 max-w-3xl">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 leading-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
               {selectedPlatform && t[selectedPlatform as keyof typeof t]
@@ -181,7 +181,7 @@ export default function Home() {
         <ProHeroBanner />
 
         {/* Platform Selector - with max height to prevent layout shift */}
-        <div className="w-full max-w-5xl mx-auto mb-3 overflow-hidden">
+        <div className="w-full max-w-5xl mx-auto mb-2 overflow-hidden">
           <PlatformSelector
             selectedPlatform={selectedPlatform}
             onSelectPlatform={setSelectedPlatform}
