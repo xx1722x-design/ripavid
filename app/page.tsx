@@ -180,8 +180,8 @@ export default function Home() {
         {/* Pro Hero Banner */}
         <ProHeroBanner />
 
-        {/* Platform Selector */}
-        <div className="mb-3">
+        {/* Platform Selector - with max height to prevent layout shift */}
+        <div className="w-full max-w-5xl mx-auto mb-3 overflow-hidden">
           <PlatformSelector
             selectedPlatform={selectedPlatform}
             onSelectPlatform={setSelectedPlatform}

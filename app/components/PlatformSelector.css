@@ -30,18 +30,21 @@
 .platform-selector-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: center;
   align-items: center;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 1rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   max-width: 100%;
   margin: 0 auto;
   scroll-behavior: smooth;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  /* Fixed height to prevent layout shift */
+  height: auto;
+  min-height: 120px;
 }
 
 .platform-selector-container::-webkit-scrollbar {
@@ -53,7 +56,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid;
@@ -64,6 +67,9 @@
   white-space: nowrap;
   flex-shrink: 0;
   font-weight: 500;
+  /* Prevent layout shift from animations */
+  min-height: 100px;
+  width: auto;
 }
 
 .platform-icon-button:hover {

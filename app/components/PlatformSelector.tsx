@@ -35,9 +35,9 @@ export default function PlatformSelector({
   showLabel = true,
 }: PlatformSelectorProps) {
   return (
-    <div className="w-full mb-8">
+    <div className="w-full flex flex-col">
       {showLabel && (
-        <p className="text-sm font-semibold text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-4 text-center">
+        <p className="text-sm font-semibold text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-4 text-center flex-shrink-0">
           Select Platform
         </p>
       )}
