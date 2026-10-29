@@ -51,6 +51,12 @@ export default function Home() {
     return 'en';
   });
 
+  // Ref for UrlForm (for smooth scroll from Pricing section)
+  const urlFormRef = useRef<HTMLDivElement>(null);
+  const scrollToDownloader = () => {
+    urlFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   // [B2B DISABLED] Ref for B2B API Center section (for smooth scroll)
   // const b2bSectionRef = useRef<HTMLDivElement>(null);
   // const scrollToB2B = () => {
@@ -190,14 +196,16 @@ export default function Home() {
         </div>
 
         {/* URL Input Form */}
-        {/* @ts-ignore */}
-        <UrlForm
-          onSubmit={handleRipVideo}
-          isLoading={isLoading}
-          language={language}
-          initialUrl={initialUrl}
-          autoSubmit={!!initialUrl}
-        />
+        <div ref={urlFormRef}>
+          {/* @ts-ignore */}
+          <UrlForm
+            onSubmit={handleRipVideo}
+            isLoading={isLoading}
+            language={language}
+            initialUrl={initialUrl}
+            autoSubmit={!!initialUrl}
+          />
+        </div>
 
         {/* API Error Display */}
         {error && (
@@ -286,7 +294,7 @@ export default function Home() {
         {!result && (
           <>
             {/* @ts-ignore */}
-            <ProPricingSection language={language} />
+            <ProPricingSection language={language} onScrollToDownloader={scrollToDownloader} />
           </>
         )}
 

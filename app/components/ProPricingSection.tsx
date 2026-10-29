@@ -6,11 +6,17 @@ import { useAuth } from '@/app/context/AuthContext';
 
 interface ProPricingSectionProps {
   language?: string;
+  onScrollToDownloader?: () => void;
 }
 
-export default function ProPricingSection({ language = 'en' }: ProPricingSectionProps) {
+export default function ProPricingSection({ language = 'en', onScrollToDownloader }: ProPricingSectionProps) {
   const { user, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [showApprovalMessage, setShowApprovalMessage] = useState(false);
+
+  const handleFreeClick = () => {
+    onScrollToDownloader?.();
+  };
 
   const handleUpgradeClick = async () => {
     if (!isAuthenticated) {
@@ -23,30 +29,22 @@ export default function ProPricingSection({ language = 'en' }: ProPricingSection
       return;
     }
 
-    // Open Paddle checkout
-    if (typeof window !== 'undefined' && window.Paddle) {
-      setIsLoading(true);
-      window.Paddle.Checkout.open({
-        items: [
-          {
-            priceId: process.env.NEXT_PUBLIC_PADDLE_PRO_PRODUCT_ID,
-            quantity: 1,
-          },
-        ],
-        customer: {
-          email: user?.email || '',
-        },
-        customData: {
-          userId: user?.uid || '',
-        },
-      });
-      setIsLoading(false);
-    }
+    // Show domain approval pending message
+    setShowApprovalMessage(true);
+    setTimeout(() => setShowApprovalMessage(false), 4000);
   };
 
   return (
     <div id="pricing" className="w-full py-20 px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
       <div className="max-w-6xl mx-auto">
+        {/* Domain Approval Pending Message */}
+        {showApprovalMessage && (
+          <div className="fixed bottom-4 right-4 z-50 bg-amber-900/90 border border-amber-500 text-amber-100 px-6 py-4 rounded-lg shadow-lg max-w-sm animate-in fade-in slide-in-from-right-4">
+            <p className="font-semibold text-sm mb-1">⏳ Domain Approval in Progress</p>
+            <p className="text-xs">Pro pass checkout will be available soon. Please check back later!</p>
+          </div>
+        )}
+
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
@@ -82,12 +80,18 @@ export default function ProPricingSection({ language = 'en' }: ProPricingSection
             </ul>
 
             {!isAuthenticated ? (
-              <button className="w-full py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-lg transition-colors">
-                Currently Using
+              <button
+                onClick={handleFreeClick}
+                className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors"
+              >
+                Get Started
               </button>
             ) : user?.tier === 'free' ? (
-              <button className="w-full py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-lg transition-colors">
-                Your Plan
+              <button
+                onClick={handleFreeClick}
+                className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors"
+              >
+                Back to Downloader
               </button>
             ) : null}
           </div>
