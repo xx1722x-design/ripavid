@@ -118,10 +118,25 @@ export async function GET(request: NextRequest) {
 
     console.log('[OAuth] Proceeding with token exchange (state validation complete)');
 
-    // Get the current request's protocol and host for accurate redirect_uri
-    const protocol = request.headers.get('x-forwarded-proto') || 'https';
-    const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || 'www.ripavid.com';
-    const redirectUri = `${protocol}://${host}/api/auth/callback`;
+    // Determine redirect_uri based on environment (MUST MATCH /api/auth/google)
+    let redirectUri: string;
+    const isProduction = process.env.NODE_ENV === 'production';
+
+    if (isProduction) {
+      // Production: Use hardcoded value to match Google Console exactly
+      redirectUri = 'https://www.ripavid.com/api/auth/callback';
+      console.log('[OAuth] Production environment - using hardcoded redirect_uri');
+    } else {
+      // Development: Use dynamic detection with port stripping
+      const protocol = request.headers.get('x-forwarded-proto') || 'http';
+      const rawHost = request.headers.get('x-forwarded-host') || request.headers.get('host') || 'localhost:3000';
+
+      // Remove port from host if present (e.g., "localhost:3000" -> "localhost")
+      const host = rawHost.split(':')[0] || rawHost;
+
+      redirectUri = `${protocol}://${host}:3000/api/auth/callback`;
+      console.log(`[OAuth] Development environment - using dynamic redirect_uri: ${redirectUri}`);
+    }
 
     console.log(`[OAuth] Callback received, exchanging code with redirect_uri: ${redirectUri}`);
 

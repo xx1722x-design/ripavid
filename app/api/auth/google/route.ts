@@ -3,14 +3,27 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
-  // Get the current request's protocol and host for accurate redirect_uri
-  const protocol = request.headers.get('x-forwarded-proto') || 'https';
-  const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || 'www.ripavid.com';
+  // Determine redirect_uri based on environment
+  let redirectUri: string;
+  const isProduction = process.env.NODE_ENV === 'production';
 
-  // Build redirect_uri from the current request domain
-  const redirectUri = `${protocol}://${host}/api/auth/callback`;
+  if (isProduction) {
+    // Production: Use hardcoded value to match Google Console exactly
+    redirectUri = 'https://www.ripavid.com/api/auth/callback';
+    console.log('[OAuth] Production environment - using hardcoded redirect_uri');
+  } else {
+    // Development: Use dynamic detection
+    const protocol = request.headers.get('x-forwarded-proto') || 'http';
+    const rawHost = request.headers.get('x-forwarded-host') || request.headers.get('host') || 'localhost:3000';
 
-  console.log(`[OAuth] Initiating login with redirect_uri: ${redirectUri}`);
+    // Remove port from host if present (e.g., "localhost:3000" -> "localhost")
+    const host = rawHost.split(':')[0] || rawHost;
+
+    redirectUri = `${protocol}://${host}:3000/api/auth/callback`;
+    console.log(`[OAuth] Development environment - using dynamic redirect_uri: ${redirectUri}`);
+  }
+
+  console.log(`[OAuth] Final redirect_uri for Google OAuth: ${redirectUri}`);
 
   // Generate random state for CSRF protection
   const state = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
