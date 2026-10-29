@@ -49,6 +49,7 @@ export function middleware(request: NextRequest) {
   const { pathname, searchParams, hostname } = request.nextUrl;
 
   // Detect if the request is for /watch path (rrryoutube.com/watch?v=...)
+  // rrryoutube.com, www.rrryoutube.com에서 들어오는 모든 /watch 요청을 처리
   if (pathname === '/watch' || pathname === '/watch/') {
     const videoId = searchParams.get('v');
 
@@ -56,19 +57,12 @@ export function middleware(request: NextRequest) {
       // Normalize to YouTube URL
       const youtubeUrl = normalizeYouTubeUrl(videoId);
 
-      // Create URL with ?url parameter
-      const redirectUrl = new URL('/', request.nextUrl.origin);
+      // 명시적으로 ripavid.com으로 리다이렉트 (무한 루프 방지)
+      const redirectUrl = new URL('/', 'https://www.ripavid.com');
       redirectUrl.searchParams.set('url', youtubeUrl);
 
       return NextResponse.redirect(redirectUrl);
     }
-  }
-
-  // Handle www subdomain normalization
-  if (hostname?.startsWith('www.')) {
-    const newUrl = new URL(request.nextUrl);
-    newUrl.hostname = hostname.replace('www.', '');
-    return NextResponse.redirect(newUrl);
   }
 
   return NextResponse.next();
