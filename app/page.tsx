@@ -10,8 +10,7 @@ import FaqAccordion from './components/FaqAccordion';
 import Footer from './components/Footer';
 import PlatformSelector from './components/PlatformSelector';
 import MarketingCopy from './components/MarketingCopy';
-import AdsterraBanner from './components/AdsterraBanner';
-import AffiliateBanners from './components/AffiliateBanners';
+// Advertising components removed - using on-click pop-under strategy instead
 // import B2BApiCenter from './components/B2BApiCenter';
 // [B2B SECTION DISABLED] - B2C 전환 중
 import SocialShareBar from './components/SocialShareBar';
@@ -242,8 +241,6 @@ export default function Home() {
           </>
         )}
 
-        {/* Affiliate Banners (Language-based smart switching) */}
-        <AffiliateBanners language={language} />
 
         {/* Social Proof Ticker */}
         {!result && <SocialProofTicker />}
@@ -301,8 +298,6 @@ export default function Home() {
           </>
         )}
 
-        {/* Adsterra Native Banner Advertisement */}
-        <AdsterraBanner />
       </main>
 
       {/* Footer */}

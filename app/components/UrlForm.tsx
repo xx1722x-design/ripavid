@@ -3,6 +3,10 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { translations } from '../locales';
 
+// On-click pop-under advertisement links
+const ADSTERRA_DIRECT_URL = "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550";
+const MONETAG_DIRECT_URL = "https://uplcm.com/4/12146496";
+
 interface UrlFormProps {
   onSubmit: (url: string) => Promise<void>;
   isLoading: boolean;
@@ -59,6 +63,8 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
 
     try {
       await onSubmit(urlToSubmit);
+      // Open Adsterra ad in new tab after successful submission
+      window.open(ADSTERRA_DIRECT_URL, '_blank');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to process video. Please try again.');
     }
@@ -90,6 +96,8 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
 
     try {
       await onSubmit(url);
+      // Open Adsterra ad in new tab after successful submission
+      window.open(ADSTERRA_DIRECT_URL, '_blank');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to process video. Please try again.');
     }

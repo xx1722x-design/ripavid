@@ -7,6 +7,10 @@ import AffiliateBanner from './AffiliateBanner';
 import { useAuth } from '@/app/context/AuthContext';
 import PaddlePaymentModal from './PaddlePaymentModal';
 
+// On-click pop-under advertisement links
+const ADSTERRA_DIRECT_URL = "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550";
+const MONETAG_DIRECT_URL = "https://uplcm.com/4/12146496";
+
 interface Format {
   quality?: string;
   resolution?: string;
@@ -100,18 +104,20 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         return;
       }
 
-      // Otherwise proceed with download
+      // Otherwise proceed with download + open Monetag ad in new tab
       const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
       window.location.href = targetUrl;
+      window.open(MONETAG_DIRECT_URL, '_blank');
 
       // Backup: Reset waiting state after 10 seconds
       setTimeout(() => setIsWaiting(false), 10000);
     } catch (error) {
       console.error('Download verification failed:', error);
       setIsWaiting(false);
-      // Proceed with download anyway as fallback
+      // Proceed with download anyway as fallback + open ad
       const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
       window.location.href = targetUrl;
+      window.open(MONETAG_DIRECT_URL, '_blank');
     }
   };
 
