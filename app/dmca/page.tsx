@@ -177,7 +177,7 @@ export default function DMCAPage() {
         {/* Footer */}
         <div className="mt-16 pt-8 border-t border-zinc-800">
           <p className="text-zinc-500 text-sm">
-            © 2025 RipAVid. All rights reserved.
+            © 2026 RipAVid. All rights reserved.
           </p>
         </div>
       </div>
