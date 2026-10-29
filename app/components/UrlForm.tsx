@@ -1,12 +1,14 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { translations } from '../locales';
 
 interface UrlFormProps {
   onSubmit: (url: string) => Promise<void>;
   isLoading: boolean;
   language?: string;
+  initialUrl?: string;
+  autoSubmit?: boolean;
 }
 
 type Platform = 'auto' | 'douyin' | 'xiaohongshu' | 'youtube' | 'instagram';
@@ -19,11 +21,48 @@ const PLATFORM_LABELS: Record<Platform, { icon: string }> = {
   instagram: { icon: '📷' },
 };
 
-export default function UrlForm({ onSubmit, isLoading, language = 'en' }: UrlFormProps) {
-  const [url, setUrl] = useState('');
+export default function UrlForm({ onSubmit, isLoading, language = 'en', initialUrl = '', autoSubmit = false }: UrlFormProps) {
+  const [url, setUrl] = useState(initialUrl);
   const [error, setError] = useState('');
   const [platform, setPlatform] = useState<Platform>('auto');
+  const [hasAutoSubmitted, setHasAutoSubmitted] = useState(false);
   const t = translations[language as keyof typeof translations] || translations['en'];
+
+  // Auto-submit if initialUrl is provided
+  useEffect(() => {
+    if (initialUrl && !hasAutoSubmitted && autoSubmit) {
+      setUrl(initialUrl);
+      // Delay auto-submit by 100ms to match spec
+      const timer = setTimeout(() => {
+        setHasAutoSubmitted(true);
+        // Create a synthetic form submission
+        handleAutoSubmit(initialUrl);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [initialUrl, autoSubmit, hasAutoSubmitted]);
+
+  const handleAutoSubmit = async (urlToSubmit: string) => {
+    setError('');
+
+    if (!urlToSubmit.trim()) {
+      setError(t.error);
+      return;
+    }
+
+    try {
+      new URL(urlToSubmit);
+    } catch {
+      setError('Invalid URL format');
+      return;
+    }
+
+    try {
+      await onSubmit(urlToSubmit);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to process video. Please try again.');
+    }
+  };
 
   const PLATFORMS: Record<Platform, string> = {
     auto: t.autoDetect,

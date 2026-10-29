@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "./components/ThemeProvider";
+import { AuthProvider } from "./context/AuthContext";
+import Header from "./components/Header";
 import "./globals.css";
 import { ReactNode } from "react";
 
@@ -31,7 +33,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-white dark:bg-[#0B0F19] text-gray-900 dark:text-gray-100 transition-colors duration-300">
-        <Providers>{children}</Providers>
+        <AuthProvider>
+          <Providers>
+            <Header />
+            {children}
+          </Providers>
+        </AuthProvider>
 
         {/* Monetag In-Page Push Advertisement */}
         <Script

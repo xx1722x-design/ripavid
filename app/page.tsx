@@ -8,12 +8,12 @@ import QuickTutorial from './components/QuickTutorial';
 import FeaturesGrid from './components/FeaturesGrid';
 import FaqAccordion from './components/FaqAccordion';
 import Footer from './components/Footer';
-import LanguageSwitcher from './components/LanguageSwitcher';
 import PlatformSelector from './components/PlatformSelector';
 import MarketingCopy from './components/MarketingCopy';
 import AdsterraBanner from './components/AdsterraBanner';
 import AffiliateBanners from './components/AffiliateBanners';
-import B2BApiCenter from './components/B2BApiCenter';
+// import B2BApiCenter from './components/B2BApiCenter';
+// [B2B SECTION DISABLED] - B2C 전환 중
 import SocialShareBar from './components/SocialShareBar';
 import { translations, getTranslations } from './locales';
 
@@ -42,6 +42,7 @@ export default function Home() {
   const [error, setError] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('');
   const [originalUrl, setOriginalUrl] = useState('');
+  const [initialUrl, setInitialUrl] = useState('');
   const [language, setLanguage] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('selectedLanguage') || 'en';
@@ -49,12 +50,11 @@ export default function Home() {
     return 'en';
   });
 
-  // Ref for B2B API Center section (for smooth scroll)
-  const b2bSectionRef = useRef<HTMLDivElement>(null);
-
-  const scrollToB2B = () => {
-    b2bSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  // [B2B DISABLED] Ref for B2B API Center section (for smooth scroll)
+  // const b2bSectionRef = useRef<HTMLDivElement>(null);
+  // const scrollToB2B = () => {
+  //   b2bSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // };
 
   useEffect(() => {
     // Force dark mode
@@ -71,6 +71,14 @@ export default function Home() {
     };
 
     window.addEventListener('languageChanged', handleStorageChange);
+
+    // Detect URL parameter for auto-redirect UX
+    const params = new URLSearchParams(window.location.search);
+    const urlParam = params.get('url');
+    if (urlParam) {
+      setInitialUrl(decodeURIComponent(urlParam));
+    }
+
     return () => window.removeEventListener('languageChanged', handleStorageChange);
   }, []);
 
@@ -115,10 +123,6 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/10 light:bg-blue-500/5 rounded-full blur-3xl opacity-20"></div>
       </div>
 
-      {/* Header with Language Switcher */}
-      <header className="fixed top-0 right-0 z-50 pr-4 sm:pr-8 pt-4 sm:pt-6">
-        <LanguageSwitcher />
-      </header>
 
       <main className="relative z-10 flex flex-col items-center justify-start min-h-full px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 md:pt-12 pb-0">
         {/* Logo / Branding */}
@@ -148,19 +152,14 @@ export default function Home() {
           </p>
         </div>
 
-        {/* API / Enterprise CTA Button - Premium Floating Card */}
+        {/* [B2B DISABLED] API / Enterprise CTA Button - Premium Floating Card
         <div className="mb-6 w-full max-w-3xl">
           <button
             onClick={scrollToB2B}
             className="group w-full relative px-4 sm:px-6 py-3 sm:py-4 rounded-lg transition-all duration-300 overflow-hidden border-2 border-cyan-500/50 dark:border-cyan-500/50 light:border-cyan-400/30 hover:border-cyan-400/80 dark:hover:border-cyan-400/80 light:hover:border-cyan-400/60"
           >
-            {/* Animated background gradient */}
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/20 via-blue-900/20 to-cyan-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-            {/* Glow effect */}
             <div className="absolute inset-0 rounded-xl blur-xl bg-gradient-to-r from-cyan-500/30 via-blue-500/30 to-cyan-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
-
-            {/* Content */}
             <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-2">
               <span className="text-xl sm:text-2xl">🚀</span>
               <div className="text-center sm:text-left">
@@ -175,6 +174,7 @@ export default function Home() {
             </div>
           </button>
         </div>
+        */}
 
         {/* Platform Selector */}
         <div className="mb-3">
@@ -187,7 +187,13 @@ export default function Home() {
 
         {/* URL Input Form */}
         {/* @ts-ignore */}
-        <UrlForm onSubmit={handleRipVideo} isLoading={isLoading} language={language} />
+        <UrlForm
+          onSubmit={handleRipVideo}
+          isLoading={isLoading}
+          language={language}
+          initialUrl={initialUrl}
+          autoSubmit={!!initialUrl}
+        />
 
         {/* API Error Display */}
         {error && (
@@ -258,13 +264,13 @@ export default function Home() {
           <div className="w-full max-w-5xl mx-auto my-16 border-t border-zinc-800 dark:border-zinc-800 light:border-gray-200"></div>
         )}
 
-        {/* B2B API Center Section - Scrolled Target */}
+        {/* [B2B API CENTER DISABLED] - B2C 전환 중
         {!result && (
           <div ref={b2bSectionRef} className="w-full">
-            {/* @ts-ignore */}
             <B2BApiCenter language={language} />
           </div>
         )}
+        */}
 
         {/* FAQ Accordion */}
         {!result && (

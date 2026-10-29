@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { translations } from '../locales';
 import TipSlider from './TipSlider';
 import AffiliateBanner from './AffiliateBanner';
+import { useAuth } from '@/app/context/AuthContext';
+import PaddlePaymentModal from './PaddlePaymentModal';
 
 interface Format {
   quality?: string;
@@ -60,9 +62,12 @@ const parseResolution = (resolution?: string, quality?: string): string => {
 export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en', originalUrl = '' }: VideoResultProps) {
   const [isWaiting, setIsWaiting] = useState(false);
   const [waitingHeight, setWaitingHeight] = useState(720);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const { user } = useAuth();
 
   const t = translations[language as keyof typeof translations] || translations['en'];
   const allFormats = [...formats.free, ...formats.premium];
+  const isPro = user?.tier === 'pro';
 
   // Extract numeric height from resolution string (e.g., "720p" -> 720)
   const getHeightFromResolution = (res: string): number => {
@@ -128,11 +133,21 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         </div>
       )}
 
-      {/* Video-Only Formats Section (1080p and above - NO AUDIO) */}
+      {/* Premium Formats Section (1080p and above - Pro only) */}
       {formats.premium && formats.premium.length > 0 && (
-        <div className="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
-          <p className="text-sm font-semibold text-red-300 mb-3">🔇 Video Only (No Audio):</p>
-          <p className="text-xs text-red-200 mb-3 italic">High-quality formats without audio. Requires audio editing or additional processing.</p>
+        <div className={`mb-6 p-4 rounded-lg border ${
+          isPro
+            ? 'bg-purple-900/20 border-purple-500/50'
+            : 'bg-red-900/20 border-red-500/30'
+        }`}>
+          <p className={`text-sm font-semibold mb-3 ${isPro ? 'text-purple-300' : 'text-red-300'}`}>
+            {isPro ? '👑 Pro Pass Quality' : '🔒 Pro Pass Quality'}
+          </p>
+          <p className={`text-xs mb-3 italic ${isPro ? 'text-purple-200' : 'text-red-200'}`}>
+            {isPro
+              ? '1080p and higher quality formats'
+              : 'Upgrade to Pro Pass to download 1080p and higher quality.'}
+          </p>
           <div className="flex flex-wrap gap-2">
             {formats.premium.map((format, index) => {
               const resolution = parseResolution(format.resolution, format.quality);
@@ -140,13 +155,25 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
               return (
                 <button
                   key={`premium-${index}`}
-                  onClick={() => handleDownloadClick(height)}
-                  disabled={isWaiting}
-                  className="text-xs bg-red-700 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded-full transition-colors cursor-pointer flex items-center gap-2 font-medium opacity-75"
+                  onClick={() => {
+                    if (isPro) {
+                      handleDownloadClick(height);
+                    } else {
+                      setShowPaymentModal(true);
+                    }
+                  }}
+                  disabled={isWaiting && !isPro}
+                  className={`text-xs px-4 py-2 rounded-full transition-all cursor-pointer flex items-center gap-2 font-medium ${
+                    isPro
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white'
+                      : 'bg-red-700/60 hover:bg-red-700 text-white opacity-75 hover:opacity-90'
+                  }`}
                 >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1V4a1 1 0 011-1h5a1 1 0 011 1v1m5-1a1 1 0 011 1v1m0 0a1 1 0 001 1h1a1 1 0 001-1m-1-1v-4a1 1 0 00-1-1h-4.586a1 1 0 00-.707.293l-3.414 3.414a1 1 0 00-.293.707V15a1 1 0 001 1h1m8-1a1 1 0 01-1 1m0 0H9m3 0a1 1 0 01-1-1" />
-                  </svg>
+                  {!isPro && (
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 1L9.3 6.6H3.36v3.67h4.89L12 20l3.75-9.73h4.89V6.6h-5.94L12 1z" />
+                    </svg>
+                  )}
                   {resolution}
                 </button>
               );
@@ -196,6 +223,15 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           </p>
         </div>
       </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPaymentModal && (
+        <PaddlePaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          language={language}
+        />
       )}
     </div>
   );
