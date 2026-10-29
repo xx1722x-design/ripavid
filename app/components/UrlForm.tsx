@@ -129,7 +129,7 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            placeholder={t.pasteLink}
+            placeholder="👉 Try typing: https://www.rrryoutube.com/watch?v=..."
             disabled={isLoading}
             className="w-full px-6 py-4 sm:px-8 sm:py-6 h-14 sm:h-16 bg-zinc-800 dark:bg-zinc-800 light:bg-white border-2 border-zinc-600 dark:border-zinc-600 light:border-gray-300 rounded-xl text-base sm:text-lg md:text-xl font-semibold text-gray-100 dark:text-white light:text-gray-900 placeholder-gray-500 dark:placeholder-gray-400 light:placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           />

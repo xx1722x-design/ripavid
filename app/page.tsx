@@ -16,6 +16,8 @@ import MarketingCopy from './components/MarketingCopy';
 import SocialShareBar from './components/SocialShareBar';
 import ProHeroBanner from './components/ProHeroBanner';
 import ProPricingSection from './components/ProPricingSection';
+import RRRTipBanner from './components/RRRTipBanner';
+import RRRTrickModal from './components/RRRTrickModal';
 import { translations, getTranslations } from './locales';
 
 interface Format {
@@ -50,6 +52,7 @@ export default function Home() {
     }
     return 'en';
   });
+  const [showRRRModal, setShowRRRModal] = useState(false);
 
   // Ref for UrlForm (for smooth scroll from Pricing section)
   const urlFormRef = useRef<HTMLDivElement>(null);
@@ -186,6 +189,9 @@ export default function Home() {
         {/* Pro Hero Banner */}
         <ProHeroBanner />
 
+        {/* RRR Trick Tip Banner */}
+        <RRRTipBanner onClick={() => setShowRRRModal(true)} />
+
         {/* Platform Selector - with max height to prevent layout shift */}
         <div className="w-full max-w-5xl mx-auto mb-2 overflow-hidden">
           <PlatformSelector
@@ -307,6 +313,9 @@ export default function Home() {
         )}
 
       </main>
+
+      {/* RRR Trick Modal */}
+      <RRRTrickModal isOpen={showRRRModal} onClose={() => setShowRRRModal(false)} />
 
       {/* Footer */}
       {/* @ts-ignore */}
