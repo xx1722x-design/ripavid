@@ -11,9 +11,32 @@ interface User {
   googleId?: string;
 }
 
+// In-memory store (primary for Vercel serverless)
+const memoryStore = new Map<string, User>();
+
+// File path for local development
 const DB_PATH = path.join(process.cwd(), 'data', 'users.json');
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Check if file system is writable
+async function isFileSystemWritable(): Promise<boolean> {
+  if (isProduction) {
+    // Vercel serverless environment
+    return false;
+  }
+  try {
+    const testFile = path.join(process.cwd(), '.fs-test');
+    await fs.writeFile(testFile, 'test');
+    await fs.unlink(testFile);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 async function ensureDbExists() {
+  if (isProduction) return; // Skip in production
+
   try {
     await fs.access(DB_PATH);
   } catch {
@@ -23,18 +46,42 @@ async function ensureDbExists() {
     } catch {
       // Directory might already exist
     }
-    await fs.writeFile(DB_PATH, JSON.stringify([]));
+    try {
+      await fs.writeFile(DB_PATH, JSON.stringify([]));
+    } catch {
+      // File system not writable - use memory only
+      console.warn('[Users] File system not writable, using memory store only');
+    }
   }
 }
 
-async function getAllUsers(): Promise<User[]> {
-  await ensureDbExists();
+async function loadUsersFromFile(): Promise<User[]> {
+  if (isProduction) return [];
+
   try {
     const data = await fs.readFile(DB_PATH, 'utf-8');
     return JSON.parse(data);
   } catch {
     return [];
   }
+}
+
+async function getAllUsers(): Promise<User[]> {
+  // First check memory store
+  if (memoryStore.size > 0) {
+    return Array.from(memoryStore.values());
+  }
+
+  // Try to load from file if not in production
+  if (!isProduction) {
+    await ensureDbExists();
+    const fileUsers = await loadUsersFromFile();
+    // Cache in memory
+    fileUsers.forEach((u) => memoryStore.set(u.uid, u));
+    return fileUsers;
+  }
+
+  return Array.from(memoryStore.values());
 }
 
 export async function getUserByEmail(email: string): Promise<User | null> {
@@ -70,9 +117,19 @@ export async function createUser(
     googleId,
   };
 
-  users.push(newUser);
-  await ensureDbExists();
-  await fs.writeFile(DB_PATH, JSON.stringify(users, null, 2));
+  // Store in memory (primary)
+  memoryStore.set(newUser.uid, newUser);
+
+  // Try to persist to file (development only)
+  if (!isProduction) {
+    try {
+      users.push(newUser);
+      await ensureDbExists();
+      await fs.writeFile(DB_PATH, JSON.stringify(users, null, 2));
+    } catch (error) {
+      console.warn('[Users] Failed to persist user to file, using memory store only:', error);
+    }
+  }
 
   return newUser;
 }
@@ -86,10 +143,20 @@ export async function updateUser(uid: string, updates: Partial<User>): Promise<U
   }
 
   const updatedUser = { ...users[index], ...updates };
-  users[index] = updatedUser;
 
-  await ensureDbExists();
-  await fs.writeFile(DB_PATH, JSON.stringify(users, null, 2));
+  // Update in memory (primary)
+  memoryStore.set(uid, updatedUser);
+
+  // Try to persist to file (development only)
+  if (!isProduction) {
+    try {
+      users[index] = updatedUser;
+      await ensureDbExists();
+      await fs.writeFile(DB_PATH, JSON.stringify(users, null, 2));
+    } catch (error) {
+      console.warn('[Users] Failed to persist update to file, using memory store only:', error);
+    }
+  }
 
   return updatedUser;
 }
