@@ -1,5 +1,6 @@
 export const zhCNTranslations = {
   continueWithGoogle: '使用Google继续',
+  logout: '登出',
   title: '轻松下载所有视频',
   subtitle: '从YouTube、TikTok、Instagram等多个平台在几秒内下载视频',
   subtext: '快速、简单、完全免费。无需注册。',

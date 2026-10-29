@@ -1,5 +1,6 @@
 export const idTranslations = {
   continueWithGoogle: 'Lanjutkan dengan Google',
+  logout: 'Keluar',
   title: 'Unduh Video dengan Mudah',
   subtitle: 'Unduh video dari YouTube, TikTok, Instagram dan lainnya dalam hitungan detik',
   subtext: 'Cepat, sederhana, dan sepenuhnya gratis. Tidak perlu mendaftar.',

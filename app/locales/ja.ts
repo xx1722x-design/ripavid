@@ -1,5 +1,6 @@
 export const jaTranslations = {
   continueWithGoogle: 'Googleで1秒で始める',
+  logout: 'ログアウト',
   title: 'すべての動画を簡単にダウンロード',
   subtitle: 'YouTube、TikTok、Instagramなどから数秒で動画をダウンロード',
   subtext: '高速、シンプル、完全無料。登録不要。',

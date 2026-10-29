@@ -1,5 +1,6 @@
 export const koTranslations = {
   continueWithGoogle: 'Google로 1초 만에 시작하기',
+  logout: '로그아웃',
   title: '모든 영상을 쉽게 다운로드하세요',
   subtitle: '유튜브, 틱톡, 인스타그램 등에서 몇 초 만에 영상을 다운로드하세요',
   subtext: '빠르고 간단하며 완전히 무료입니다. 가입 불필요.',

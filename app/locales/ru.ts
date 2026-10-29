@@ -1,5 +1,6 @@
 export const ruTranslations = {
   continueWithGoogle: 'Продолжить с Google',
+  logout: 'Выход',
   title: 'Легко скачивайте видео',
   subtitle: 'Скачивайте видео с YouTube, TikTok, Instagram и многого другого за считанные секунды',
   subtext: 'Быстро, просто и совершенно бесплатно. Регистрация не требуется.',

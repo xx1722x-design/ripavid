@@ -1,5 +1,6 @@
 export const nlTranslations = {
   continueWithGoogle: 'Doorgaan met Google',
+  logout: 'Afmelden',
   title: 'Download Video\'s Gemakkelijk',
   subtitle: 'Download video\'s van YouTube, TikTok, Instagram en meer in enkele seconden',
   subtext: 'Snel, eenvoudig en volledig gratis. Geen registratie vereist.',

@@ -1,5 +1,6 @@
 export const trTranslations = {
   continueWithGoogle: 'Google ile devam et',
+  logout: 'Çıkış yap',
   title: 'Videoları Kolayca İndir',
   subtitle: 'YouTube, TikTok, Instagram ve daha fazlasından videoları saniyeler içinde indirin',
   subtext: 'Hızlı, basit ve tamamen ücretsiz. Kaydolmaya gerek yok.',

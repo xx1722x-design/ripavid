@@ -1,5 +1,6 @@
 export const itTranslations = {
   continueWithGoogle: 'Continua con Google',
+  logout: 'Disconnetti',
   title: 'Scarica video facilmente',
   subtitle: 'Scarica video da YouTube, TikTok, Instagram e molto altro in pochi secondi',
   subtext: 'Veloce, semplice e completamente gratuito. Nessuna registrazione richiesta.',

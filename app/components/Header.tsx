@@ -131,7 +131,7 @@ export default function Header() {
         className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-900/20 transition-colors flex items-center gap-2 pointer-events-auto"
       >
         <LogOut className="w-4 h-4" />
-        로그아웃
+        {t.logout || 'Log out'}
       </button>
     </div>
   );
