@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Check } from 'lucide-react';
 import { useAuth } from '@/app/context/AuthContext';
+import { translations } from '@/app/locales';
 
 interface ProPricingSectionProps {
   language?: string;
@@ -13,6 +14,9 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
   const { user, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showApprovalMessage, setShowApprovalMessage] = useState(false);
+  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('yearly');
+
+  const t = translations[language as keyof typeof translations] || translations['en'];
 
   const handleFreeClick = () => {
     onScrollToDownloader?.();
@@ -34,6 +38,11 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     setTimeout(() => setShowApprovalMessage(false), 4000);
   };
 
+  const proPrice = billingPeriod === 'yearly' ? '$2.49' : '$4.99';
+  const proBilledText = billingPeriod === 'yearly'
+    ? t.pricingBilledYearly
+    : t.pricingBilledMonthly;
+
   return (
     <div id="pricing" className="w-full py-20 px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
       <div className="max-w-6xl mx-auto">
@@ -53,6 +62,47 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
             Choose the plan that fits your needs. Upgrade anytime.
           </p>
+        </div>
+
+        {/* Billing Period Toggle */}
+        <div className="flex justify-center items-center gap-6 mb-16">
+          <button
+            onClick={() => setBillingPeriod('monthly')}
+            className={`px-6 py-3 font-semibold rounded-lg transition-all ${
+              billingPeriod === 'monthly'
+                ? 'bg-blue-600 text-white'
+                : 'bg-zinc-800 text-zinc-400 hover:text-white'
+            }`}
+          >
+            {t.pricingMonthly}
+          </button>
+
+          {/* Toggle Switch */}
+          <div className="relative w-16 h-8 bg-zinc-700 rounded-full cursor-pointer transition-colors" onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'yearly' : 'monthly')}>
+            <div
+              className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg transition-transform transform ${
+                billingPeriod === 'yearly' ? 'translate-x-8' : 'translate-x-1'
+              }`}
+            />
+          </div>
+
+          <div className="relative">
+            <button
+              onClick={() => setBillingPeriod('yearly')}
+              className={`px-6 py-3 font-semibold rounded-lg transition-all ${
+                billingPeriod === 'yearly'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-zinc-800 text-zinc-400 hover:text-white'
+              }`}
+            >
+              {t.pricingYearly}
+            </button>
+            {billingPeriod === 'yearly' && (
+              <div className="absolute -top-2 -right-8 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap animate-pulse">
+                {t.pricingSave50}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Pricing Cards */}
@@ -109,9 +159,9 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
             <div className="mb-8 pb-8 border-b border-cyan-500/30">
               <div className="text-4xl font-bold text-white">
-                $4.99<span className="text-lg text-zinc-400">/month</span>
+                {proPrice}<span className="text-lg text-zinc-400">/month</span>
               </div>
-              <p className="text-xs text-zinc-400 mt-2">Cancel anytime</p>
+              <p className="text-xs text-zinc-400 mt-2">{proBilledText}</p>
             </div>
 
             <ul className="space-y-4 mb-8">
@@ -125,7 +175,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
             {user?.tier === 'pro' ? (
               <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg transition-all opacity-70 cursor-default">
-                ✓ Your Current Plan
+                {t.yourCurrentPlan}
               </button>
             ) : (
               <button
@@ -133,7 +183,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                 disabled={isLoading}
                 className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105"
               >
-                {isLoading ? 'Loading...' : !isAuthenticated ? 'Sign in to Upgrade' : 'Upgrade Now'}
+                {isLoading ? 'Loading...' : !isAuthenticated ? t.signInToUpgrade : t.upgradeNow}
               </button>
             )}
           </div>

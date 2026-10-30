@@ -106,4 +106,14 @@ export const thTranslations = {
   // New FAQ items
   faq7Question: 'Can I download any video in 4K or 1080p?',
   faq7Answer: 'Ripavid extracts the absolute highest quality file stored on the platform\'s servers. This means you can download in 4K or 1080p only if the original creator uploaded the video in that resolution. We do not artificially upscale or fake the resolution to preserve the original quality.',
+
+  // Pricing Section Toggle
+  pricingMonthly: 'Monthly',
+  pricingYearly: 'Yearly',
+  pricingSave50: 'Save 50%',
+  pricingBilledMonthly: 'Billed monthly',
+  pricingBilledYearly: 'Billed $29.99 yearly',
+  signInToUpgrade: 'Sign in to Upgrade',
+  upgradeNow: 'Upgrade Now',
+  yourCurrentPlan: '✓ Your Current Plan',
 };

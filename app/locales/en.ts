@@ -162,4 +162,14 @@ export const enTranslations = {
   apiIntegrationDesc: 'Get started in minutes with our comprehensive documentation and official SDKs for JavaScript, Python, Go, and more',
   apiReadDocs: 'Read Documentation',
   apiTryRapidapi: 'Try on RapidAPI',
+
+  // Pricing Section Toggle
+  pricingMonthly: 'Monthly',
+  pricingYearly: 'Yearly',
+  pricingSave50: 'Save 50%',
+  pricingBilledMonthly: 'Billed monthly',
+  pricingBilledYearly: 'Billed $29.99 yearly',
+  signInToUpgrade: 'Sign in to Upgrade',
+  upgradeNow: 'Upgrade Now',
+  yourCurrentPlan: '✓ Your Current Plan',
 };

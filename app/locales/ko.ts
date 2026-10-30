@@ -162,4 +162,14 @@ export const koTranslations = {
   apiIntegrationDesc: '포괄적인 문서와 JavaScript, Python, Go 등을 위한 공식 SDK로 몇 분 내에 시작하세요',
   apiReadDocs: '문서 읽기',
   apiTryRapidapi: 'RapidAPI에서 시도하기',
+
+  // Pricing Section Toggle
+  pricingMonthly: '월간',
+  pricingYearly: '연간',
+  pricingSave50: '50% 절약',
+  pricingBilledMonthly: '매달 청구',
+  pricingBilledYearly: '연 $29.99로 청구',
+  signInToUpgrade: '업그레이드하려면 로그인하세요',
+  upgradeNow: '지금 업그레이드',
+  yourCurrentPlan: '✓ 현재 플랜',
 };
