@@ -74,4 +74,35 @@ export const zhCNTranslations = {
   downloadWaitWarning: '请勿关闭此窗口!',
   downloadTip: '💡 Download Method: Click your preferred resolution button (e.g., 720p, 1080p) in the green box above. The download will start automatically or prepare within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
+
+  // Pro Pass Modal - Button Features & Loading
+  features: '包含的功能',
+  feature1: '1080p & 4K 下载',
+  feature2: '无限下载',
+  feature3: '无水印',
+  feature4: '优先支持',
+  loading: '加载支付...',
+
+  // Pro Pass Modal
+  proPassModalTitle: '解锁4K和无限下载!',
+  proPassModalSubtitle: '加入每天为您节省时间的10万名创意工作者。',
+  proPassMonthlyLabel: '月度',
+  proPassMonthlyPrice: '每月 $4.99',
+  proPassMonthlyBilled: '按月计费',
+  proPassYearlyLabel: '年度',
+  proPassYearlyPrice: '每月 $2.49',
+  proPassYearlyBilled: '年费 $29.99',
+  proPassYearlyBadge: '🔥 最佳价值',
+  proPassOldPrice: '$4.99',
+  proPassCtaBtnYearly: '继续1年专业版',
+  proPassCtaBtnMonthly: '继续',
+  proPassSecurePayment: '🔒 通过Paddle进行安全支付。随时取消。',
+  proPassDisclaimer: '下载严格限制为原始视频的最大上传分辨率。 (例如：您无法以4K分辨率下载原始的720p视频。)',
+
+  // Resolution Selection
+  resolutionNotAvailable: '此分辨率不可用，因为原始视频是以{resolution}的分辨率上传的。',
+
+  // New FAQ items
+  faq7Question: '我可以以4K或1080p的分辨率下载任何视频吗？',
+  faq7Answer: 'Ripavid提取存储在平台服务器上的最高质量文件。这意味着您只能在原始创意工作者以该分辨率上传视频时才能以4K或1080p分辨率下载。为了保留原始质量，我们不进行人工放大或伪造分辨率。',
 };

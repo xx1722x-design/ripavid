@@ -18,6 +18,10 @@ export default function FaqAccordion({ language }: FaqAccordionProps) {
 
   const faqs: FaqItem[] = [
     {
+      question: t.faq7Question,
+      answer: t.faq7Answer,
+    },
+    {
       question: t.faq1Question,
       answer: t.faq1Answer,
     },

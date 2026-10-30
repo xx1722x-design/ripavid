@@ -75,6 +75,37 @@ export const koTranslations = {
   downloadTip: '💡 Download Method: Click your preferred resolution button (e.g., 720p, 1080p) in the green box above. The download will start automatically or prepare within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ 주의: 1080p 이상 고화질이나 WEBM 파일에서 \"지원되지 않는 인코딩\" 오류가 발생하면, 호환성이 가장 높은 \"720p MP4\"를 다운로드하시거나 VLC 미디어 플레이어를 사용해 주세요.',
 
+  // Pro Pass Modal - Button Features & Loading
+  features: '포함된 기능',
+  feature1: '1080p & 4K 다운로드',
+  feature2: '무제한 다운로드',
+  feature3: '워터마크 없음',
+  feature4: '우선 지원',
+  loading: '결제 로딩중...',
+
+  // Pro Pass Modal
+  proPassModalTitle: '4K & 무제한 다운로드 잠금 해제!',
+  proPassModalSubtitle: '매일 시간을 절약하는 10만 명의 크리에이터들과 함께하세요.',
+  proPassMonthlyLabel: '월간',
+  proPassMonthlyPrice: '월 $4.99',
+  proPassMonthlyBilled: '매달 청구',
+  proPassYearlyLabel: '연간',
+  proPassYearlyPrice: '월 $2.49',
+  proPassYearlyBilled: '연 $29.99로 청구',
+  proPassYearlyBadge: '🔥 최고의 가치',
+  proPassOldPrice: '$4.99',
+  proPassCtaBtnYearly: '1년 Pro 계속하기',
+  proPassCtaBtnMonthly: '계속하기',
+  proPassSecurePayment: '🔒 Paddle을 통한 안전한 결제. 언제든 취소 가능.',
+  proPassDisclaimer: '다운로드는 원본 영상의 최대 업로드 해상도로 제한됩니다. (예: 720p 원본 영상을 4K로 다운로드할 수 없습니다.)',
+
+  // Resolution Selection
+  resolutionNotAvailable: '이 해상도는 원본 영상이 {resolution}로 업로드되어 있기 때문에 사용할 수 없습니다.',
+
+  // New FAQ items
+  faq7Question: '모든 영상을 4K나 1080p로 다운로드할 수 있나요?',
+  faq7Answer: 'Ripavid는 플랫폼 서버에 저장된 최고 품질의 파일을 추출합니다. 즉, 원본 크리에이터가 그 해상도로 영상을 업로드한 경우에만 4K 또는 1080p로 다운로드할 수 있습니다. 원본 품질을 보존하기 위해 인위적으로 업스케일하거나 해상도를 조작하지 않습니다.',
+
   // B2B API Center
   apiBadgeText: '엔터프라이즈 API 솔루션',
   apiMainTitle: 'RipAVid Enterprise API Gateway',

@@ -74,4 +74,36 @@ export const msTranslations = {
   downloadWaitWarning: 'Jangan tutup tetingkap ini!',
   downloadTip: '💡 Download Method: Click your preferred resolution button (e.g., 720p, 1080p) in the green box above. The download will start automatically or prepare within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
+
+  
+  // Pro Pass Modal - Button Features & Loading
+  features: 'Features included',
+  feature1: '1080p & 4K downloads',
+  feature2: 'Unlimited downloads',
+  feature3: 'No watermarks',
+  feature4: 'Priority support',
+  loading: 'Loading payment...',
+
+  // Pro Pass Modal
+  proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
+  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassMonthlyLabel: 'Monthly',
+  proPassMonthlyPrice: '$4.99 / mo',
+  proPassMonthlyBilled: 'Billed monthly',
+  proPassYearlyLabel: 'Yearly',
+  proPassYearlyPrice: '$2.49 / mo',
+  proPassYearlyBilled: 'Billed $29.99 yearly',
+  proPassYearlyBadge: '🔥 BEST VALUE',
+  proPassOldPrice: '$4.99',
+  proPassCtaBtnYearly: 'Continue with 1 Year Pro',
+  proPassCtaBtnMonthly: 'Continue',
+  proPassSecurePayment: '🔒 Secure payment via Paddle. Cancel anytime.',
+  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+
+  // Resolution Selection
+  resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',
+
+  // New FAQ items
+  faq7Question: 'Can I download any video in 4K or 1080p?',
+  faq7Answer: 'Ripavid extracts the absolute highest quality file stored on the platform\'s servers. This means you can download in 4K or 1080p only if the original creator uploaded the video in that resolution. We do not artificially upscale or fake the resolution to preserve the original quality.',
 };

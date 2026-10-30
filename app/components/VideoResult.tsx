@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { translations } from '../locales';
 import TipSlider from './TipSlider';
 import AffiliateBanner from './AffiliateBanner';
@@ -67,11 +67,29 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const [isWaiting, setIsWaiting] = useState(false);
   const [waitingHeight, setWaitingHeight] = useState(720);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [loadingQuality, setLoadingQuality] = useState<string | null>(null);
+  const [hoveredResolution, setHoveredResolution] = useState<string | null>(null);
+  const waitingContainerRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
 
   const t = translations[language as keyof typeof translations] || translations['en'];
   const allFormats = [...formats.free, ...formats.premium];
   const isPro = user?.tier === 'pro';
+
+  // Find the maximum resolution available
+  const getMaxResolution = (): number => {
+    let maxHeight = 0;
+    allFormats.forEach((format) => {
+      const resolution = parseResolution(format.resolution, format.quality);
+      const height = getHeightFromResolution(resolution);
+      if (height > maxHeight) {
+        maxHeight = height;
+      }
+    });
+    return maxHeight;
+  };
+
+  const maxResolution = getMaxResolution();
 
   // Extract numeric height from resolution string (e.g., "720p" -> 720)
   const getHeightFromResolution = (res: string): number => {
@@ -79,7 +97,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
     return match ? parseInt(match[1], 10) : 720;
   };
 
-  const handleDownloadClick = async (height: number) => {
+  const handleDownloadClick = async (height: number, resolution: string) => {
     // Check if height > 720p and user is not Pro
     if (height > 720 && user?.tier !== 'pro') {
       setShowPaymentModal(true);
@@ -89,6 +107,14 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
     // For logged-in free users, verify backend tier check
     setIsWaiting(true);
     setWaitingHeight(height);
+    setLoadingQuality(resolution);
+
+    // Smooth scroll to "Preparing video..." container
+    setTimeout(() => {
+      if (waitingContainerRef.current) {
+        waitingContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
 
     try {
       // Verify the download is allowed by making a HEAD request
@@ -100,6 +126,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       // If 403, show payment modal
       if (response?.status === 403) {
         setIsWaiting(false);
+        setLoadingQuality(null);
         setShowPaymentModal(true);
         return;
       }
@@ -110,10 +137,14 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       window.open(MONETAG_DIRECT_URL, '_blank');
 
       // Backup: Reset waiting state after 10 seconds
-      setTimeout(() => setIsWaiting(false), 10000);
+      setTimeout(() => {
+        setIsWaiting(false);
+        setLoadingQuality(null);
+      }, 10000);
     } catch (error) {
       console.error('Download verification failed:', error);
       setIsWaiting(false);
+      setLoadingQuality(null);
       // Proceed with download anyway as fallback + open ad
       const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
       window.location.href = targetUrl;
@@ -150,18 +181,39 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
             {formats.free.map((format, index) => {
               const resolution = parseResolution(format.resolution, format.quality);
               const height = getHeightFromResolution(resolution);
+              const isLoadingThisQuality = loadingQuality === resolution;
+              const isDisabled = height > maxResolution;
               return (
-                <button
-                  key={`free-${index}`}
-                  onClick={() => handleDownloadClick(height)}
-                  disabled={isWaiting}
-                  className="text-xs font-bold bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 disabled:opacity-50 disabled:cursor-not-allowed text-white px-5 py-2 rounded-full transition-all cursor-pointer flex items-center gap-2 shadow-md hover:shadow-lg transform hover:scale-105 disabled:hover:scale-100"
-                >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
-                  {resolution}
-                </button>
+                <div key={`free-${index}`} className="relative group">
+                  <button
+                    onClick={() => !isDisabled && handleDownloadClick(height, resolution)}
+                    disabled={isWaiting || isDisabled}
+                    className={`text-xs font-bold px-5 py-2 rounded-full transition-all cursor-pointer flex items-center gap-2 shadow-md transform ${
+                      isDisabled
+                        ? 'bg-gray-400 dark:bg-gray-600 text-gray-700 dark:text-gray-300 opacity-50 cursor-not-allowed'
+                        : isLoadingThisQuality
+                        ? 'bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 scale-110'
+                        : 'bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 hover:scale-105'
+                    } text-white ${isWaiting && !isLoadingThisQuality && !isDisabled ? 'opacity-50 cursor-not-allowed disabled:hover:scale-100' : !isDisabled && 'hover:shadow-lg'}`}
+                  >
+                    {isLoadingThisQuality && !isDisabled && (
+                      <svg className="w-3 h-3 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    )}
+                    {!isLoadingThisQuality && !isDisabled && (
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                    )}
+                    {resolution}
+                  </button>
+                  {isDisabled && (
+                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-gray-800 dark:bg-gray-700 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                      {t.resolutionNotAvailable?.replace('{resolution}', `${maxResolution}p`) || `This resolution is not available because the original video was uploaded in ${maxResolution}p.`}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
@@ -187,30 +239,41 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
             {formats.premium.map((format, index) => {
               const resolution = parseResolution(format.resolution, format.quality);
               const height = getHeightFromResolution(resolution);
+              const isDisabled = height > maxResolution;
+              const isLoadingThisQuality = loadingQuality === resolution;
               return (
-                <button
-                  key={`premium-${index}`}
-                  onClick={() => {
-                    if (isPro) {
-                      handleDownloadClick(height);
-                    } else {
-                      setShowPaymentModal(true);
-                    }
-                  }}
-                  disabled={isWaiting && !isPro}
-                  className={`text-xs px-4 py-2 rounded-full transition-all cursor-pointer flex items-center gap-2 font-medium ${
-                    isPro
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white'
-                      : 'bg-red-700/60 hover:bg-red-700 text-white opacity-75 hover:opacity-90'
-                  }`}
-                >
-                  {!isPro && (
-                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 1L9.3 6.6H3.36v3.67h4.89L12 20l3.75-9.73h4.89V6.6h-5.94L12 1z" />
-                    </svg>
+                <div key={`premium-${index}`} className="relative group">
+                  <button
+                    onClick={() => {
+                      if (isDisabled) return;
+                      if (isPro) {
+                        handleDownloadClick(height, resolution);
+                      } else {
+                        setShowPaymentModal(true);
+                      }
+                    }}
+                    disabled={(isWaiting && !isPro) || isDisabled}
+                    className={`text-xs px-4 py-2 rounded-full transition-all cursor-pointer flex items-center gap-2 font-medium ${
+                      isDisabled
+                        ? 'bg-gray-400 dark:bg-gray-600 text-gray-700 dark:text-gray-300 opacity-50 cursor-not-allowed'
+                        : isPro
+                        ? `bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white ${isLoadingThisQuality ? 'scale-110' : 'hover:scale-105'}`
+                        : 'bg-red-700/60 hover:bg-red-700 text-white opacity-75 hover:opacity-90'
+                    }`}
+                  >
+                    {!isPro && !isDisabled && (
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 1L9.3 6.6H3.36v3.67h4.89L12 20l3.75-9.73h4.89V6.6h-5.94L12 1z" />
+                      </svg>
+                    )}
+                    {resolution}
+                  </button>
+                  {isDisabled && (
+                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-gray-800 dark:bg-gray-700 text-white text-xs rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                      {t.resolutionNotAvailable?.replace('{resolution}', `${maxResolution}p`) || `This resolution is not available because the original video was uploaded in ${maxResolution}p.`}
+                    </div>
                   )}
-                  {resolution}
-                </button>
+                </div>
               );
             })}
           </div>
@@ -219,15 +282,23 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
 
       {/* 대기 상태 UI */}
       {isWaiting && (
-        <div className="w-full max-w-2xl mx-auto mt-6 p-6 bg-blue-950/40 border-2 border-blue-500/50 rounded-xl shadow-lg">
-          <div className="text-center mb-4">
-            <div className="inline-block p-3 bg-blue-900/60 rounded-full mb-3">
-              <svg className="w-8 h-8 text-blue-400 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div
+          ref={waitingContainerRef}
+          className="w-full max-w-2xl mx-auto mt-6 p-8 bg-gradient-to-br from-blue-950/60 to-blue-900/60 border-4 border-blue-400/80 rounded-xl shadow-2xl animate-pulse"
+        >
+          <div className="text-center mb-6">
+            <div className="inline-block p-4 bg-blue-600/80 rounded-full mb-4 animate-pulse">
+              <svg className="w-10 h-10 text-blue-200 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
             </div>
-            <p className="text-lg font-bold text-blue-300 mb-2">⏳ Preparing video...</p>
-            <p className="text-sm text-blue-200">(Takes 1-2 mins, please do not close this window)</p>
+            <p className="text-2xl lg:text-3xl font-bold text-blue-200 mb-3 animate-bounce">
+              ⏳ Preparing your download...
+            </p>
+            <p className="text-base text-blue-300 font-semibold mb-2">
+              Quality: <span className="text-yellow-300 font-bold">{loadingQuality}</span>
+            </p>
+            <p className="text-sm text-blue-300">(Takes 1-2 mins, please do not close this window)</p>
           </div>
 
           {/* 가치 제공형 슬라이드 */}

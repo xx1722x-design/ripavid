@@ -74,4 +74,35 @@ export const jaTranslations = {
   downloadWaitWarning: 'ウィンドウを閉じないでください！',
   downloadTip: '💡 Download Method: Click your preferred resolution button (e.g., 720p, 1080p) in the green box above. The download will start automatically or prepare within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
+
+  // Pro Pass Modal - Button Features & Loading
+  features: '含まれる機能',
+  feature1: '1080p & 4K ダウンロード',
+  feature2: '無制限ダウンロード',
+  feature3: 'ウォーターマークなし',
+  feature4: '優先サポート',
+  loading: '支払いを読み込み中...',
+
+  // Pro Pass Modal
+  proPassModalTitle: '4Kと無制限ダウンロードのロック解除!',
+  proPassModalSubtitle: '毎日時間を節約している10万人のクリエイターに参加してください。',
+  proPassMonthlyLabel: '月間',
+  proPassMonthlyPrice: '月額 $4.99',
+  proPassMonthlyBilled: '毎月請求',
+  proPassYearlyLabel: '年間',
+  proPassYearlyPrice: '月額 $2.49',
+  proPassYearlyBilled: '年額 $29.99で請求',
+  proPassYearlyBadge: '🔥 最高の価値',
+  proPassOldPrice: '$4.99',
+  proPassCtaBtnYearly: '1年プロ版を続ける',
+  proPassCtaBtnMonthly: '続ける',
+  proPassSecurePayment: '🔒 Paddleによる安全なお支払い。いつでもキャンセル可能。',
+  proPassDisclaimer: 'ダウンロードは元の動画の最大アップロード解像度に厳密に制限されます。 (例: 720p元の動画を4Kでダウンロードすることはできません。)',
+
+  // Resolution Selection
+  resolutionNotAvailable: 'この解像度は、元の動画が{resolution}でアップロードされているため使用できません。',
+
+  // New FAQ items
+  faq7Question: 'すべての動画を4Kまたは1080pでダウンロードできますか？',
+  faq7Answer: 'Ripavid は、プラットフォーム サーバーに保存されている最高品質のファイルを抽出します。これは、元の作成者がその解像度で動画をアップロードした場合にのみ、4K または 1080p でダウンロードできることを意味します。元の品質を保つために、人為的にアップスケールしたり、解像度を偽ったりすることはありません。',
 };

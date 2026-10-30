@@ -60,6 +60,12 @@ export default function Home() {
     urlFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  // Ref for VideoResult (for smooth scroll when formats appear)
+  const videoResultRef = useRef<HTMLDivElement>(null);
+  const scrollToVideoResult = () => {
+    videoResultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   // [B2B DISABLED] Ref for B2B API Center section (for smooth scroll)
   // const b2bSectionRef = useRef<HTMLDivElement>(null);
   // const scrollToB2B = () => {
@@ -91,6 +97,15 @@ export default function Home() {
 
     return () => window.removeEventListener('languageChanged', handleStorageChange);
   }, []);
+
+  // 1단계 스크롤: VideoResult 컴포넌트가 나타날 때 (화질 탭 영역으로)
+  useEffect(() => {
+    if (result) {
+      setTimeout(() => {
+        scrollToVideoResult();
+      }, 300);
+    }
+  }, [result]);
 
   const handleRipVideo = async (url: string) => {
     setIsLoading(true);
@@ -236,15 +251,17 @@ export default function Home() {
 
         {/* Video Result */}
         {result && (
-          <VideoResult
-            title={result.title}
-            thumbnail={result.thumbnail}
-            duration={result.duration}
-            formats={result.formats as any}
-            onClose={() => setResult(null)}
-            language={language}
-            originalUrl={originalUrl}
-          />
+          <div ref={videoResultRef}>
+            <VideoResult
+              title={result.title}
+              thumbnail={result.thumbnail}
+              duration={result.duration}
+              formats={result.formats as any}
+              onClose={() => setResult(null)}
+              language={language}
+              originalUrl={originalUrl}
+            />
+          </div>
         )}
 
         {/* Social Share Bar - Viral Share Promotion */}
