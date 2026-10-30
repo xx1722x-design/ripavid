@@ -8,6 +8,7 @@ interface FooterProps {
 
 export default function Footer({ language = 'en' }: FooterProps) {
   const t = translations[language as keyof typeof translations] || translations['en'];
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="mt-24 w-full border-t border-zinc-800 dark:border-zinc-800 light:border-gray-200 bg-zinc-950/50 dark:bg-zinc-950/50 light:bg-gray-50 backdrop-blur-sm">
@@ -61,7 +62,7 @@ export default function Footer({ language = 'en' }: FooterProps) {
         {/* Divider */}
         <div className="border-t border-zinc-800 dark:border-zinc-800 light:border-gray-200 pt-8">
           <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-zinc-500 dark:text-zinc-500 light:text-gray-600">
-            <p>{t.footerCopyright}</p>
+            <p>© {currentYear} RipAVid. All rights reserved.</p>
             <div className="flex gap-6 mt-4 sm:mt-0">
               <a href="#" className="hover:text-cyan-400 transition-colors">Twitter</a>
               <a href="#" className="hover:text-cyan-400 transition-colors">GitHub</a>
