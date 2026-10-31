@@ -32,6 +32,25 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-WW0J3P1PYH"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-WW0J3P1PYH');
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-white dark:bg-[#0B0F19] text-gray-900 dark:text-gray-100 transition-colors duration-300">
         <AuthProvider>
           <Providers>
