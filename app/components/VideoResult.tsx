@@ -122,10 +122,16 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
 
     try {
       // Verify the download is allowed by making a HEAD request
-      const response = await fetch(
-        `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`,
-        { method: 'HEAD' }
-      );
+      let response: Response | null = null;
+      try {
+        response = await fetch(
+          `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`,
+          { method: 'HEAD' }
+        );
+      } catch (fetchError) {
+        const errorMsg = fetchError instanceof Error ? fetchError.message : 'Network request failed';
+        throw new Error(`Connection error: ${errorMsg}`);
+      }
 
       // If 403, show payment modal
       if (response?.status === 403) {
@@ -137,8 +143,16 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
 
       // If not ok, try to get error message
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: `Download failed: ${response.status} ${response.statusText}` }));
-        throw new Error(errorData.error || `Download failed: ${response.status} ${response.statusText}`);
+        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          if (errorData?.error) {
+            errorMessage = errorData.error;
+          }
+        } catch {
+          // JSON parse failed, use status message
+        }
+        throw new Error(errorMessage);
       }
 
       // Otherwise proceed with download + open Monetag ad in new tab
