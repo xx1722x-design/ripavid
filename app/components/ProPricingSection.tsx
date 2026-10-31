@@ -14,12 +14,72 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
   const { user, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showApprovalMessage, setShowApprovalMessage] = useState(false);
+  const [showPaymentMethodModal, setShowPaymentMethodModal] = useState(false);
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('yearly');
 
   const t = translations[language as keyof typeof translations] || translations['en'];
 
   const handleFreeClick = () => {
     onScrollToDownloader?.();
+  };
+
+  const initiateLemonSqueezyCheckout = async () => {
+    if (!isAuthenticated) {
+      window.location.href = '/api/auth/google';
+      return;
+    }
+
+    if (user?.tier === 'pro') {
+      alert('You are already a Pro member!');
+      return;
+    }
+
+    // TODO: Implement Lemon Squeezy checkout flow
+    console.log('Initiating Lemon Squeezy checkout for Fiat payments');
+    alert('Lemon Squeezy checkout will be available soon');
+  };
+
+  const initiateNOWPaymentsCheckout = async () => {
+    if (!isAuthenticated) {
+      window.location.href = '/api/auth/google';
+      return;
+    }
+
+    if (user?.tier === 'pro') {
+      alert('You are already a Pro member!');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/crypto/create-invoice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user?.uid,
+          billingPeriod,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        alert(`Failed to create payment: ${error.error}`);
+        return;
+      }
+
+      const data = await response.json();
+      if (data.invoiceUrl) {
+        // Redirect to NOWPayments invoice
+        window.location.href = data.invoiceUrl;
+      }
+    } catch (error) {
+      console.error('Crypto checkout error:', error);
+      alert('Failed to initiate crypto payment. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleUpgradeClick = async () => {
@@ -33,9 +93,8 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
       return;
     }
 
-    // Show domain approval pending message
-    setShowApprovalMessage(true);
-    setTimeout(() => setShowApprovalMessage(false), 4000);
+    // Show payment method selection modal
+    setShowPaymentMethodModal(true);
   };
 
   const proPrice = billingPeriod === 'yearly' ? '$2.49' : '$4.99';
@@ -192,10 +251,125 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         {/* Trust Badge */}
         <div className="text-center mt-12">
           <p className="text-zinc-500 text-sm">
-            🔒 Secure payment powered by Paddle • Cancel anytime, no hidden fees
+            🔒 Secure payments powered by Lemon Squeezy & NOWPayments • Cancel anytime, no hidden fees
           </p>
         </div>
       </div>
+
+      {/* Hybrid Payment Method Selection Modal */}
+      {showPaymentMethodModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-2xl">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowPaymentMethodModal(false)}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-white transition-colors"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Header */}
+            <div className="text-center mb-10">
+              <h2 className="text-3xl lg:text-4xl font-bold text-black dark:text-white mb-3">
+                Choose Payment Method
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400">
+                Select how you'd like to pay for your Pro Pass
+              </p>
+            </div>
+
+            {/* Payment Method Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {/* Fiat Payment Option - Lemon Squeezy */}
+              <div
+                onClick={() => {
+                  initiateLemonSqueezyCheckout();
+                  setShowPaymentMethodModal(false);
+                }}
+                className="p-6 border-2 border-cyan-500/50 rounded-xl cursor-pointer hover:border-cyan-500 hover:bg-cyan-50 dark:hover:bg-cyan-950/30 transition-all group"
+              >
+                <div className="text-4xl mb-3">💳</div>
+                <h3 className="text-lg font-bold text-black dark:text-white mb-2 group-hover:text-cyan-600">
+                  Cards & Apple Pay
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Pay with credit/debit card or Apple Pay
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Powered by Lemon Squeezy
+                </p>
+              </div>
+
+              {/* Digital Wallets Option - Lemon Squeezy */}
+              <div
+                onClick={() => {
+                  initiateLemonSqueezyCheckout();
+                  setShowPaymentMethodModal(false);
+                }}
+                className="p-6 border-2 border-green-500/50 rounded-xl cursor-pointer hover:border-green-500 hover:bg-green-50 dark:hover:bg-green-950/30 transition-all group"
+              >
+                <div className="text-4xl mb-3">📱</div>
+                <h3 className="text-lg font-bold text-black dark:text-white mb-2 group-hover:text-green-600">
+                  Digital Wallets
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Google Pay, PayPal, and more
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Powered by Lemon Squeezy
+                </p>
+              </div>
+
+              {/* Local Payments Option - Lemon Squeezy */}
+              <div
+                onClick={() => {
+                  initiateLemonSqueezyCheckout();
+                  setShowPaymentMethodModal(false);
+                }}
+                className="p-6 border-2 border-blue-500/50 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all group"
+              >
+                <div className="text-4xl mb-3">🌍</div>
+                <h3 className="text-lg font-bold text-black dark:text-white mb-2 group-hover:text-blue-600">
+                  Local Payments
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Regional payment methods in your country
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Powered by Lemon Squeezy
+                </p>
+              </div>
+
+              {/* Crypto Payment Option - NOWPayments */}
+              <div
+                onClick={() => {
+                  initiateNOWPaymentsCheckout();
+                  setShowPaymentMethodModal(false);
+                }}
+                className="p-6 border-2 border-orange-500/50 rounded-xl cursor-pointer hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/30 transition-all group"
+              >
+                <div className="text-4xl mb-3">₿</div>
+                <h3 className="text-lg font-bold text-black dark:text-white mb-2 group-hover:text-orange-600">
+                  Crypto & Web3
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  Bitcoin, Ethereum, and other cryptocurrencies
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Powered by NOWPayments
+                </p>
+              </div>
+            </div>
+
+            {/* Footer Info */}
+            <div className="text-center text-xs text-gray-600 dark:text-gray-400">
+              <p>All payment methods are secure and encrypted.</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
