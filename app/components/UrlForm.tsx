@@ -27,11 +27,16 @@ const PLATFORM_LABELS: Record<Platform, { icon: string }> = {
 };
 
 export default function UrlForm({ onSubmit, isLoading, language = 'en', initialUrl = '', autoSubmit = false, onError }: UrlFormProps) {
+  // Safely initialize language with default
+  const safeLanguage = (language && typeof language === 'string') ? language : 'en';
+
+  // Safely access translations
+  const t = translations[safeLanguage as keyof typeof translations] ?? translations['en'];
+
   const [url, setUrl] = useState(initialUrl);
   const [error, setError] = useState('');
   const [platform, setPlatform] = useState<Platform>('auto');
   const [hasAutoSubmitted, setHasAutoSubmitted] = useState(false);
-  const t = translations[language as keyof typeof translations] || translations['en'];
 
   // Auto-submit if initialUrl is provided
   useEffect(() => {

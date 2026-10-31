@@ -166,7 +166,9 @@ export default function Home() {
     }
   };
 
-  const t = translations[language as keyof typeof translations] || translations['en'];
+  // Safely initialize translations with proper fallback
+  const safeLanguage = (language && typeof language === 'string') ? language : 'en';
+  const t = translations[safeLanguage as keyof typeof translations] ?? translations['en'];
 
   return (
     <ErrorBoundary onError={(error) => setError(`Runtime error: ${error.message}`)}>
