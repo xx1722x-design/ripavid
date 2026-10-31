@@ -72,11 +72,21 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const waitingContainerRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
 
-  const t = translations[language as keyof typeof translations] || translations['en'];
+  // Safely initialize translations with proper fallback
+  const safeLanguage = (language && typeof language === 'string') ? language : 'en';
+  const t = translations[safeLanguage as keyof typeof translations] ?? translations['en'];
+
+  // Extract numeric height from resolution string (e.g., "720p" -> 720) - DEFINE FIRST
+  const getHeightFromResolution = (res: string): number => {
+    const match = res.match(/(\d+)p?/);
+    return match ? parseInt(match[1], 10) : 720;
+  };
+
+  // Prepare formats and derived values
   const allFormats = [...formats.free, ...formats.premium];
   const isPro = user?.tier === 'pro';
 
-  // Find the maximum resolution available
+  // Find the maximum resolution available - NOW SAFE TO CALL getHeightFromResolution
   const getMaxResolution = (): number => {
     let maxHeight = 0;
     allFormats.forEach((format) => {
@@ -90,12 +100,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   };
 
   const maxResolution = getMaxResolution();
-
-  // Extract numeric height from resolution string (e.g., "720p" -> 720)
-  const getHeightFromResolution = (res: string): number => {
-    const match = res.match(/(\d+)p?/);
-    return match ? parseInt(match[1], 10) : 720;
-  };
 
   const handleDownloadClick = async (height: number, resolution: string) => {
     // Check if height > 720p and user is not Pro

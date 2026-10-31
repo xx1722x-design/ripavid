@@ -38,26 +38,7 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
   const [platform, setPlatform] = useState<Platform>('auto');
   const [hasAutoSubmitted, setHasAutoSubmitted] = useState(false);
 
-  // Auto-submit if initialUrl is provided
-  useEffect(() => {
-    if (initialUrl && !hasAutoSubmitted && autoSubmit) {
-      try {
-        setUrl(initialUrl);
-        // Delay auto-submit by 100ms to match spec
-        const timer = setTimeout(() => {
-          setHasAutoSubmitted(true);
-          // Create a synthetic form submission
-          handleAutoSubmit(initialUrl);
-        }, 100);
-        return () => clearTimeout(timer);
-      } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : 'Failed to process initial URL';
-        setError(errorMsg);
-        onError?.(errorMsg);
-      }
-    }
-  }, [initialUrl, autoSubmit, hasAutoSubmitted, onError]);
-
+  // DEFINE handleAutoSubmit BEFORE useEffect that calls it
   const handleAutoSubmit = async (urlToSubmit: string) => {
     try {
       setError('');
@@ -99,6 +80,26 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
       onError?.(errorMsg);
     }
   };
+
+  // Auto-submit if initialUrl is provided (AFTER handleAutoSubmit is defined)
+  useEffect(() => {
+    if (initialUrl && !hasAutoSubmitted && autoSubmit) {
+      try {
+        setUrl(initialUrl);
+        // Delay auto-submit by 100ms to match spec
+        const timer = setTimeout(() => {
+          setHasAutoSubmitted(true);
+          // Create a synthetic form submission
+          handleAutoSubmit(initialUrl);
+        }, 100);
+        return () => clearTimeout(timer);
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Failed to process initial URL';
+        setError(errorMsg);
+        onError?.(errorMsg);
+      }
+    }
+  }, [initialUrl, autoSubmit, hasAutoSubmitted, onError, handleAutoSubmit]);
 
   const PLATFORMS: Record<Platform, string> = {
     auto: t.autoDetect,
