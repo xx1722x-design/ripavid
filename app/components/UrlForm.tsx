@@ -13,6 +13,7 @@ interface UrlFormProps {
   language?: string;
   initialUrl?: string;
   autoSubmit?: boolean;
+  onError?: (error: string) => void;
 }
 
 type Platform = 'auto' | 'douyin' | 'xiaohongshu' | 'youtube' | 'instagram';
@@ -25,7 +26,7 @@ const PLATFORM_LABELS: Record<Platform, { icon: string }> = {
   instagram: { icon: '📷' },
 };
 
-export default function UrlForm({ onSubmit, isLoading, language = 'en', initialUrl = '', autoSubmit = false }: UrlFormProps) {
+export default function UrlForm({ onSubmit, isLoading, language = 'en', initialUrl = '', autoSubmit = false, onError }: UrlFormProps) {
   const [url, setUrl] = useState(initialUrl);
   const [error, setError] = useState('');
   const [platform, setPlatform] = useState<Platform>('auto');
@@ -35,38 +36,62 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
   // Auto-submit if initialUrl is provided
   useEffect(() => {
     if (initialUrl && !hasAutoSubmitted && autoSubmit) {
-      setUrl(initialUrl);
-      // Delay auto-submit by 100ms to match spec
-      const timer = setTimeout(() => {
-        setHasAutoSubmitted(true);
-        // Create a synthetic form submission
-        handleAutoSubmit(initialUrl);
-      }, 100);
-      return () => clearTimeout(timer);
+      try {
+        setUrl(initialUrl);
+        // Delay auto-submit by 100ms to match spec
+        const timer = setTimeout(() => {
+          setHasAutoSubmitted(true);
+          // Create a synthetic form submission
+          handleAutoSubmit(initialUrl);
+        }, 100);
+        return () => clearTimeout(timer);
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Failed to process initial URL';
+        setError(errorMsg);
+        onError?.(errorMsg);
+      }
     }
-  }, [initialUrl, autoSubmit, hasAutoSubmitted]);
+  }, [initialUrl, autoSubmit, hasAutoSubmitted, onError]);
 
   const handleAutoSubmit = async (urlToSubmit: string) => {
-    setError('');
-
-    if (!urlToSubmit.trim()) {
-      setError(t.error);
-      return;
-    }
-
     try {
-      new URL(urlToSubmit);
-    } catch {
-      setError('Invalid URL format');
-      return;
-    }
+      setError('');
 
-    try {
-      await onSubmit(urlToSubmit);
-      // Open Adsterra ad in new tab after successful submission
-      window.open(ADSTERRA_DIRECT_URL, '_blank');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to process video. Please try again.');
+      if (!urlToSubmit || typeof urlToSubmit !== 'string') {
+        const errMsg = 'Invalid URL provided';
+        setError(errMsg);
+        onError?.(errMsg);
+        return;
+      }
+
+      const trimmedUrl = urlToSubmit.trim();
+      if (trimmedUrl.length === 0) {
+        setError(t.error);
+        return;
+      }
+
+      try {
+        new URL(trimmedUrl);
+      } catch {
+        const errMsg = 'Invalid URL format';
+        setError(errMsg);
+        onError?.(errMsg);
+        return;
+      }
+
+      try {
+        await onSubmit(trimmedUrl);
+        // Open Adsterra ad in new tab after successful submission
+        window.open(ADSTERRA_DIRECT_URL, '_blank');
+      } catch (err) {
+        const errMsg = err instanceof Error ? err.message : 'Failed to process video. Please try again.';
+        setError(errMsg);
+        onError?.(errMsg);
+      }
+    } catch (outerErr) {
+      const errorMsg = outerErr instanceof Error ? outerErr.message : 'An unexpected error occurred';
+      setError(errorMsg);
+      onError?.(errorMsg);
     }
   };
 
