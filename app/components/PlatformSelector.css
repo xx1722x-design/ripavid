@@ -33,18 +33,11 @@
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: center;
-  align-items: center;
-  overflow-x: auto;
-  overflow-y: hidden;
+  align-items: flex-start;
   padding: 0.5rem 0.5rem;
   max-width: 100%;
   margin: 0 auto;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  /* Fixed height to prevent layout shift */
-  height: auto;
-  min-height: 120px;
+  width: 100%;
 }
 
 .platform-selector-container::-webkit-scrollbar {
@@ -65,10 +58,8 @@
   color: #d4d4d8;
   cursor: pointer;
   white-space: nowrap;
-  flex-shrink: 0;
   font-weight: 500;
-  /* Prevent layout shift from animations */
-  min-height: 100px;
+  height: auto;
   width: auto;
 }
 

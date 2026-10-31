@@ -260,6 +260,7 @@ export default function Home() {
               onClose={() => setResult(null)}
               language={language}
               originalUrl={originalUrl}
+              onError={(errorMessage) => setError(errorMessage)}
             />
           </div>
         )}

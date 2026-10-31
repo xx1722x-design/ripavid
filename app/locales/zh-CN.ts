@@ -116,3 +116,4 @@ export const zhCNTranslations = {
   upgradeNow: '立即升级',
   yourCurrentPlan: '✓ 当前计划',
 };
+

@@ -173,3 +173,4 @@ export const koTranslations = {
   upgradeNow: '지금 업그레이드',
   yourCurrentPlan: '✓ 현재 플랜',
 };
+

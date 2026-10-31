@@ -116,3 +116,4 @@ export const jaTranslations = {
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
 };
+

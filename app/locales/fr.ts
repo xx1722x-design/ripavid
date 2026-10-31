@@ -97,7 +97,7 @@ export const frTranslations = {
   proPassOldPrice: '$4.99',
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
-  proPassSecurePayment: '🔒 Secure payment via Paddle. Cancel anytime.',
+  proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.'',
   proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
@@ -117,3 +117,4 @@ export const frTranslations = {
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
 };
+

@@ -5,7 +5,6 @@ import { createPortal } from 'react-dom';
 import { useAuth } from '@/app/context/AuthContext';
 import { LogOut, User, Crown } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
-import PaddlePaymentModal from './PaddlePaymentModal';
 import { translations } from '@/app/locales';
 
 export default function Header() {
@@ -167,13 +166,6 @@ export default function Header() {
       )}
 
       {isMounted && isDropdownOpen && isAuthenticated && createPortal(dropdownContent, document.body)}
-      {showPaymentModal && (
-        <PaddlePaymentModal
-          isOpen={showPaymentModal}
-          onClose={() => setShowPaymentModal(false)}
-          language="en"
-        />
-      )}
     </div>
   );
 }

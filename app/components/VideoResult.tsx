@@ -5,7 +5,6 @@ import { translations } from '../locales';
 import TipSlider from './TipSlider';
 import AffiliateBanner from './AffiliateBanner';
 import { useAuth } from '@/app/context/AuthContext';
-import PaddlePaymentModal from './PaddlePaymentModal';
 
 // On-click pop-under advertisement links
 const ADSTERRA_DIRECT_URL = "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550";
@@ -31,6 +30,7 @@ interface VideoResultProps {
   onClose: () => void;
   language?: string;
   originalUrl?: string;
+  onError?: (errorMessage: string) => void;
 }
 
 // 해상도 포맷 파싱 함수 (1920x1080 → 1080p, 720 → 720p)
@@ -63,7 +63,7 @@ const parseResolution = (resolution?: string, quality?: string): string => {
   return cleanText || 'Download';
 };
 
-export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en', originalUrl = '' }: VideoResultProps) {
+export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en', originalUrl = '', onError }: VideoResultProps) {
   const [isWaiting, setIsWaiting] = useState(false);
   const [waitingHeight, setWaitingHeight] = useState(720);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -121,7 +121,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       const response = await fetch(
         `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`,
         { method: 'HEAD' }
-      ).catch(() => null);
+      );
 
       // If 403, show payment modal
       if (response?.status === 403) {
@@ -129,6 +129,12 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         setLoadingQuality(null);
         setShowPaymentModal(true);
         return;
+      }
+
+      // If not ok, try to get error message
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: `Download failed: ${response.status} ${response.statusText}` }));
+        throw new Error(errorData.error || `Download failed: ${response.status} ${response.statusText}`);
       }
 
       // Otherwise proceed with download + open Monetag ad in new tab
@@ -145,10 +151,9 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       console.error('Download verification failed:', error);
       setIsWaiting(false);
       setLoadingQuality(null);
-      // Proceed with download anyway as fallback + open ad
-      const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
-      window.location.href = targetUrl;
-      window.open(MONETAG_DIRECT_URL, '_blank');
+
+      const errorMessage = error instanceof Error ? error.message : 'Failed to prepare download. Please try again.';
+      onError?.(errorMessage);
     }
   };
 
@@ -331,14 +336,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       </div>
       )}
 
-      {/* Payment Modal */}
-      {showPaymentModal && (
-        <PaddlePaymentModal
-          isOpen={showPaymentModal}
-          onClose={() => setShowPaymentModal(false)}
-          language={language}
-        />
-      )}
     </div>
   );
 }
