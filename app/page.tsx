@@ -89,10 +89,19 @@ export default function Home() {
     window.addEventListener('languageChanged', handleStorageChange);
 
     // Detect URL parameter for auto-redirect UX
-    const params = new URLSearchParams(window.location.search);
-    const urlParam = params.get('url');
-    if (urlParam) {
-      setInitialUrl(decodeURIComponent(urlParam));
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlParam = params.get('url');
+      if (urlParam) {
+        const decodedUrl = decodeURIComponent(urlParam);
+        // Validate URL format
+        if (typeof decodedUrl === 'string' && decodedUrl.trim().length > 0) {
+          setInitialUrl(decodedUrl);
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing URL parameter:', error);
+      setError('Invalid URL parameter provided.');
     }
 
     return () => window.removeEventListener('languageChanged', handleStorageChange);
@@ -108,32 +117,50 @@ export default function Home() {
   }, [result]);
 
   const handleRipVideo = async (url: string) => {
-    setIsLoading(true);
-    setError('');
-    setResult(null);
-    setOriginalUrl(url);
-
     try {
-      const response = await fetch('/api/download', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Server error: ${response.status}`);
+      // Validate URL before processing
+      if (!url || typeof url !== 'string') {
+        setError('Invalid URL provided.');
+        return;
       }
 
-      const data: VideoData = await response.json();
-      setResult(data);
-      console.log('Video extracted successfully:', data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to extract video. Please try again.');
-      console.error('Download error:', err);
-    } finally {
+      const trimmedUrl = url.trim();
+      if (trimmedUrl.length === 0) {
+        setError('Please enter a valid URL.');
+        return;
+      }
+
+      setIsLoading(true);
+      setError('');
+      setResult(null);
+      setOriginalUrl(trimmedUrl);
+
+      try {
+        const response = await fetch('/api/download', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url: trimmedUrl }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Server error: ${response.status}`);
+        }
+
+        const data: VideoData = await response.json();
+        setResult(data);
+        console.log('Video extracted successfully:', data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to extract video. Please try again.');
+        console.error('Download error:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    } catch (outerErr) {
+      setError('An unexpected error occurred. Please try again.');
+      console.error('Unexpected error in handleRipVideo:', outerErr);
       setIsLoading(false);
     }
   };
