@@ -73,31 +73,26 @@ export default function LanguageSwitcher() {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as Node;
-      if (
-        buttonRef.current &&
-        !buttonRef.current.contains(target) &&
-        menuRef.current &&
-        !menuRef.current.contains(target)
-      ) {
+      // Check if click is outside both button and menu
+      const isClickOutside =
+        (buttonRef.current && !buttonRef.current.contains(target)) &&
+        (menuRef.current && !menuRef.current.contains(target));
+
+      if (isClickOutside) {
         setIsOpen(false);
       }
     }
 
     function handleScroll() {
-      if (isOpen) {
-        calculatePosition();
-      }
+      calculatePosition();
     }
 
     if (isOpen) {
-      // Delay to ensure event listeners are attached after DOM is ready
-      const timer = setTimeout(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        window.addEventListener('scroll', handleScroll, true);
-      }, 0);
+      // Add event listeners immediately
+      document.addEventListener('mousedown', handleClickOutside);
+      window.addEventListener('scroll', handleScroll, true);
 
       return () => {
-        clearTimeout(timer);
         document.removeEventListener('mousedown', handleClickOutside);
         window.removeEventListener('scroll', handleScroll, true);
       };

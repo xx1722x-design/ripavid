@@ -33,6 +33,7 @@ interface VideoResultProps {
   language?: string;
   originalUrl?: string;
   onError?: (errorMessage: string) => void;
+  onShowDailyLimitPaywall?: () => void;
 }
 
 // 해상도 포맷 파싱 함수 (1920x1080 → 1080p, 720 → 720p)
@@ -65,7 +66,7 @@ const parseResolution = (resolution?: string, quality?: string): string => {
   return cleanText || 'Download';
 };
 
-export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en', originalUrl = '', onError }: VideoResultProps) {
+export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en', originalUrl = '', onError, onShowDailyLimitPaywall }: VideoResultProps) {
   const [isWaiting, setIsWaiting] = useState(false);
   const [waitingHeight, setWaitingHeight] = useState(720);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -140,7 +141,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       if (response?.status === 403) {
         setIsWaiting(false);
         setLoadingQuality(null);
-        setShowDailyLimitPaywall(true);
+        onShowDailyLimitPaywall?.();
         return;
       }
 

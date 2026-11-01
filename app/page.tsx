@@ -305,6 +305,7 @@ export default function Home() {
               language={language}
               originalUrl={originalUrl}
               onError={(errorMessage) => setError(errorMessage)}
+              onShowDailyLimitPaywall={() => setShowDailyLimitPaywall(true)}
             />
           </div>
         )}
