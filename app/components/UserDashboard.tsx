@@ -116,159 +116,83 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
   };
 
   const handleRipVideo = async (url: string) => {
+    if (!url || typeof url !== 'string') {
+      setProcessingError('❌ Invalid URL provided. Please enter a valid video URL.');
+      return;
+    }
+
+    const trimmedUrl = url.trim();
+    if (trimmedUrl.length === 0) {
+      setProcessingError('❌ Please enter a valid video URL.');
+      return;
+    }
+
+    setProcessingLoading(true);
+    setProcessingError('');
+    setResult(null);
+    setOriginalUrl(trimmedUrl);
+
+    let serverRawText = '';
+
     try {
-      if (!url || typeof url !== 'string') {
-        setProcessingError('❌ Invalid URL provided. Please enter a valid video URL.');
-        return;
-      }
+      // STEP 1: Fetch with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000);
 
-      const trimmedUrl = url.trim();
-      if (trimmedUrl.length === 0) {
-        setProcessingError('❌ Please enter a valid video URL.');
-        return;
-      }
-
-      setProcessingLoading(true);
-      setProcessingError('');
-      setResult(null);
-      setOriginalUrl(trimmedUrl);
-
-      let serverRawText = '';
-      let responseStatus = 0;
-      let responseHeaders: any = {};
-
+      let response: Response;
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
-
-        try {
-          const response = await fetch('/api/download', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ url: trimmedUrl }),
-            signal: controller.signal,
-          });
-
-          clearTimeout(timeoutId);
-          responseStatus = response.status;
-          responseHeaders = Object.fromEntries(response.headers.entries());
-
-          // CRITICAL: Capture raw text first, before attempting JSON parse
-          serverRawText = await response.text();
-          console.log('[UserDashboard] Raw server response:', serverRawText);
-
-          if (!response.ok) {
-            // Try JSON parse first
-            let errorData: any = null;
-            try {
-              errorData = JSON.parse(serverRawText);
-            } catch (parseError) {
-              // Not JSON, use raw text
-              console.error('[UserDashboard] Server returned non-JSON error:', serverRawText);
-            }
-
-            const errorMessage = errorData?.error ||
-                                 `Server Error ${response.status}: ${serverRawText.substring(0, 200)}`;
-
-            const fullError = `
-❌ API REQUEST FAILED
-
-Status: ${response.status} ${response.statusText}
-Headers: ${JSON.stringify(responseHeaders, null, 2)}
-
-Server Response (Raw Text):
-${serverRawText}
-
-Parsed Error (if JSON): ${errorData?.error || 'Not JSON'}
-Stack Trace (if available): ${errorData?.stack || 'Not available'}`;
-
-            throw new Error(fullError);
-          }
-
-          // CRITICAL: Try to parse JSON response
-          let data: VideoData | null = null;
-          try {
-            data = JSON.parse(serverRawText);
-          } catch (jsonError) {
-            const fullError = `
-❌ JSON PARSE ERROR
-
-Cannot parse server response as JSON.
-
-Server Response (Raw Text):
-${serverRawText}
-
-Parse Error: ${jsonError instanceof Error ? jsonError.message : String(jsonError)}
-Stack: ${jsonError instanceof Error ? jsonError.stack : 'N/A'}`;
-
-            console.error('[UserDashboard] JSON parse error:', jsonError);
-            throw new Error(fullError);
-          }
-
-          if (!data || !data.formats) {
-            const fullError = `
-❌ INVALID RESPONSE FORMAT
-
-Server returned valid JSON but missing required fields.
-
-Response Structure:
-${JSON.stringify(data, null, 2)}
-
-Required fields: title, formats (with free and premium arrays)`;
-
-            throw new Error(fullError);
-          }
-
-          setResult(data);
-          console.log('✅ Video extracted successfully:', data);
-        } catch (fetchError) {
-          clearTimeout(timeoutId);
-
-          if (fetchError instanceof TypeError) {
-            // Network error
-            const fullError = `
-❌ NETWORK ERROR
-
-${fetchError.message}
-
-Stack Trace:
-${fetchError.stack || 'Not available'}
-
-Server Raw Response: ${serverRawText || 'No response received'}`;
-
-            if (fetchError.message.includes('Timeout') || fetchError.message.includes('AbortError')) {
-              throw new Error(
-                `⏱️ REQUEST TIMEOUT (60 seconds)\n\n${fullError}`
-              );
-            } else {
-              throw new Error(fullError);
-            }
-          } else if (fetchError instanceof Error) {
-            throw fetchError;
-          } else {
-            throw new Error(`❌ Unknown error: ${String(fetchError)}\n\nServer response: ${serverRawText}`);
-          }
-        }
-      } catch (err) {
-        const fullErrorMsg = (() => {
-          if (err instanceof Error) {
-            return err.message;
-          }
-          return `❌ UNEXPECTED ERROR\n\n${String(err)}\n\nServer Response: ${serverRawText}`;
-        })();
-
-        setProcessingError(fullErrorMsg);
-        console.error('[UserDashboard] Download error:', err);
-        console.error('[UserDashboard] Server raw response:', serverRawText);
-      } finally {
-        setProcessingLoading(false);
+        response = await fetch('/api/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: trimmedUrl }),
+          signal: controller.signal,
+        });
+      } catch (fetchErr) {
+        clearTimeout(timeoutId);
+        const errMsg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+        throw new Error(`⏱️ NETWORK REQUEST FAILED\n\nFetch Error: ${errMsg}\n\nDetails: Check network connection and CORS settings`);
       }
-    } catch (outerErr) {
-      const errorMsg = outerErr instanceof Error ? outerErr.message : `❌ ${String(outerErr)}`;
-      setProcessingError(errorMsg);
-      console.error('[UserDashboard] Unexpected error in handleRipVideo:', outerErr);
+
+      clearTimeout(timeoutId);
+
+      // STEP 2: Get raw text (BEFORE any JSON parsing!)
+      try {
+        serverRawText = await response.text();
+      } catch (textErr) {
+        throw new Error(`❌ CANNOT READ RESPONSE\n\nFailed to read response body\n\nError: ${textErr instanceof Error ? textErr.message : String(textErr)}`);
+      }
+
+      console.log('[DEBUG] Server raw response:', serverRawText);
+
+      // STEP 3: Check HTTP status
+      if (!response.ok) {
+        throw new Error(`❌ HTTP ${response.status} ${response.statusText}\n\nServer Response:\n${serverRawText}`);
+      }
+
+      // STEP 4: Parse JSON
+      let data: VideoData | null = null;
+      try {
+        data = JSON.parse(serverRawText);
+      } catch (jsonErr) {
+        throw new Error(`❌ SERVER RETURNED INVALID JSON\n\nRaw Response:\n${serverRawText}\n\nParse Error: ${jsonErr instanceof Error ? jsonErr.message : String(jsonErr)}`);
+      }
+
+      // STEP 5: Validate structure
+      if (!data || !data.formats || !Array.isArray(data.formats.free)) {
+        throw new Error(`❌ INVALID RESPONSE STRUCTURE\n\nServer Response:\n${JSON.stringify(data, null, 2)}`);
+      }
+
+      // SUCCESS: Set result
+      setResult(data);
+      console.log('✅ Video extracted:', data);
+    } catch (err) {
+      // FORCE OUTPUT: Always set the error, no default strings
+      const fullMsg = err instanceof Error ? err.message : String(err);
+      const finalError = `${fullMsg}\n\n[Server Raw Response Below]\n${serverRawText}`;
+
+      console.error('[ERROR TRAP]', finalError);
+      setProcessingError(finalError);
+    } finally {
       setProcessingLoading(false);
     }
   };
