@@ -74,8 +74,6 @@ export const ruTranslations = {
   downloadWaitWarning: 'Не закрывайте это окно!',
   downloadTip: '💡 Download Method: Click your preferred resolution button (e.g., 720p, 1080p) in the green box above. The download will start automatically or prepare within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
-
-  
   // Pro Pass Modal - Button Features & Loading
   features: 'Features included',
   feature1: '1080p & 4K downloads',
@@ -83,7 +81,6 @@ export const ruTranslations = {
   feature3: 'No watermarks',
   feature4: 'Priority support',
   loading: 'Loading payment...',
-
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
   proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
@@ -99,23 +96,31 @@ export const ruTranslations = {
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
   proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
-
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',
-
   // New FAQ items
   faq7Question: 'Can I download any video in 4K or 1080p?',
   faq7Answer: 'Ripavid extracts the absolute highest quality file stored on the platform\'s servers. This means you can download in 4K or 1080p only if the original creator uploaded the video in that resolution. We do not artificially upscale or fake the resolution to preserve the original quality.',
-
-  // Pricing Section Toggle
-  pricingMonthly: 'Monthly',
-  pricingYearly: 'Yearly',
-  pricingSave50: 'Save 50%',
-  pricingBilledMonthly: 'Billed monthly',
-  pricingBilledYearly: 'Billed $29.99 yearly',
-  signInToUpgrade: 'Sign in to Upgrade',
-  upgradeNow: 'Upgrade Now',
-  yourCurrentPlan: '✓ Your Current Plan',
+  // Pricing Section
+  pricingSave60: 'Экономьте 60%',
+  pricingBilledYearly: 'Выставлено счетом $190 в год',
+  freePlanTitle: 'Бесплатно',
+  freePlanDescription: 'Идеально для базового импорта контента',
+  freeFeature1: 'Качество до 720p',
+  freeFeature2: 'Стандартный импорт контента',
+  freeFeature3: 'Не требуется регистрация',
+  freeCtaButton: 'Начать',
+  freeBackButton: 'Вернуться к импортеру',
+  proPlanTitle: 'Pro',
+  proPlanDescription: 'Профессиональный набор для локализации контента',
+  proMonthlyPrice: '$19/месяц',
+  proYearlyPrice: '$19/месяц',
+  proYearlyBilledPrice: 'Выставлено счетом $190 в год',
+  proFeature1: '👑 Извлечение субтитров с помощью ИИ (SRT)',
+  proFeature2: 'Качество 1080p и 4K',
+  proFeature3: 'Неограниченные премиум-импорты',
+  proFeature4: 'Приоритетная поддержка',
+  proMostPopular: 'Самый популярный',
 
   // RRR Trick Feature
   rrrTipText: 'для мгновенного импорта медиа!',

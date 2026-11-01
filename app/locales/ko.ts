@@ -74,7 +74,6 @@ export const koTranslations = {
   downloadWaitWarning: '창을 닫지 마세요!',
   downloadTip: '💡 Download Method: Click your preferred resolution button (e.g., 720p, 1080p) in the green box above. The download will start automatically or prepare within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ 주의: 1080p 이상 고화질이나 WEBM 파일에서 \"지원되지 않는 인코딩\" 오류가 발생하면, 호환성이 가장 높은 \"720p MP4\"를 다운로드하시거나 VLC 미디어 플레이어를 사용해 주세요.',
-
   // Pro Pass Modal - Button Features & Loading
   features: '포함된 기능',
   feature1: '1080p & 4K 다운로드',
@@ -82,7 +81,6 @@ export const koTranslations = {
   feature3: '워터마크 없음',
   feature4: '우선 지원',
   loading: '결제 로딩중...',
-
   // Pro Pass Modal
   proPassModalTitle: '4K & 무제한 다운로드 잠금 해제!',
   proPassModalSubtitle: '매일 시간을 절약하는 10만 명의 크리에이터들과 함께하세요.',
@@ -98,19 +96,15 @@ export const koTranslations = {
   proPassCtaBtnMonthly: '계속하기',
   proPassSecurePayment: '🔒 Paddle을 통한 안전한 결제. 언제든 취소 가능.',
   proPassDisclaimer: '다운로드는 원본 영상의 최대 업로드 해상도로 제한됩니다. (예: 720p 원본 영상을 4K로 다운로드할 수 없습니다.)',
-
   // Resolution Selection
   resolutionNotAvailable: '이 해상도는 원본 영상이 {resolution}로 업로드되어 있기 때문에 사용할 수 없습니다.',
-
   // New FAQ items
   faq7Question: '모든 영상을 4K나 1080p로 다운로드할 수 있나요?',
   faq7Answer: 'Ripavid는 플랫폼 서버에 저장된 최고 품질의 파일을 추출합니다. 즉, 원본 크리에이터가 그 해상도로 영상을 업로드한 경우에만 4K 또는 1080p로 다운로드할 수 있습니다. 원본 품질을 보존하기 위해 인위적으로 업스케일하거나 해상도를 조작하지 않습니다.',
-
   // B2B API Center
   apiBadgeText: '엔터프라이즈 API 솔루션',
   apiMainTitle: 'RipAVid Enterprise API Gateway',
   apiMainDesc: '전 세계 개발자와 기업을 위한 고성능 소셜 미디어 영상 파싱 & 다운로드 API',
-
   // Pricing Plans
   apiDeveloperPlan: 'Developer Tier',
   apiDeveloperDesc: '영상 API 통합을 시작하기에 완벽함',
@@ -118,7 +112,6 @@ export const koTranslations = {
   apiDevFeature2: '기본 API 지원',
   apiDevFeature3: '커뮤니티 액세스',
   apiDevFeature4: '표준 응답 시간',
-
   apiProPlan: 'Pro Tier',
   apiProDesc: '성장하는 개발자와 애플리케이션을 위함',
   apiProFeature1: '월 50,000회 요청',
@@ -127,7 +120,6 @@ export const koTranslations = {
   apiProFeature4: '100ms 이하 응답 시간',
   apiProFeature5: '고급 분석 대시보드',
   apiMostPopular: '가장 인기있음',
-
   apiEnterprisePlan: 'Enterprise Tier',
   apiEnterpriseDesc: '대규모 운영 및 엔터프라이즈 조직을 위함',
   apiEnterpriseFeature1: '무제한 요청',
@@ -135,15 +127,12 @@ export const koTranslations = {
   apiEnterpriseFeature3: '맞춤형 크롤링 솔루션',
   apiEnterpriseFeature4: '99.9% SLA 보장',
   apiEnterpriseFeature5: '1:1 전담 계정 관리자',
-
   apiGetApiKey: 'API Key 받기',
   apiSubscribeNow: '지금 구독',
   apiContactSales: '영업팀 문의',
-
   // API Features
   apiFeaturesTitle: 'API 기능',
   apiFeaturesDesc: '원활한 통합과 고성능 영상 처리를 위한 모든 것을 제공합니다',
-
   apiFeature1Title: '번개 같은 속도',
   apiFeature1Desc: '영상 파싱 및 다운로드 100ms 이하 응답 시간',
   apiFeature2Title: '엔터프라이즈 보안',
@@ -156,22 +145,31 @@ export const koTranslations = {
   apiFeature5Desc: '비동기 처리 및 이벤트 알림을 위한 실시간 콜백',
   apiFeature6Title: '분석 대시보드',
   apiFeature6Desc: '사용량 모니터링, 요청 추적 및 성능 지표 분석',
-
   // Integration Section
   apiIntegrationTitle: '간단한 통합',
   apiIntegrationDesc: '포괄적인 문서와 JavaScript, Python, Go 등을 위한 공식 SDK로 몇 분 내에 시작하세요',
   apiReadDocs: '문서 읽기',
   apiTryRapidapi: 'RapidAPI에서 시도하기',
-
-  // Pricing Section Toggle
-  pricingMonthly: '월간',
-  pricingYearly: '연간',
-  pricingSave50: '50% 절약',
-  pricingBilledMonthly: '매달 청구',
-  pricingBilledYearly: '연 $29.99로 청구',
-  signInToUpgrade: '업그레이드하려면 로그인하세요',
-  upgradeNow: '지금 업그레이드',
-  yourCurrentPlan: '✓ 현재 플랜',
+  // Pricing Section
+  pricingSave60: '60% 절약',
+  pricingBilledYearly: '연 $190 청구',
+  freePlanTitle: '무료',
+  freePlanDescription: '기본 콘텐츠 가져오기에 최적',
+  freeFeature1: '최대 720p 품질',
+  freeFeature2: '표준 콘텐츠 가져오기',
+  freeFeature3: '가입 불필요',
+  freeCtaButton: '시작하기',
+  freeBackButton: '가져오기로 돌아가기',
+  proPlanTitle: 'Pro',
+  proPlanDescription: '전문 콘텐츠 현지화 스위트',
+  proMonthlyPrice: '월 $19',
+  proYearlyPrice: '월 $19',
+  proYearlyBilledPrice: '연 $190 청구',
+  proFeature1: '👑 AI 자막 추출 (SRT)',
+  proFeature2: '1080p & 4K 품질',
+  proFeature3: '무제한 프리미엄 가져오기',
+  proFeature4: '우선 지원',
+  proMostPopular: '가장 인기',
 
   // RRR Trick Feature
   rrrTipText: '미디어를 즉시 불러올 수 있어요!',

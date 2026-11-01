@@ -97,10 +97,10 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     setShowPaymentMethodModal(true);
   };
 
-  const proPrice = billingPeriod === 'yearly' ? '$2.49' : '$4.99';
+  const proPrice = '$19';
   const proBilledText = billingPeriod === 'yearly'
-    ? t.pricingBilledYearly
-    : t.pricingBilledMonthly;
+    ? (t.pricingBilledYearly || 'Billed $190 yearly')
+    : 'Billed monthly';
 
   return (
     <div id="pricing" className="w-full py-20 px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
@@ -133,7 +133,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                 : 'bg-zinc-800 text-zinc-400 hover:text-white'
             }`}
           >
-            {t.pricingMonthly}
+            Monthly
           </button>
 
           {/* Toggle Switch */}
@@ -154,11 +154,11 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                   : 'bg-zinc-800 text-zinc-400 hover:text-white'
               }`}
             >
-              {t.pricingYearly}
+              Yearly
             </button>
             {billingPeriod === 'yearly' && (
               <div className="absolute -top-2 -right-8 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap animate-pulse">
-                {t.pricingSave50}
+                {t.pricingSave60 || 'Save 60%'}
               </div>
             )}
           </div>
@@ -169,8 +169,8 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           {/* Free Plan */}
           <div className="relative p-8 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300">
             <div className="mb-6">
-              <h3 className="text-2xl font-bold text-white mb-2">Free</h3>
-              <p className="text-zinc-400 text-sm">Perfect for basic downloads</p>
+              <h3 className="text-2xl font-bold text-white mb-2">{t.freePlanTitle || 'Free'}</h3>
+              <p className="text-zinc-400 text-sm">{t.freePlanDescription || 'Perfect for basic content imports'}</p>
             </div>
 
             <div className="mb-8 pb-8 border-b border-zinc-700">
@@ -180,7 +180,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
             </div>
 
             <ul className="space-y-4 mb-8">
-              {['Up to 720p quality', 'Unlimited downloads', 'No sign-up required'].map((feature) => (
+              {[t.freeFeature1 || 'Up to 720p quality', t.freeFeature2 || 'Standard content imports', t.freeFeature3 || 'No sign-up required'].map((feature) => (
                 <li key={feature} className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                   <span className="text-zinc-300">{feature}</span>
@@ -193,14 +193,14 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                 onClick={handleFreeClick}
                 className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors"
               >
-                Get Started
+                {t.freeCtaButton || 'Get Started'}
               </button>
             ) : user?.tier === 'free' ? (
               <button
                 onClick={handleFreeClick}
                 className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors"
               >
-                Back to Downloader
+                {t.freeBackButton || 'Back to Importer'}
               </button>
             ) : null}
           </div>
@@ -208,12 +208,12 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           {/* Pro Plan - Featured */}
           <div className="relative p-8 border-2 border-cyan-500 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-blue-900/20 hover:from-cyan-900/40 hover:to-blue-900/40 transition-all duration-300 md:scale-105">
             <div className="absolute -top-4 left-6 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-              MOST POPULAR
+              {t.proMostPopular || 'MOST POPULAR'}
             </div>
 
             <div className="mb-6">
-              <h3 className="text-2xl font-bold text-white mb-2">Pro Pass</h3>
-              <p className="text-cyan-300 text-sm">Unlimited high-quality downloads</p>
+              <h3 className="text-2xl font-bold text-white mb-2">{t.proPlanTitle || 'Pro'}</h3>
+              <p className="text-cyan-300 text-sm">{t.proPlanDescription || 'Professional content localization suite'}</p>
             </div>
 
             <div className="mb-8 pb-8 border-b border-cyan-500/30">
@@ -224,7 +224,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
             </div>
 
             <ul className="space-y-4 mb-8">
-              {['1080p & 4K quality', 'Unlimited downloads', 'Priority support'].map((feature) => (
+              {[t.proFeature1 || '👑 AI Subtitle Extraction (SRT)', t.proFeature2 || '1080p & 4K quality', t.proFeature3 || 'Unlimited premium imports', t.proFeature4 || 'Priority support'].map((feature) => (
                 <li key={feature} className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
                   <span className="text-zinc-300">{feature}</span>
@@ -234,7 +234,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
             {user?.tier === 'pro' ? (
               <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg transition-all opacity-70 cursor-default">
-                {t.yourCurrentPlan}
+                Your Current Plan
               </button>
             ) : (
               <button
@@ -242,7 +242,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                 disabled={isLoading}
                 className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105"
               >
-                {isLoading ? 'Loading...' : !isAuthenticated ? t.signInToUpgrade : t.upgradeNow}
+                {isLoading ? 'Loading...' : !isAuthenticated ? 'Sign In to Upgrade' : 'Upgrade Now'}
               </button>
             )}
           </div>

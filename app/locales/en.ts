@@ -74,7 +74,6 @@ export const enTranslations = {
   downloadWaitWarning: 'Please do not close this window!',
   downloadTip: '💡 Content Import: Select your preferred quality option (e.g., 720p, 1080p) above. The content will be extracted and prepared for localization within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ Note: High-quality files (1080p+) may require additional processing time. For optimal compatibility, export in 720p MP4 format or use professional video players.',
-
   // Pro Pass Modal - Button Features & Loading
   features: 'Features included',
   feature1: '4K content import',
@@ -82,7 +81,6 @@ export const enTranslations = {
   feature3: 'Priority processing',
   feature4: 'Priority support',
   loading: 'Loading payment...',
-
   // Pro Pass Modal
   proPassModalTitle: 'Unlock Professional Localization Tools',
   proPassModalSubtitle: 'Join 100,000+ creators expanding to global markets.',
@@ -98,19 +96,15 @@ export const enTranslations = {
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
   proPassDisclaimer: 'Content import quality is limited to the original source\'s maximum resolution. (e.g., You cannot import a 720p original video in 4K.)',
-
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',
-
   // New FAQ items
   faq7Question: 'Can I download any video in 4K or 1080p?',
   faq7Answer: 'Ripavid extracts the absolute highest quality file stored on the platform\'s servers. This means you can download in 4K or 1080p only if the original creator uploaded the video in that resolution. We do not artificially upscale or fake the resolution to preserve the original quality.',
-
   // B2B API Center
   apiBadgeText: 'Enterprise API Solutions',
   apiMainTitle: 'RipAVid Enterprise API Gateway',
   apiMainDesc: 'High-performance social media video parsing & downloading API for global developers and businesses',
-
   // Pricing Plans
   apiDeveloperPlan: 'Developer Tier',
   apiDeveloperDesc: 'Perfect for getting started with video API integration',
@@ -118,7 +112,6 @@ export const enTranslations = {
   apiDevFeature2: 'Basic API support',
   apiDevFeature3: 'Community access',
   apiDevFeature4: 'Standard response time',
-
   apiProPlan: 'Pro Tier',
   apiProDesc: 'For serious developers and growing applications',
   apiProFeature1: '50,000 requests/month',
@@ -127,7 +120,6 @@ export const enTranslations = {
   apiProFeature4: '< 100ms response time',
   apiProFeature5: 'Advanced analytics dashboard',
   apiMostPopular: 'MOST POPULAR',
-
   apiEnterprisePlan: 'Enterprise Tier',
   apiEnterpriseDesc: 'For large-scale operations and enterprise organizations',
   apiEnterpriseFeature1: 'Unlimited requests',
@@ -135,15 +127,12 @@ export const enTranslations = {
   apiEnterpriseFeature3: 'Custom crawling solutions',
   apiEnterpriseFeature4: '99.9% SLA guarantee',
   apiEnterpriseFeature5: '1:1 dedicated account manager',
-
   apiGetApiKey: 'Get API Key',
   apiSubscribeNow: 'Subscribe Now',
   apiContactSales: 'Contact Sales',
-
   // API Features
   apiFeaturesTitle: 'API Features',
   apiFeaturesDesc: 'Everything you need for seamless integration and high-performance video processing',
-
   apiFeature1Title: 'Lightning Fast Processing',
   apiFeature1Desc: '<100ms response time for video parsing and downloading',
   apiFeature2Title: 'Enterprise Security',
@@ -156,22 +145,31 @@ export const enTranslations = {
   apiFeature5Desc: 'Real-time callbacks for async processing and event notifications',
   apiFeature6Title: 'Analytics Dashboard',
   apiFeature6Desc: 'Monitor usage, track requests, and analyze performance metrics',
-
   // Integration Section
   apiIntegrationTitle: 'Simple Integration',
   apiIntegrationDesc: 'Get started in minutes with our comprehensive documentation and official SDKs for JavaScript, Python, Go, and more',
   apiReadDocs: 'Read Documentation',
   apiTryRapidapi: 'Try on RapidAPI',
-
-  // Pricing Section Toggle
-  pricingMonthly: 'Monthly',
-  pricingYearly: 'Yearly',
-  pricingSave50: 'Save 50%',
-  pricingBilledMonthly: 'Billed monthly',
-  pricingBilledYearly: 'Billed $29.99 yearly',
-  signInToUpgrade: 'Sign in to Upgrade',
-  upgradeNow: 'Upgrade Now',
-  yourCurrentPlan: '✓ Your Current Plan',
+  // Pricing Section
+  pricingSave60: 'Save 60%',
+  pricingBilledYearly: 'Billed $190 yearly',
+  freePlanTitle: 'Free',
+  freePlanDescription: 'Perfect for basic content import',
+  freeFeature1: 'Up to 720p quality',
+  freeFeature2: 'Standard content import',
+  freeFeature3: 'No sign-up required',
+  freeCtaButton: 'Get Started',
+  freeBackButton: 'Back to Importer',
+  proPlanTitle: 'Pro',
+  proPlanDescription: 'Professional content localization suite',
+  proMonthlyPrice: '$19/mo',
+  proYearlyPrice: '$19/mo',
+  proYearlyBilledPrice: 'Billed $190 yearly',
+  proFeature1: '👑 AI Subtitle Extraction (SRT)',
+  proFeature2: '1080p & 4K quality',
+  proFeature3: 'Unlimited premium imports',
+  proFeature4: 'Priority support',
+  proMostPopular: 'Most Popular',
 
   // RRR Trick Feature
   rrrTipText: 'to import media instantly!',

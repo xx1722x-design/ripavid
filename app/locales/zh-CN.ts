@@ -74,7 +74,6 @@ export const zhCNTranslations = {
   downloadWaitWarning: '请勿关闭此窗口!',
   downloadTip: '💡 Download Method: Click your preferred resolution button (e.g., 720p, 1080p) in the green box above. The download will start automatically or prepare within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
-
   // Pro Pass Modal - Button Features & Loading
   features: '包含的功能',
   feature1: '1080p & 4K 下载',
@@ -82,7 +81,6 @@ export const zhCNTranslations = {
   feature3: '无水印',
   feature4: '优先支持',
   loading: '加载支付...',
-
   // Pro Pass Modal
   proPassModalTitle: '解锁4K和无限下载!',
   proPassModalSubtitle: '加入每天为您节省时间的10万名创意工作者。',
@@ -98,23 +96,31 @@ export const zhCNTranslations = {
   proPassCtaBtnMonthly: '继续',
   proPassSecurePayment: '🔒 通过Paddle进行安全支付。随时取消。',
   proPassDisclaimer: '下载严格限制为原始视频的最大上传分辨率。 (例如：您无法以4K分辨率下载原始的720p视频。)',
-
   // Resolution Selection
   resolutionNotAvailable: '此分辨率不可用，因为原始视频是以{resolution}的分辨率上传的。',
-
   // New FAQ items
   faq7Question: '我可以以4K或1080p的分辨率下载任何视频吗？',
   faq7Answer: 'Ripavid提取存储在平台服务器上的最高质量文件。这意味着您只能在原始创意工作者以该分辨率上传视频时才能以4K或1080p分辨率下载。为了保留原始质量，我们不进行人工放大或伪造分辨率。',
-
-  // Pricing Section Toggle
-  pricingMonthly: '月度',
-  pricingYearly: '年度',
-  pricingSave50: '节省50%',
-  pricingBilledMonthly: '按月计费',
-  pricingBilledYearly: '年费$29.99',
-  signInToUpgrade: '登录以升级',
-  upgradeNow: '立即升级',
-  yourCurrentPlan: '✓ 当前计划',
+  // Pricing Section
+  pricingSave60: '节省 60%',
+  pricingBilledYearly: '每年计费 $190',
+  freePlanTitle: '免费',
+  freePlanDescription: '完美适合基本内容导入',
+  freeFeature1: '最高 720p 品质',
+  freeFeature2: '标准内容导入',
+  freeFeature3: '无需注册',
+  freeCtaButton: '开始使用',
+  freeBackButton: '返回导入器',
+  proPlanTitle: 'Pro',
+  proPlanDescription: '专业内容本地化套件',
+  proMonthlyPrice: '月费 $19',
+  proYearlyPrice: '月费 $19',
+  proYearlyBilledPrice: '每年计费 $190',
+  proFeature1: '👑 AI 字幕提取 (SRT)',
+  proFeature2: '1080p & 4K 品质',
+  proFeature3: '无限高级导入',
+  proFeature4: '优先支持',
+  proMostPopular: '最受欢迎',
 
   // RRR Trick Feature
   rrrTipText: '立即导入媒体!',

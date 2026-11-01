@@ -74,7 +74,6 @@ export const jaTranslations = {
   downloadWaitWarning: 'ウィンドウを閉じないでください！',
   downloadTip: '💡 Download Method: Click your preferred resolution button (e.g., 720p, 1080p) in the green box above. The download will start automatically or prepare within 90 seconds. Please do not close this window until complete.',
   codecWarning: '⚠️ Caution: If you encounter an "unsupported encoding" error on high-quality (1080p+) or WEBM files, download the most compatible "720p MP4" format or use VLC Media Player to play the file.',
-
   // Pro Pass Modal - Button Features & Loading
   features: '含まれる機能',
   feature1: '1080p & 4K ダウンロード',
@@ -82,7 +81,6 @@ export const jaTranslations = {
   feature3: 'ウォーターマークなし',
   feature4: '優先サポート',
   loading: '支払いを読み込み中...',
-
   // Pro Pass Modal
   proPassModalTitle: '4Kと無制限ダウンロードのロック解除!',
   proPassModalSubtitle: '毎日時間を節約している10万人のクリエイターに参加してください。',
@@ -98,23 +96,31 @@ export const jaTranslations = {
   proPassCtaBtnMonthly: '続ける',
   proPassSecurePayment: '🔒 Paddleによる安全なお支払い。いつでもキャンセル可能。',
   proPassDisclaimer: 'ダウンロードは元の動画の最大アップロード解像度に厳密に制限されます。 (例: 720p元の動画を4Kでダウンロードすることはできません。)',
-
   // Resolution Selection
   resolutionNotAvailable: 'この解像度は、元の動画が{resolution}でアップロードされているため使用できません。',
-
   // New FAQ items
   faq7Question: 'すべての動画を4Kまたは1080pでダウンロードできますか？',
   faq7Answer: 'Ripavid は、プラットフォーム サーバーに保存されている最高品質のファイルを抽出します。これは、元の作成者がその解像度で動画をアップロードした場合にのみ、4K または 1080p でダウンロードできることを意味します。元の品質を保つために、人為的にアップスケールしたり、解像度を偽ったりすることはありません。',
-
-  // Pricing Section Toggle
-  pricingMonthly: 'Monthly',
-  pricingYearly: 'Yearly',
-  pricingSave50: 'Save 50%',
-  pricingBilledMonthly: 'Billed monthly',
-  pricingBilledYearly: 'Billed $29.99 yearly',
-  signInToUpgrade: 'Sign in to Upgrade',
-  upgradeNow: 'Upgrade Now',
-  yourCurrentPlan: '✓ Your Current Plan',
+  // Pricing Section
+  pricingSave60: '60% 節約',
+  pricingBilledYearly: '年間 $190 請求',
+  freePlanTitle: '無料',
+  freePlanDescription: '基本的なコンテンツインポートに最適',
+  freeFeature1: '最大720p品質',
+  freeFeature2: '標準コンテンツインポート',
+  freeFeature3: 'サインアップ不要',
+  freeCtaButton: '始める',
+  freeBackButton: 'インポーターに戻る',
+  proPlanTitle: 'Pro',
+  proPlanDescription: 'プロフェッショナルコンテンツローカライゼーションスイート',
+  proMonthlyPrice: '月額 $19',
+  proYearlyPrice: '月額 $19',
+  proYearlyBilledPrice: '年間 $190 請求',
+  proFeature1: '👑 AI字幕抽出 (SRT)',
+  proFeature2: '1080p & 4K品質',
+  proFeature3: '無制限プレミアムインポート',
+  proFeature4: '優先サポート',
+  proMostPopular: '最も人気',
 
   // RRR Trick Feature
   rrrTipText: 'メディアをインスタントにインポート!',
