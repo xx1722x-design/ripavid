@@ -145,9 +145,17 @@ function DashboardContent() {
 
               {/* Guest Download Counter Badge */}
               {isGuest && (
-                <div className="ml-auto mr-auto hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-md">
-                  <span className="text-xs text-cyan-300 font-semibold whitespace-nowrap">
-                    {guestDownloadCount}/3
+                <div className={`ml-auto mr-auto hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
+                  guestDownloadCount >= 3
+                    ? 'bg-red-500/10 border-red-500/30'
+                    : 'bg-cyan-500/10 border-cyan-500/30'
+                }`}>
+                  <span className={`text-xs font-semibold whitespace-nowrap ${
+                    guestDownloadCount >= 3
+                      ? 'text-red-300'
+                      : 'text-cyan-300'
+                  }`}>
+                    {guestDownloadCount >= 3 ? 'Limit Reached' : `Free: ${3 - guestDownloadCount}/3 Left`}
                   </span>
                 </div>
               )}
@@ -172,9 +180,17 @@ function DashboardContent() {
 
             {/* Mobile Guest Download Counter Badge */}
             {isGuest && !isAuthenticated && (
-              <div className="sm:hidden flex items-center gap-1.5 px-2.5 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-md">
-                <span className="text-xs text-cyan-300 font-semibold whitespace-nowrap">
-                  {guestDownloadCount}/3
+              <div className={`sm:hidden flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
+                guestDownloadCount >= 3
+                  ? 'bg-red-500/10 border-red-500/30'
+                  : 'bg-cyan-500/10 border-cyan-500/30'
+              }`}>
+                <span className={`text-xs font-semibold whitespace-nowrap ${
+                  guestDownloadCount >= 3
+                    ? 'text-red-300'
+                    : 'text-cyan-300'
+                }`}>
+                  {guestDownloadCount >= 3 ? 'Limit' : `${3 - guestDownloadCount}/3`}
                 </span>
               </div>
             )}
