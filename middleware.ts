@@ -48,11 +48,16 @@ function normalizeYouTubeUrl(input: string): string {
 export function middleware(request: NextRequest) {
   const { pathname, searchParams, hostname } = request.nextUrl;
 
+  // Detect if coming from rrr domain or rrr prefix
+  const isRrrDomain = hostname.includes('rrryoutube') ||
+                      hostname.includes('rrr.') ||
+                      hostname.includes('rrr-');
+
   // Handle /shorts/:id redirects (already handled by next.config.ts)
   // This middleware ensures the video ID is properly passed to dashboard
 
   // Detect if the request is for /watch path (rrryoutube.com/watch?v=...)
-  // rrryoutube.com, www.rrryoutube.com에서 들어오는 모든 /watch 요청을 처리
+  // rrryoutube.com, www.rrryoutube.com, 또는 rrr 프리픽스 도메인에서 들어오는 /watch 요청 처리
   if (pathname === '/watch' || pathname === '/watch/') {
     const videoId = searchParams.get('v');
 
@@ -60,9 +65,31 @@ export function middleware(request: NextRequest) {
       // Normalize to YouTube URL
       const youtubeUrl = normalizeYouTubeUrl(videoId);
 
-      // 명시적으로 ripavid.com으로 리다이렉트 (무한 루프 방지)
+      // ripavid.com으로 리다이렉트하면서 URL 파라미터 전달
       const redirectUrl = new URL('/', 'https://www.ripavid.com');
       redirectUrl.searchParams.set('url', youtubeUrl);
+
+      return NextResponse.redirect(redirectUrl);
+    }
+  }
+
+  // Handle requests from rrr domains pointing to root path (e.g., rrryoutube.com/)
+  // Extract video ID from query parameters
+  if (isRrrDomain && (pathname === '/' || pathname === '')) {
+    const videoId = searchParams.get('v');
+    const videoUrl = searchParams.get('url');
+
+    if (videoId || videoUrl) {
+      const redirectUrl = new URL('/', 'https://www.ripavid.com');
+
+      if (videoUrl) {
+        // Full URL provided
+        redirectUrl.searchParams.set('url', videoUrl);
+      } else if (videoId) {
+        // Video ID only - normalize it
+        const youtubeUrl = normalizeYouTubeUrl(videoId);
+        redirectUrl.searchParams.set('url', youtubeUrl);
+      }
 
       return NextResponse.redirect(redirectUrl);
     }

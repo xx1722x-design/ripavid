@@ -112,6 +112,17 @@ export default function Home() {
     return () => window.removeEventListener('languageChanged', handleStorageChange);
   }, []);
 
+  // Auto-submit when initialUrl is available (rrr redirect entry)
+  useEffect(() => {
+    if (initialUrl && !isLoading && !result) {
+      // Delay to ensure component is fully mounted
+      const timer = setTimeout(() => {
+        handleRipVideo(initialUrl);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [initialUrl]);
+
   // 1단계 스크롤: VideoResult 컴포넌트가 나타날 때 (화질 탭 영역으로)
   useEffect(() => {
     if (result) {
