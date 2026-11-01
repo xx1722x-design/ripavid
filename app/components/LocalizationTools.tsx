@@ -49,6 +49,9 @@ export default function LocalizationTools({
   const [highlightStatus, setHighlightStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [highlights, setHighlights] = useState<Highlight[]>([]);
 
+  const [renderingIds, setRenderingIds] = useState<Set<number>>(new Set());
+  const [renderingErrors, setRenderingErrors] = useState<Record<number, string>>({});
+
   const handleExtractSubtitles = async () => {
     try {
       setIsExtracting(true);
@@ -265,6 +268,105 @@ export default function LocalizationTools({
     return 'bg-green-500 border-green-400';
   };
 
+  const handleGenerateVideoClip = async (highlight: Highlight, idx: number) => {
+    try {
+      setRenderingIds(prev => new Set(prev).add(idx));
+      setRenderingErrors(prev => ({ ...prev, [idx]: '' }));
+
+      // Call API to start video rendering
+      const response = await fetch('/api/render-short', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          videoUrl,
+          startTime: highlight.startTime,
+          endTime: highlight.endTime,
+          videoTitle,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to start rendering');
+      }
+
+      const data = await response.json();
+      const processingId = data.processingId;
+
+      if (!processingId) {
+        throw new Error('No processing ID returned');
+      }
+
+      // Poll for rendering status
+      let isComplete = false;
+      let pollCount = 0;
+      const maxPolls = 180; // Max 10 minutes (180 * 3.3s)
+
+      while (!isComplete && pollCount < maxPolls) {
+        await new Promise(resolve => setTimeout(resolve, 3300)); // Poll every 3.3 seconds
+        pollCount++;
+
+        try {
+          const statusResponse = await fetch(`/api/render-short?processingId=${processingId}`);
+
+          if (statusResponse.ok) {
+            const statusData = await statusResponse.json();
+
+            if (statusData.success && statusData.processingId) {
+              // Ready to download
+              isComplete = true;
+
+              // Download the file
+              const downloadResponse = await fetch(`/api/render-short?processingId=${processingId}&action=download`);
+
+              if (downloadResponse.ok) {
+                const blob = await downloadResponse.blob();
+                const downloadUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = `${videoTitle.slice(0, 30)}-clip-${idx + 1}.mp4`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(downloadUrl);
+
+                setRenderingIds(prev => {
+                  const newSet = new Set(prev);
+                  newSet.delete(idx);
+                  return newSet;
+                });
+              } else {
+                throw new Error('Failed to download rendered video');
+              }
+            }
+          } else {
+            const statusData = await statusResponse.json();
+            if (statusData.message?.includes('not found')) {
+              throw new Error('Rendering job expired. Please try again.');
+            }
+          }
+        } catch (err) {
+          console.error('Status check error:', err);
+        }
+      }
+
+      if (!isComplete) {
+        throw new Error('Video rendering timeout. Please try again.');
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('Video rendering error:', error);
+      setRenderingErrors(prev => ({ ...prev, [idx]: errorMsg }));
+      setRenderingIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(idx);
+        return newSet;
+      });
+    }
+  };
+
   return (
     <div className="mt-8 w-full max-w-2xl">
       <div className="bg-gradient-to-r from-purple-900/30 via-pink-900/20 to-purple-900/30 border border-purple-500/40 rounded-xl p-6 backdrop-blur-sm">
@@ -464,6 +566,34 @@ export default function LocalizationTools({
                       >
                         📋 Copy Timespan
                       </button>
+                      <button
+                        onClick={() => handleGenerateVideoClip(highlight, idx)}
+                        disabled={renderingIds.has(idx)}
+                        className={`w-full py-1.5 px-2 rounded text-xs transition-all font-semibold flex items-center justify-center gap-1 ${
+                          renderingIds.has(idx)
+                            ? 'bg-blue-600/30 text-blue-300 cursor-not-allowed'
+                            : 'bg-blue-600/50 hover:bg-blue-600 text-blue-100'
+                        }`}
+                      >
+                        {renderingIds.has(idx) ? (
+                          <>
+                            <span className="animate-spin">⏳</span>
+                            <span>Rendering...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>🎬</span>
+                            <span>Generate Video Clip</span>
+                          </>
+                        )}
+                      </button>
+
+                      {/* Error message */}
+                      {renderingErrors[idx] && (
+                        <div className="w-full py-1.5 px-2 bg-red-600/30 rounded text-xs text-red-300">
+                          ⚠️ {renderingErrors[idx]}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
