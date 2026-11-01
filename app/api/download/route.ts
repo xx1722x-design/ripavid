@@ -6,9 +6,88 @@ export const runtime = 'nodejs';
 // ⏱️ Vercel 타임아웃 연장 (기본 60초 → 120초)
 export const maxDuration = 120;
 
+// 게스트 일일 다운로드 제한
+const GUEST_DAILY_LIMIT = 3;
+
 interface DownloadRequest {
   url: string;
   platform?: string;
+}
+
+/**
+ * Extract real IP address from request
+ * Handles multiple sources: x-forwarded-for, cf-connecting-ip, x-real-ip, remote addr
+ */
+function getClientIp(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
+  }
+
+  const cloudflareIp = request.headers.get('cf-connecting-ip');
+  if (cloudflareIp) {
+    return cloudflareIp;
+  }
+
+  const realIp = request.headers.get('x-real-ip');
+  if (realIp) {
+    return realIp;
+  }
+
+  return 'unknown';
+}
+
+/**
+ * Check if user has exceeded daily guest download limit
+ * Returns { allowed: boolean, count: number, error?: string }
+ */
+async function checkGuestDownloadLimit(ipAddress: string): Promise<{ allowed: boolean; count: number; error?: string }> {
+  try {
+    // Only check if Supabase is configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return { allowed: true, count: 0 };
+    }
+
+    // Dynamically import Supabase functions
+    const { getGuestDownloadCount } = await import('@/lib/supabase');
+    const { count, error } = await getGuestDownloadCount(ipAddress);
+
+    if (error) {
+      console.warn('[Rate Limit] Error checking guest download count:', error);
+      // If Supabase is down, allow the download (failsafe)
+      return { allowed: true, count: 0, error };
+    }
+
+    const allowed = count < GUEST_DAILY_LIMIT;
+
+    if (!allowed) {
+      console.log(`[Rate Limit] IP ${ipAddress} exceeded daily limit (${count}/${GUEST_DAILY_LIMIT})`);
+    }
+
+    return { allowed, count };
+  } catch (error) {
+    console.error('[Rate Limit] Unexpected error checking limit:', error);
+    return { allowed: true, count: 0, error: 'Unexpected error' };
+  }
+}
+
+/**
+ * Increment guest download count
+ */
+async function incrementGuestDownloadCount(ipAddress: string): Promise<{ success: boolean; count?: number; error?: string }> {
+  try {
+    // Only increment if Supabase is configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return { success: true, count: 0 };
+    }
+
+    // Dynamically import Supabase functions
+    const { incrementGuestDownloadCount: increment } = await import('@/lib/supabase');
+    return await increment(ipAddress);
+  } catch (error) {
+    console.error('[Rate Limit] Error incrementing download count:', error);
+    return { success: false, error: 'Failed to increment count' };
+  }
 }
 
 interface FormatData {
@@ -109,6 +188,31 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Invalid URL format' },
         { status: 400 }
       );
+    }
+
+    // 🔒 Guest 사용자의 일일 다운로드 제한 체크 (Supabase가 설정된 경우만)
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const clientIp = getClientIp(request);
+      console.log(`📍 Client IP: ${clientIp}`);
+
+      const { allowed: isDownloadAllowed, count: currentCount } = await checkGuestDownloadLimit(clientIp);
+
+      if (!isDownloadAllowed) {
+        console.log(`❌ Guest download limit exceeded for IP ${clientIp}: ${currentCount}/${GUEST_DAILY_LIMIT}`);
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'DAILY_LIMIT_EXCEEDED',
+            message: `You have reached your daily download limit (${GUEST_DAILY_LIMIT}/day). Sign up for free to get unlimited downloads!`,
+            remaining: 0,
+          },
+          { status: 403 }
+        );
+      }
+
+      console.log(`✅ Guest download allowed. Current count: ${currentCount}/${GUEST_DAILY_LIMIT}`);
+    } else {
+      console.warn('⚠️ Supabase not configured. Skipping guest download limit check.');
     }
 
     let extractedData: any = null;
@@ -220,6 +324,17 @@ export async function POST(request: NextRequest) {
       hasThumbnail: !!thumbnail,
       sampleFreeUrl: freeFormats[0]?.url ? freeFormats[0].url.substring(0, 100) : '없음',
     });
+
+    // ✅ Increment guest download count (fire and forget) - if Supabase is configured
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const clientIp = getClientIp(request);
+      const { success: incrementSuccess, count: newCount } = await incrementGuestDownloadCount(clientIp);
+      if (incrementSuccess) {
+        console.log(`✅ Guest download count incremented. New count: ${newCount}/${GUEST_DAILY_LIMIT}`);
+      } else {
+        console.warn(`⚠️ Failed to increment guest download count for IP ${clientIp}`);
+      }
+    }
 
     return NextResponse.json(responseData);
   } catch (error) {

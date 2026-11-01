@@ -5,6 +5,7 @@ import { translations } from '../locales';
 import TipSlider from './TipSlider';
 import AffiliateBanner from './AffiliateBanner';
 import LocalizationTools from './LocalizationTools';
+import DailyLimitPaywall from './DailyLimitPaywall';
 import { useAuth } from '@/app/context/AuthContext';
 
 // On-click pop-under advertisement links
@@ -68,6 +69,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const [isWaiting, setIsWaiting] = useState(false);
   const [waitingHeight, setWaitingHeight] = useState(720);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showDailyLimitPaywall, setShowDailyLimitPaywall] = useState(false);
   const [loadingQuality, setLoadingQuality] = useState<string | null>(null);
   const [hoveredResolution, setHoveredResolution] = useState<string | null>(null);
   const waitingContainerRef = useRef<HTMLDivElement>(null);
@@ -134,11 +136,11 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         throw new Error(`Connection error: ${errorMsg}`);
       }
 
-      // If 403, show payment modal
+      // If 403, show daily limit paywall
       if (response?.status === 403) {
         setIsWaiting(false);
         setLoadingQuality(null);
-        setShowPaymentModal(true);
+        setShowDailyLimitPaywall(true);
         return;
       }
 
@@ -369,6 +371,8 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       </div>
       )}
 
+      {/* Daily Limit Paywall Modal */}
+      <DailyLimitPaywall isOpen={showDailyLimitPaywall} onClose={() => setShowDailyLimitPaywall(false)} />
     </div>
   );
 }
