@@ -264,9 +264,9 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
     try {
       return (
       <>
-      <div className="w-full flex flex-col items-center justify-start h-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <div className="w-full flex flex-col items-center justify-start h-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-3">
         {/* Logo */}
-        <div className="mb-3 flex items-center gap-2">
+        <div className="mb-1.5 flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center font-bold text-white">
             ⚡
           </div>
@@ -276,8 +276,8 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
         </div>
 
         {/* Hero Section */}
-        <div className="text-center mb-3 max-w-3xl">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 leading-tight">
+        <div className="text-center mb-2 max-w-3xl">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-0.5 leading-tight">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
               Expand Your Global Reach
             </span>
@@ -291,12 +291,12 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
         </div>
 
         {/* Pro Hero Banner */}
-        <div className="w-full max-w-3xl px-4 mb-2">
+        <div className="w-full max-w-3xl px-4 mb-1">
           <ProHeroBanner onOpenPricingModal={() => setShowPricingModal(true)} />
         </div>
 
         {/* Platform Selector */}
-        <div className="w-full max-w-5xl mb-3 overflow-hidden">
+        <div className="w-full max-w-5xl mb-1 overflow-hidden">
           {/* @ts-ignore */}
           <PlatformSelector selectedPlatform="" onSelectPlatform={() => {}} showLabel={true} />
         </div>
@@ -314,8 +314,8 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
           />
         </div>
 
-        {/* Error Display - Full Debug Mode */}
-        {processingError && (
+        {/* Error Display - Hide 403 errors (DailyLimitPaywall handles them) */}
+        {processingError && !processingError.includes('403') && !processingError.includes('DAILY_LIMIT_EXCEEDED') && (
           <div className="w-full max-w-4xl mx-auto bg-red-900/30 border-2 border-red-500 text-red-100 px-6 py-4 rounded-lg mb-8 mt-4">
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="flex items-center gap-2">
