@@ -174,8 +174,13 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       setIsWaiting(false);
       setLoadingQuality(null);
 
+      // Don't show error dialog for 403 - DailyLimitPaywall is already shown
       const errorMessage = error instanceof Error ? error.message : 'Failed to prepare download. Please try again.';
-      onError?.(errorMessage);
+
+      // Only call onError if it's not a 403 (daily limit exceeded)
+      if (!errorMessage.includes('403') && !errorMessage.includes('DAILY_LIMIT_EXCEEDED')) {
+        onError?.(errorMessage);
+      }
     }
   };
 

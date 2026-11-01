@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import { useAuth } from '@/app/context/AuthContext';
 import { ErrorTrapBanner } from '@/app/components/ErrorTrapBanner';
 import { DashboardErrorBoundary } from '@/app/components/DashboardErrorBoundary';
+import RRRTipBanner from '@/app/components/RRRTipBanner';
+import Footer from '@/app/components/Footer';
 
 const UserDashboard = dynamic(
   () => import('@/app/components/UserDashboard'),
@@ -39,6 +41,7 @@ function DashboardContent() {
   const [language] = useState('en');
   const [initialUrl, setInitialUrl] = useState('');
   const [contentError, setContentError] = useState<Error | null>(null);
+  const [showRRRModal, setShowRRRModal] = useState(false);
 
   // Extract URL parameters safely using client-side method
   useEffect(() => {
@@ -90,8 +93,13 @@ function DashboardContent() {
 
   try {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black">
+      <div className="min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black flex flex-col">
         <ErrorTrapBanner error={contentError} context="DashboardContent" />
+
+        {/* RRR Tip Banner */}
+        <div className="px-4 py-4">
+          <RRRTipBanner onClick={() => setShowRRRModal(true)} language={language} />
+        </div>
 
         {/* Header with User Info */}
         <div className="bg-zinc-900/50 border-b border-zinc-800 sticky top-0 z-40 backdrop-blur-sm">
@@ -139,7 +147,7 @@ function DashboardContent() {
         </div>
 
         {/* Main Content */}
-        <div className="py-12">
+        <div className="py-12 flex-grow">
           <Suspense fallback={<LoadingFallback />}>
             <UserDashboard
               language={language}
@@ -152,6 +160,9 @@ function DashboardContent() {
             />
           </Suspense>
         </div>
+
+        {/* Footer */}
+        <Footer language={language} />
       </div>
     );
   } catch (fatalError) {
