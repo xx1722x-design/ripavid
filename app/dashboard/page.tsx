@@ -8,7 +8,6 @@ import { ErrorTrapBanner } from '@/app/components/ErrorTrapBanner';
 import { DashboardErrorBoundary } from '@/app/components/DashboardErrorBoundary';
 import RRRTipBanner from '@/app/components/RRRTipBanner';
 import RRRTrickModal from '@/app/components/RRRTrickModal';
-import DailyLimitPaywall from '@/app/components/DailyLimitPaywall';
 import QuickTagsSection from '@/app/components/QuickTagsSection';
 import Footer from '@/app/components/Footer';
 
@@ -45,7 +44,8 @@ function DashboardContent() {
   const [initialUrl, setInitialUrl] = useState('');
   const [contentError, setContentError] = useState<Error | null>(null);
   const [showRRRModal, setShowRRRModal] = useState(false);
-  const [showDailyLimitPaywall, setShowDailyLimitPaywall] = useState(false);
+  const [showDailyLimitBanner, setShowDailyLimitBanner] = useState(false);
+  const [guestDownloadCount, setGuestDownloadCount] = useState(0);
 
   // Extract URL parameters safely using client-side method
   useEffect(() => {
@@ -161,7 +161,13 @@ function DashboardContent() {
                 console.error('[Dashboard] UserDashboard error:', err);
                 setContentError(err);
               }}
-              onShowDailyLimitPaywall={() => setShowDailyLimitPaywall(true)}
+              onShowDailyLimitBanner={() => {
+                setShowDailyLimitBanner(true);
+                fetch('/api/guest-downloads/count')
+                  .then((res) => res.json())
+                  .then((data) => setGuestDownloadCount(data.count || 3))
+                  .catch(() => setGuestDownloadCount(3));
+              }}
             />
           </Suspense>
         </div>
@@ -175,8 +181,35 @@ function DashboardContent() {
         {/* RRR Trick Modal */}
         <RRRTrickModal isOpen={showRRRModal} onClose={() => setShowRRRModal(false)} language={language} />
 
-        {/* Daily Limit Paywall */}
-        <DailyLimitPaywall isOpen={showDailyLimitPaywall} onClose={() => setShowDailyLimitPaywall(false)} />
+        {/* Daily Limit Banner */}
+        {showDailyLimitBanner && isGuest && (
+          <div className="fixed bottom-0 left-0 right-0 z-40 px-4 py-4 bg-gradient-to-r from-amber-900/40 to-red-900/40 border-t border-amber-400 backdrop-blur-sm">
+            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="flex-grow">
+                <p className="text-sm sm:text-base text-amber-200 font-semibold mb-2">
+                  You have used all 3 free downloads for today.
+                </p>
+                <p className="text-xs sm:text-sm text-amber-100/80">
+                  Sign in to enjoy unlimited downloads up to 720p/HD!
+                </p>
+              </div>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <a
+                  href="/auth/signup"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm rounded-lg transition-all text-center"
+                >
+                  Sign Up Free
+                </a>
+                <a
+                  href="/auth/login"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-white/10 hover:bg-white/20 text-gray-200 font-semibold text-xs sm:text-sm rounded-lg transition-all border border-white/20 text-center"
+                >
+                  Sign In
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   } catch (fatalError) {

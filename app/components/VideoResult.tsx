@@ -5,7 +5,6 @@ import { translations } from '../locales';
 import TipSlider from './TipSlider';
 import AffiliateBanner from './AffiliateBanner';
 import LocalizationTools from './LocalizationTools';
-import DailyLimitPaywall from './DailyLimitPaywall';
 import { useAuth } from '@/app/context/AuthContext';
 
 // On-click pop-under advertisement links
@@ -33,7 +32,7 @@ interface VideoResultProps {
   language?: string;
   originalUrl?: string;
   onError?: (errorMessage: string) => void;
-  onShowDailyLimitPaywall?: () => void;
+  onShowDailyLimitBanner?: () => void;
 }
 
 // 해상도 포맷 파싱 함수 (1920x1080 → 1080p, 720 → 720p)
@@ -66,11 +65,10 @@ const parseResolution = (resolution?: string, quality?: string): string => {
   return cleanText || 'Download';
 };
 
-export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en', originalUrl = '', onError, onShowDailyLimitPaywall }: VideoResultProps) {
+export default function VideoResult({ title, thumbnail, duration, formats, onClose, language = 'en', originalUrl = '', onError, onShowDailyLimitBanner }: VideoResultProps) {
   const [isWaiting, setIsWaiting] = useState(false);
   const [waitingHeight, setWaitingHeight] = useState(720);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [showDailyLimitPaywall, setShowDailyLimitPaywall] = useState(false);
   const [loadingQuality, setLoadingQuality] = useState<string | null>(null);
   const [hoveredResolution, setHoveredResolution] = useState<string | null>(null);
   const waitingContainerRef = useRef<HTMLDivElement>(null);
@@ -137,11 +135,11 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         throw new Error(`Connection error: ${errorMsg}`);
       }
 
-      // If 403, show daily limit paywall
+      // If 403, show daily limit banner
       if (response?.status === 403) {
         setIsWaiting(false);
         setLoadingQuality(null);
-        onShowDailyLimitPaywall?.();
+        onShowDailyLimitBanner?.();
         return;
       }
 
@@ -180,9 +178,9 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
 
       const errorMessage = error instanceof Error ? error.message : 'Failed to prepare download. Please try again.';
 
-      // Don't call onError for 403 errors - DailyLimitPaywall handles it
+      // Show banner for 403 errors
       if (errorMessage === 'DAILY_LIMIT_EXCEEDED') {
-        onShowDailyLimitPaywall?.();
+        onShowDailyLimitBanner?.();
         return;
       }
 
@@ -383,9 +381,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         </div>
       </div>
       )}
-
-      {/* Daily Limit Paywall Modal */}
-      <DailyLimitPaywall isOpen={showDailyLimitPaywall} onClose={() => setShowDailyLimitPaywall(false)} />
     </div>
   );
 }
