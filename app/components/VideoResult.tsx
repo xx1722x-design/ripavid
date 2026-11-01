@@ -221,7 +221,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
                     } text-white ${isWaiting && !isLoadingThisQuality && !isDisabled ? 'opacity-50 cursor-not-allowed disabled:hover:scale-100' : !isDisabled && 'hover:shadow-lg'}`}
                   >
                     {isLoadingThisQuality && !isDisabled && (
-                      <svg className="w-3 h-3 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
                     )}
@@ -285,6 +285,11 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
                         : 'bg-red-700/60 hover:bg-red-700 text-white opacity-75 hover:opacity-90'
                     }`}
                   >
+                    {isPro && isLoadingThisQuality && !isDisabled && (
+                      <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                    )}
                     {!isPro && !isDisabled && (
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 1L9.3 6.6H3.36v3.67h4.89L12 20l3.75-9.73h4.89V6.6h-5.94L12 1z" />

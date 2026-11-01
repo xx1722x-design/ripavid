@@ -82,6 +82,15 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
   // NOTE: Auto-submit is now handled by UrlForm component
   // This useEffect has been removed to prevent double-submission and state conflicts
 
+  // Sync main button loading state with auto-submit start
+  // When initialUrl is provided with autoSubmit flag, immediately show loading spinner
+  // on the Import button so user sees immediate visual feedback
+  useEffect(() => {
+    if (initialUrl && autoSubmit && !processingLoading) {
+      setProcessingLoading(true);
+    }
+  }, [initialUrl, autoSubmit, processingLoading]);
+
   const loadHistory = async () => {
     if (!user?.uid) return;
 
