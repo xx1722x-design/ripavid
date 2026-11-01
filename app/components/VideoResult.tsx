@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { translations } from '../locales';
 import TipSlider from './TipSlider';
 import AffiliateBanner from './AffiliateBanner';
+import LocalizationTools from './LocalizationTools';
 import { useAuth } from '@/app/context/AuthContext';
 
 // On-click pop-under advertisement links
@@ -301,6 +302,15 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
             })}
           </div>
         </div>
+      )}
+
+      {/* Localization Tools Section */}
+      {!isWaiting && originalUrl && (
+        <LocalizationTools
+          videoUrl={originalUrl}
+          videoTitle={title}
+          language={language || 'en'}
+        />
       )}
 
       {/* 대기 상태 UI */}
