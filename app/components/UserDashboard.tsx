@@ -292,18 +292,18 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
         </div>
 
         {/* Pro Hero Banner */}
-        <div className="w-full max-w-3xl px-4 mb-1">
+        <div className="w-full max-w-3xl px-4 mb-0.5">
           <ProHeroBanner onOpenPricingModal={() => setShowPricingModal(true)} />
         </div>
 
         {/* Platform Selector */}
-        <div className="w-full max-w-5xl mb-1 overflow-hidden">
+        <div className="w-full max-w-5xl mb-0.5 overflow-hidden">
           {/* @ts-ignore */}
           <PlatformSelector selectedPlatform="" onSelectPlatform={() => {}} showLabel={true} />
         </div>
 
         {/* URL Input Form */}
-        <div className="w-full">
+        <div className="w-full mb-1">
           {/* @ts-ignore */}
           <UrlForm
             onSubmit={handleRipVideo}
@@ -317,7 +317,7 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
 
         {/* Error Display - Hide 403 errors (DailyLimitPaywall handles them) */}
         {processingError && !processingError.includes('403') && !processingError.includes('DAILY_LIMIT_EXCEEDED') && (
-          <div className="w-full max-w-4xl mx-auto bg-red-900/30 border-2 border-red-500 text-red-100 px-6 py-4 rounded-lg mb-8 mt-4">
+          <div className="w-full max-w-4xl mx-auto bg-red-900/30 border-2 border-red-500 text-red-100 px-6 py-4 rounded-lg mb-4 mt-2">
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="flex items-center gap-2">
                 <svg className="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">

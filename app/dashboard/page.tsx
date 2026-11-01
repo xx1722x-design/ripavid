@@ -114,15 +114,15 @@ function DashboardContent() {
         <ErrorTrapBanner error={contentError} context="DashboardContent" />
 
         {/* RRR Tip Banner */}
-        <div className="px-4 py-1 sm:py-2">
+        <div className="px-4 py-0.5 sm:py-1">
           <RRRTipBanner onClick={() => setShowRRRModal(true)} language={language} />
         </div>
 
         {/* Header with User Info */}
         <div className="bg-zinc-900/50 border-b border-zinc-800 sticky top-0 z-40 backdrop-blur-sm">
-          <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
+          <div className="max-w-6xl mx-auto px-4 py-1 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
                 {(() => {
                   try {
                     if (!user) return '👤';
@@ -134,14 +134,23 @@ function DashboardContent() {
                 })()}
               </div>
               <div>
-                <h2 className="text-white font-semibold">
+                <h2 className="text-white font-semibold text-sm">
                   {user?.name || user?.email || 'Guest User'}
                 </h2>
-                <p className="text-xs text-zinc-400">
-                  {user?.tier === 'pro' ? '✨ Pro User' : '📦 Free User'}
-                  {isGuest ? ' (Not Signed In)' : ''}
+                <p className="text-xs text-zinc-400 leading-tight">
+                  {user?.tier === 'pro' ? '✨ Pro' : '📦 Free'}
+                  {isGuest ? ' (Guest)' : ''}
                 </p>
               </div>
+
+              {/* Guest Download Counter Badge */}
+              {isGuest && (
+                <div className="ml-auto mr-auto hidden sm:flex items-center gap-1.5 px-2.5 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-md">
+                  <span className="text-xs text-cyan-300 font-semibold whitespace-nowrap">
+                    {guestDownloadCount}/3
+                  </span>
+                </div>
+              )}
             </div>
 
             {isAuthenticated && (
@@ -155,27 +164,25 @@ function DashboardContent() {
                     setContentError(err);
                   }
                 }}
-                className="px-4 py-2 bg-red-600/30 hover:bg-red-600/50 text-red-300 rounded-lg text-sm transition-all"
+                className="px-3 py-1.5 bg-red-600/30 hover:bg-red-600/50 text-red-300 rounded-lg text-xs transition-all"
               >
                 Logout
               </button>
             )}
+
+            {/* Mobile Guest Download Counter Badge */}
+            {isGuest && !isAuthenticated && (
+              <div className="sm:hidden flex items-center gap-1.5 px-2.5 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-md">
+                <span className="text-xs text-cyan-300 font-semibold whitespace-nowrap">
+                  {guestDownloadCount}/3
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Guest Download Counter (for non-authenticated users) */}
-        {isGuest && (
-          <div className="px-4 py-3">
-            <div className="max-w-6xl mx-auto inline-flex items-center gap-2 px-3 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
-              <span className="text-xs sm:text-sm text-cyan-300 font-semibold">
-                Free Downloads Today: {guestDownloadCount}/3 used
-              </span>
-            </div>
-          </div>
-        )}
-
         {/* Main Content */}
-        <div className="py-4 sm:py-6 flex-grow">
+        <div className="py-2 sm:py-3 flex-grow">
           <Suspense fallback={<LoadingFallback />}>
             <UserDashboard
               language={language}
