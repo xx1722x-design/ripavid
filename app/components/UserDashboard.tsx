@@ -11,6 +11,7 @@ interface UserDashboardProps {
   language?: string;
   initialUrl?: string;
   autoSubmit?: boolean;
+  onError?: (error: Error) => void;
 }
 
 interface Format {
@@ -32,9 +33,17 @@ interface VideoData {
   };
 }
 
-export default function UserDashboard({ language = 'en', initialUrl = '', autoSubmit = false }: UserDashboardProps) {
-  const { user, isAuthenticated } = useAuth();
-  const t = translations[language as keyof typeof translations] || translations['en'];
+export default function UserDashboard({ language = 'en', initialUrl = '', autoSubmit = false, onError }: UserDashboardProps) {
+  const { user, isAuthenticated } = useAuth() || { user: null, isAuthenticated: false };
+
+  const t = (() => {
+    try {
+      const lang = (language && typeof language === 'string') ? language : 'en';
+      return translations[lang as keyof typeof translations] || translations['en'];
+    } catch {
+      return translations['en'];
+    }
+  })();
 
   // For guest users - new processing
   const [processingLoading, setProcessingLoading] = useState(false);
@@ -203,7 +212,8 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
 
   // Guest user mode - show processing form only
   if (!isAuthenticated) {
-    return (
+    try {
+      return (
       <div className="w-full max-w-6xl mx-auto px-4 py-8">
         {/* Guest Mode Header */}
         <div className="mb-8">
@@ -259,10 +269,27 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
         )}
       </div>
     );
+    } catch (guestError) {
+      const err = guestError instanceof Error ? guestError : new Error(String(guestError));
+      console.error('[UserDashboard] Guest mode render error:', err);
+      if (onError) onError(err);
+      return (
+        <div className="w-full max-w-4xl mx-auto px-4 py-12">
+          <div className="bg-red-900/30 border border-red-500/50 rounded-xl p-8">
+            <h2 className="text-xl font-bold text-red-300 mb-2">⚠️ Error Loading Guest Mode</h2>
+            <p className="text-red-200 text-sm mb-4">{err.message}</p>
+            <a href="/" className="inline-block px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded transition-all text-sm">
+              Return to Home
+            </a>
+          </div>
+        </div>
+      );
+    }
   }
 
   // Authenticated user mode - show history + processing form
-  return (
+  try {
+    return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
@@ -426,5 +453,21 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
         </div>
       )}
     </div>
-  );
+    );
+  } catch (authError) {
+    const err = authError instanceof Error ? authError : new Error(String(authError));
+    console.error('[UserDashboard] Authenticated mode render error:', err);
+    if (onError) onError(err);
+    return (
+      <div className="w-full max-w-4xl mx-auto px-4 py-12">
+        <div className="bg-red-900/30 border border-red-500/50 rounded-xl p-8">
+          <h2 className="text-xl font-bold text-red-300 mb-2">⚠️ Error Loading Dashboard</h2>
+          <p className="text-red-200 text-sm mb-4">{err.message}</p>
+          <a href="/" className="inline-block px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded transition-all text-sm">
+            Return to Home
+          </a>
+        </div>
+      </div>
+    );
+  }
 }
