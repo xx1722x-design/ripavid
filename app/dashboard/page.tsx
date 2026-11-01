@@ -95,6 +95,19 @@ function DashboardContent() {
     }
   }, []);
 
+  // Fetch guest download count on mount (for non-authenticated users)
+  useEffect(() => {
+    if (isGuest) {
+      fetch('/api/guest-downloads/count')
+        .then((res) => res.json())
+        .then((data) => setGuestDownloadCount(data.count || 0))
+        .catch((err) => {
+          console.warn('[Dashboard] Failed to fetch guest download count:', err);
+          setGuestDownloadCount(0);
+        });
+    }
+  }, [isGuest]);
+
   try {
     return (
       <div className="min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black flex flex-col">
@@ -149,6 +162,17 @@ function DashboardContent() {
             )}
           </div>
         </div>
+
+        {/* Guest Download Counter (for non-authenticated users) */}
+        {isGuest && (
+          <div className="px-4 py-3">
+            <div className="max-w-6xl mx-auto inline-flex items-center gap-2 px-3 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
+              <span className="text-xs sm:text-sm text-cyan-300 font-semibold">
+                Free Downloads Today: {guestDownloadCount}/3 used
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Main Content */}
         <div className="py-4 sm:py-6 flex-grow">
