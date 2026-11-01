@@ -79,22 +79,8 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
     }
   }, [isAuthenticated, user?.uid]);
 
-  // Auto-submit initial URL if provided
-  useEffect(() => {
-    if (initialUrl && !hasAutoSubmitted && autoSubmit) {
-      try {
-        setHasAutoSubmitted(true);
-        // Delay auto-submit by 100ms to match spec
-        const timer = setTimeout(() => {
-          handleRipVideo(initialUrl);
-        }, 100);
-        return () => clearTimeout(timer);
-      } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : 'Failed to process initial URL';
-        setProcessingError(errorMsg);
-      }
-    }
-  }, [initialUrl, autoSubmit, hasAutoSubmitted]);
+  // NOTE: Auto-submit is now handled by UrlForm component
+  // This useEffect has been removed to prevent double-submission and state conflicts
 
   const loadHistory = async () => {
     if (!user?.uid) return;
@@ -275,6 +261,8 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
             onSubmit={handleRipVideo}
             isLoading={processingLoading}
             language={language}
+            initialUrl={initialUrl}
+            autoSubmit={autoSubmit}
             onError={(errorMessage) => setProcessingError(errorMessage)}
           />
         </div>

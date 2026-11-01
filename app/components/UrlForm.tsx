@@ -44,7 +44,7 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
       setError('');
 
       if (!urlToSubmit || typeof urlToSubmit !== 'string') {
-        const errMsg = 'Invalid URL provided';
+        const errMsg = '❌ Invalid URL type provided. Expected a string.';
         setError(errMsg);
         onError?.(errMsg);
         return;
@@ -52,14 +52,16 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
 
       const trimmedUrl = urlToSubmit.trim();
       if (trimmedUrl.length === 0) {
-        setError(t.error);
+        const errMsg = '❌ URL is empty. Please enter a valid video URL.';
+        setError(errMsg);
+        onError?.(errMsg);
         return;
       }
 
       try {
         new URL(trimmedUrl);
       } catch {
-        const errMsg = 'Invalid URL format';
+        const errMsg = '❌ Invalid URL format. Please enter a valid video URL (e.g., https://www.youtube.com/watch?v=...)';
         setError(errMsg);
         onError?.(errMsg);
         return;
@@ -70,12 +72,12 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
         // Open Adsterra ad in new tab after successful submission
         window.open(ADSTERRA_DIRECT_URL, '_blank');
       } catch (err) {
-        const errMsg = err instanceof Error ? err.message : 'Failed to process video. Please try again.';
+        const errMsg = err instanceof Error ? err.message : '❌ Failed to process video. Please try again.';
         setError(errMsg);
         onError?.(errMsg);
       }
     } catch (outerErr) {
-      const errorMsg = outerErr instanceof Error ? outerErr.message : 'An unexpected error occurred';
+      const errorMsg = outerErr instanceof Error ? outerErr.message : '❌ An unexpected error occurred while processing your URL.';
       setError(errorMsg);
       onError?.(errorMsg);
     }
@@ -114,14 +116,16 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
     setError('');
 
     if (!url.trim()) {
-      setError(t.error);
+      const errMsg = '❌ URL is empty. Please enter a valid video URL.';
+      setError(errMsg);
       return;
     }
 
     try {
       new URL(url);
     } catch {
-      setError('Invalid URL format');
+      const errMsg = '❌ Invalid URL format. Please enter a valid video URL (e.g., https://www.youtube.com/watch?v=...)';
+      setError(errMsg);
       return;
     }
 
@@ -130,7 +134,8 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
       // Open Adsterra ad in new tab after successful submission
       window.open(ADSTERRA_DIRECT_URL, '_blank');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to process video. Please try again.');
+      const errMsg = err instanceof Error ? err.message : '❌ Failed to process video. Please try again.';
+      setError(errMsg);
     }
   };
 
