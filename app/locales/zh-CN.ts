@@ -6,7 +6,7 @@ export const zhCNTranslations = {
   subtext: '快速、简单、完全免费。无需注册。',
   selectPlatform: '选择平台',
   autoDetect: '自动检测',
-  download: '下载',
+  import: '下载',
   pasteLink: '粘贴链接...',
   copyLink: '复制链接',
   downloadingText: '下载中...',

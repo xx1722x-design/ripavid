@@ -6,7 +6,7 @@ export const zhTWTranslations = {
   subtext: '快速、簡單、完全免費。無需註冊。',
   selectPlatform: '選擇平台',
   autoDetect: '自動偵測',
-  download: '下載',
+  import: '下載',
   pasteLink: '貼上連結...',
   copyLink: '複製連結',
   downloadingText: '下載中...',
@@ -98,7 +98,7 @@ export const zhTWTranslations = {
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
-  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+  proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',

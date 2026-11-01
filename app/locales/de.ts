@@ -6,10 +6,10 @@ export const deTranslations = {
   subtext: 'Schnell, einfach und völlig kostenlos. Keine Anmeldung erforderlich.',
   selectPlatform: 'Plattform auswählen',
   autoDetect: 'Automatische Erkennung',
-  download: 'Herunterladen',
+  import: 'Herunterladen',
   pasteLink: 'Link hier einfügen...',
   copyLink: 'Link kopieren',
-  downloadingText: 'Download läuft...',
+  downloadingText: 'Import läuft...',
   error: 'Fehler',
   youtube: 'YouTube-Videos und Musik in HD herunterladen',
   instagram: 'Instagram-Fotos und -Videos sofort herunterladen',
@@ -98,7 +98,7 @@ export const deTranslations = {
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
-  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+  proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',

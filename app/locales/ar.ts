@@ -6,7 +6,7 @@ export const arTranslations = {
   subtext: 'سريع وبسيط وتماما مجاني. لا حاجة للتسجيل.',
   selectPlatform: 'اختر المنصة',
   autoDetect: 'الكشف التلقائي',
-  download: 'تنزيل',
+  import: 'تنزيل',
   pasteLink: 'الصق الرابط هنا...',
   copyLink: 'نسخ الرابط',
   downloadingText: 'جاري التنزيل...',
@@ -98,7 +98,7 @@ export const arTranslations = {
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
-  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+  proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',

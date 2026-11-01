@@ -6,7 +6,7 @@ export const tlTranslations = {
   subtext: 'Mabilis, simple, at ganap na libre. Walang pangangailangan para mag-sign up.',
   selectPlatform: 'Piliin ang Platform',
   autoDetect: 'Awtomatikong Pagkilala',
-  download: 'I-download',
+  import: 'I-download',
   pasteLink: 'Ipaste ang link dito...',
   copyLink: 'Kopyahin ang Link',
   downloadingText: 'Nag-download...',
@@ -98,7 +98,7 @@ export const tlTranslations = {
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
-  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+  proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',

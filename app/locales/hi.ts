@@ -6,7 +6,7 @@ export const hiTranslations = {
   subtext: 'तेज़, सरल और पूरी तरह से मुफ़्त। कोई पंजीकरण आवश्यक नहीं।',
   selectPlatform: 'प्लेटफॉर्म चुनें',
   autoDetect: 'स्वचालित पहचान',
-  download: 'डाउनलोड करें',
+  import: 'डाउनलोड करें',
   pasteLink: 'यहाँ लिंक पेस्ट करें...',
   copyLink: 'लिंक कॉपी करें',
   downloadingText: 'डाउनलोड हो रहा है...',
@@ -98,7 +98,7 @@ export const hiTranslations = {
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
-  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+  proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',

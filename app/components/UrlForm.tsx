@@ -182,7 +182,7 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m0 0l-2-1m2 1v2.5M14 4l-2 1m0 0l-2-1m2 1v2.5" />
                 </svg>
-                {t.download}
+                {t.import}
               </>
             )}
           </button>

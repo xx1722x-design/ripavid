@@ -33,7 +33,7 @@ export default function Footer({ language = 'en' }: FooterProps) {
             <h4 className="font-semibold text-white dark:text-white light:text-gray-900 mb-4">{t.footerProductsTitle}</h4>
             <ul className="space-y-2 text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600">
               <li><a href="#" className="hover:text-cyan-400 transition-colors">{t.footerFeaturesLink}</a></li>
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">{t.download}</a></li>
+              <li><a href="#" className="hover:text-cyan-400 transition-colors">{t.import}</a></li>
               <li><a href="#" className="hover:text-cyan-400 transition-colors">{t.footerGuideLink}</a></li>
             </ul>
           </div>

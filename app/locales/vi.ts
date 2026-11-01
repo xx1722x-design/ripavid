@@ -6,7 +6,7 @@ export const viTranslations = {
   subtext: 'Nhanh, đơn giản và hoàn toàn miễn phí. Không cần đăng ký.',
   selectPlatform: 'Chọn nền tảng',
   autoDetect: 'Tự động phát hiện',
-  download: 'Tải xuống',
+  import: 'Tải xuống',
   pasteLink: 'Dán liên kết ở đây...',
   copyLink: 'Sao chép liên kết',
   downloadingText: 'Đang tải xuống...',
@@ -98,7 +98,7 @@ export const viTranslations = {
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
-  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+  proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',

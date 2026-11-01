@@ -6,7 +6,7 @@ export const msTranslations = {
   subtext: 'Pantas, mudah, dan sepenuhnya percuma. Tidak perlu mendaftar.',
   selectPlatform: 'Pilih Platform',
   autoDetect: 'Pengesanan Automatik',
-  download: 'Muat Turun',
+  import: 'Muat Turun',
   pasteLink: 'Tampal pautan di sini...',
   copyLink: 'Salin Pautan',
   downloadingText: 'Sedang Memuat Turun...',
@@ -98,7 +98,7 @@ export const msTranslations = {
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
-  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+  proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',

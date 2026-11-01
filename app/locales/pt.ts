@@ -6,7 +6,7 @@ export const ptTranslations = {
   subtext: 'Rápido, simples e completamente grátis. Sem necessidade de inscrição.',
   selectPlatform: 'Selecionar plataforma',
   autoDetect: 'Detecção automática',
-  download: 'Baixar',
+  import: 'Baixar',
   pasteLink: 'Cole o link aqui...',
   copyLink: 'Copiar link',
   downloadingText: 'Baixando...',
@@ -57,7 +57,7 @@ export const ptTranslations = {
   faq5Answer: 'Não, não é necessário se inscrever. Simplesmente cole o link e baixe.',
   faq6Question: 'Existem limites de download?',
   faq6Answer: 'Não, não há limites. Você pode baixar quantos vídeos desejar.',
-  footerTagline: 'Downloader de vídeo rápido e fácil',
+  footerTagline: 'Importer de vídeo rápido e fácil',
   footerProductsTitle: 'Produtos',
   footerFeaturesLink: 'Recursos',
   footerGuideLink: 'Dicas e guia',
@@ -98,7 +98,7 @@ export const ptTranslations = {
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
-  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+  proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',

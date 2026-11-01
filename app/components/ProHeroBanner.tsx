@@ -26,10 +26,10 @@ export default function ProHeroBanner() {
           <span className="text-3xl sm:text-4xl">👑</span>
           <div className="text-center sm:text-left">
             <div className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:via-blue-300 group-hover:to-purple-300 transition-all">
-              1080p & 4K Download Unlimited
+              Unlock Professional Localization Features
             </div>
             <div className="text-sm sm:text-base text-zinc-400 group-hover:text-zinc-300 transition-colors mt-2">
-              Unlock the highest quality with Pro Pass • Tap to explore plans
+              Get priority processing and advanced tools • Tap to explore plans
             </div>
           </div>
           <span className="text-3xl sm:text-4xl">⚡</span>

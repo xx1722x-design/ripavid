@@ -6,7 +6,7 @@ export const thTranslations = {
   subtext: 'รวดเร็ว ง่าย และฟรีทั้งหมด ไม่จำเป็นต้องลงทะเบียน',
   selectPlatform: 'เลือกแพลตฟอร์ม',
   autoDetect: 'ตรวจหาอัตโนมัติ',
-  download: 'ดาวน์โหลด',
+  import: 'ดาวน์โหลด',
   pasteLink: 'วางลิงก์ที่นี่...',
   copyLink: 'คัดลอกลิงก์',
   downloadingText: 'กำลังดาวน์โหลด...',
@@ -98,7 +98,7 @@ export const thTranslations = {
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
   proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
-  proPassDisclaimer: 'Downloads are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
+  proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
 
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',
