@@ -1,7 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { translations } from '../locales';
+
+const PublishModal = dynamic(() => import('./PublishModal'), { ssr: false });
 
 interface LocalizationToolsProps {
   videoUrl: string;
@@ -56,6 +59,9 @@ export default function LocalizationTools({
   const [dubbingErrors, setDubbingErrors] = useState<Record<number, string>>({});
   const [selectedDubbingLanguage, setSelectedDubbingLanguage] = useState<string>('en');
   const [selectedVoice, setSelectedVoice] = useState<string>('EXAVITQu4vr4xnSDxMaL');
+
+  const [isPublishModalOpen, setIsPublishModalOpen] = useState(false);
+  const [publishVideoUrl, setPublishVideoUrl] = useState<string>('');
 
   // ElevenLabs voices mapping
   const VOICES_BY_LANGUAGE: Record<string, Array<{ id: string; name: string }>> = {
@@ -809,6 +815,18 @@ export default function LocalizationTools({
                         )}
                       </button>
 
+                      {/* Publish to Social Button */}
+                      <button
+                        onClick={() => {
+                          setPublishVideoUrl(videoUrl);
+                          setIsPublishModalOpen(true);
+                        }}
+                        className="w-full py-1.5 px-2 bg-green-600/50 hover:bg-green-600 rounded text-xs text-green-100 transition-all font-semibold flex items-center justify-center gap-1"
+                      >
+                        <span>📤</span>
+                        <span>Publish to Social</span>
+                      </button>
+
                       {/* Dubbing Error message */}
                       {dubbingErrors[idx] && (
                         <div className="w-full py-1.5 px-2 bg-red-600/30 rounded text-xs text-red-300">
@@ -866,6 +884,19 @@ export default function LocalizationTools({
           </ul>
         </div>
       </div>
+
+      {/* Publish Modal */}
+      <PublishModal
+        isOpen={isPublishModalOpen}
+        onClose={() => setIsPublishModalOpen(false)}
+        videoUrl={publishVideoUrl}
+        videoTitle={videoTitle}
+        onPublishSuccess={(results) => {
+          console.log('Publishing success:', results);
+          // Optionally update job history via Supabase
+          // await saveJobHistory({...});
+        }}
+      />
     </div>
   );
 }
