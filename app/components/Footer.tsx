@@ -54,7 +54,7 @@ export default function Footer({ language = 'en' }: FooterProps) {
             <h4 className="font-semibold text-white dark:text-white light:text-gray-900 mb-4">{t.footerContactTitle}</h4>
             <ul className="space-y-2 text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600">
               <li><a href="mailto:support@ripavid.com" className="hover:text-cyan-400 transition-colors">support@ripavid.com</a></li>
-              <li><a href="#" className="hover:text-cyan-400 transition-colors">{t.footerBugReportLink}</a></li>
+              <li><a href="/dashboard" className="hover:text-cyan-400 transition-colors">Dashboard</a></li>
               <li><a href="#" className="hover:text-cyan-400 transition-colors">{t.footerFeatureSuggestLink}</a></li>
             </ul>
           </div>
