@@ -17,6 +17,7 @@ interface UserDashboardProps {
   initialUrl?: string;
   autoSubmit?: boolean;
   onError?: (error: Error) => void;
+  onShowDailyLimitPaywall?: () => void;
 }
 
 interface Format {
@@ -38,7 +39,7 @@ interface VideoData {
   };
 }
 
-export default function UserDashboard({ language = 'en', initialUrl = '', autoSubmit = false, onError }: UserDashboardProps) {
+export default function UserDashboard({ language = 'en', initialUrl = '', autoSubmit = false, onError, onShowDailyLimitPaywall }: UserDashboardProps) {
   let user = null;
   let isAuthenticated = false;
 
@@ -352,6 +353,7 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
             language={language}
             originalUrl={originalUrl}
             onError={(errorMessage) => setProcessingError(errorMessage)}
+            onShowDailyLimitPaywall={onShowDailyLimitPaywall}
           />
         )}
 

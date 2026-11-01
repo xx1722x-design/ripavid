@@ -8,6 +8,7 @@ import { ErrorTrapBanner } from '@/app/components/ErrorTrapBanner';
 import { DashboardErrorBoundary } from '@/app/components/DashboardErrorBoundary';
 import RRRTipBanner from '@/app/components/RRRTipBanner';
 import RRRTrickModal from '@/app/components/RRRTrickModal';
+import DailyLimitPaywall from '@/app/components/DailyLimitPaywall';
 import Footer from '@/app/components/Footer';
 
 const UserDashboard = dynamic(
@@ -43,6 +44,7 @@ function DashboardContent() {
   const [initialUrl, setInitialUrl] = useState('');
   const [contentError, setContentError] = useState<Error | null>(null);
   const [showRRRModal, setShowRRRModal] = useState(false);
+  const [showDailyLimitPaywall, setShowDailyLimitPaywall] = useState(false);
 
   // Extract URL parameters safely using client-side method
   useEffect(() => {
@@ -98,13 +100,13 @@ function DashboardContent() {
         <ErrorTrapBanner error={contentError} context="DashboardContent" />
 
         {/* RRR Tip Banner */}
-        <div className="px-4 py-4">
+        <div className="px-4 py-1 sm:py-2">
           <RRRTipBanner onClick={() => setShowRRRModal(true)} language={language} />
         </div>
 
         {/* Header with User Info */}
         <div className="bg-zinc-900/50 border-b border-zinc-800 sticky top-0 z-40 backdrop-blur-sm">
-          <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold">
                 {(() => {
@@ -148,7 +150,7 @@ function DashboardContent() {
         </div>
 
         {/* Main Content */}
-        <div className="py-12 flex-grow">
+        <div className="py-4 sm:py-6 flex-grow">
           <Suspense fallback={<LoadingFallback />}>
             <UserDashboard
               language={language}
@@ -158,6 +160,7 @@ function DashboardContent() {
                 console.error('[Dashboard] UserDashboard error:', err);
                 setContentError(err);
               }}
+              onShowDailyLimitPaywall={() => setShowDailyLimitPaywall(true)}
             />
           </Suspense>
         </div>
@@ -167,6 +170,9 @@ function DashboardContent() {
 
         {/* RRR Trick Modal */}
         <RRRTrickModal isOpen={showRRRModal} onClose={() => setShowRRRModal(false)} language={language} />
+
+        {/* Daily Limit Paywall */}
+        <DailyLimitPaywall isOpen={showDailyLimitPaywall} onClose={() => setShowDailyLimitPaywall(false)} />
       </div>
     );
   } catch (fatalError) {
