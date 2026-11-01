@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface PricingComparisonModalProps {
   isOpen: boolean;
@@ -8,6 +9,8 @@ interface PricingComparisonModalProps {
 }
 
 export default function PricingComparisonModal({ isOpen, onClose }: PricingComparisonModalProps) {
+  const router = useRouter();
+
   if (!isOpen) return null;
 
   return (
@@ -145,7 +148,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                 <li><span className="text-emerald-300 font-bold">✓</span> Unlimited downloads</li>
                 <li><span className="text-emerald-300 font-bold">✓</span> Lifetime download history</li>
               </ul>
-              <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-lg transition-all shadow-lg hover:shadow-blue-500/30">
+              <button onClick={() => router.push('/auth/signup')} className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-lg transition-all shadow-lg hover:shadow-blue-500/30">
                 Sign Up for Free
               </button>
             </div>
