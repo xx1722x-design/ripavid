@@ -19,6 +19,7 @@ import ProHeroBanner from './components/ProHeroBanner';
 import ProPricingSection from './components/ProPricingSection';
 import RRRTipBanner from './components/RRRTipBanner';
 import RRRTrickModal from './components/RRRTrickModal';
+import PricingComparisonModal from './components/PricingComparisonModal';
 import { translations, getTranslations } from './locales';
 
 interface Format {
@@ -54,6 +55,7 @@ export default function Home() {
     return 'en';
   });
   const [showRRRModal, setShowRRRModal] = useState(false);
+  const [showPricingModal, setShowPricingModal] = useState(false);
 
   // Ref for UrlForm (for smooth scroll from Pricing section)
   const urlFormRef = useRef<HTMLDivElement>(null);
@@ -233,7 +235,7 @@ export default function Home() {
         */}
 
         {/* Pro Hero Banner */}
-        <ProHeroBanner />
+        <ProHeroBanner onOpenPricingModal={() => setShowPricingModal(true)} />
 
         {/* RRR Trick Tip Banner */}
         <RRRTipBanner onClick={() => setShowRRRModal(true)} language={language} />
@@ -366,6 +368,9 @@ export default function Home() {
 
       {/* RRR Trick Modal */}
       <RRRTrickModal isOpen={showRRRModal} onClose={() => setShowRRRModal(false)} language={language} />
+
+      {/* Pricing Comparison Modal */}
+      <PricingComparisonModal isOpen={showPricingModal} onClose={() => setShowPricingModal(false)} />
 
         {/* Footer */}
         {/* @ts-ignore */}

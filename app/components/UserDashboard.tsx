@@ -10,6 +10,7 @@ import PlatformSelector from './PlatformSelector';
 import SocialProofTicker from './SocialProofTicker';
 import FeaturesGrid from './FeaturesGrid';
 import ProHeroBanner from './ProHeroBanner';
+import PricingComparisonModal from './PricingComparisonModal';
 
 interface UserDashboardProps {
   language?: string;
@@ -67,6 +68,9 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
   const [processingError, setProcessingError] = useState('');
   const [originalUrl, setOriginalUrl] = useState('');
   const [hasAutoSubmitted, setHasAutoSubmitted] = useState(false);
+
+  // Modal state
+  const [showPricingModal, setShowPricingModal] = useState(false);
 
   // For authenticated users - history
   const [history, setHistory] = useState<JobHistory[]>([]);
@@ -259,6 +263,7 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
   if (!isAuthenticated) {
     try {
       return (
+      <>
       <div className="w-full flex flex-col items-center justify-start min-h-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Logo */}
         <div className="mb-4 flex items-center gap-2">
@@ -286,7 +291,7 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
         </div>
 
         {/* Pro Hero Banner */}
-        <ProHeroBanner />
+        <ProHeroBanner onOpenPricingModal={() => setShowPricingModal(true)} />
 
         {/* Platform Selector */}
         <div className="w-full max-w-5xl mb-4 overflow-hidden">
@@ -364,6 +369,10 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
           </>
         )}
       </div>
+
+      {/* Pricing Comparison Modal */}
+      <PricingComparisonModal isOpen={showPricingModal} onClose={() => setShowPricingModal(false)} />
+      </>
     );
     } catch (guestError) {
       const err = guestError instanceof Error ? guestError : new Error(String(guestError));
