@@ -83,8 +83,10 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
   };
 
   const handleUpgradeClick = () => {
-    // Open Gumroad checkout in a new window
-    window.open('https://7760636545235.gumroad.com/l/hqxtu', '_blank');
+    const gumroadLink = billingPeriod === 'monthly'
+      ? 'https://7760636545235.gumroad.com/l/hqxtu'
+      : 'https://7760636545235.gumroad.com/l/fzuboe';
+    window.open(gumroadLink, '_blank');
   };
 
   const proPrice = '$19';
