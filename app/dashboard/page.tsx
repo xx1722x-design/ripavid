@@ -9,6 +9,7 @@ import { DashboardErrorBoundary } from '@/app/components/DashboardErrorBoundary'
 import RRRTipBanner from '@/app/components/RRRTipBanner';
 import RRRTrickModal from '@/app/components/RRRTrickModal';
 import DailyLimitPaywall from '@/app/components/DailyLimitPaywall';
+import QuickTagsSection from '@/app/components/QuickTagsSection';
 import Footer from '@/app/components/Footer';
 
 const UserDashboard = dynamic(
@@ -164,6 +165,9 @@ function DashboardContent() {
             />
           </Suspense>
         </div>
+
+        {/* Quick Tags Section for SEO */}
+        <QuickTagsSection />
 
         {/* Footer */}
         <Footer language={language} />

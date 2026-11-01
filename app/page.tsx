@@ -21,6 +21,7 @@ import RRRTipBanner from './components/RRRTipBanner';
 import RRRTrickModal from './components/RRRTrickModal';
 import PricingComparisonModal from './components/PricingComparisonModal';
 import DailyLimitPaywall from './components/DailyLimitPaywall';
+import QuickTagsSection from './components/QuickTagsSection';
 import { translations, getTranslations } from './locales';
 
 interface Format {
@@ -376,6 +377,9 @@ export default function Home() {
 
       {/* Daily Limit Paywall Modal */}
       <DailyLimitPaywall isOpen={showDailyLimitPaywall} onClose={() => setShowDailyLimitPaywall(false)} />
+
+      {/* Quick Tags Section for SEO */}
+      <QuickTagsSection />
 
         {/* Footer */}
         {/* @ts-ignore */}
