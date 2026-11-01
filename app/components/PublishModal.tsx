@@ -153,24 +153,32 @@ export default function PublishModal({
           {/* Success Message */}
           {publishSuccess && (
             <div className="bg-green-900/30 border border-green-500/50 rounded-lg p-4">
-              <p className="text-green-300 font-semibold mb-2">✅ Publishing Successful!</p>
-              <div className="space-y-1 text-sm text-green-300/80">
+              <p className="text-green-300 font-semibold mb-2">✅ Sent to Local Bot!</p>
+              <div className="space-y-2 text-sm text-green-300/80">
                 {Object.entries(publishingStatus).map(([platform, result]) => (
-                  <div key={platform} className="flex items-center gap-2">
-                    <span>{result.status === 'success' ? '✓' : '✗'}</span>
-                    <span className="capitalize">{platform}</span>
-                    {result.url && (
-                      <a
-                        href={result.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-cyan-400 hover:underline"
-                      >
-                        View →
-                      </a>
-                    )}
+                  <div key={platform} className="flex items-center gap-3 bg-green-900/20 p-2 rounded">
+                    <span className="text-lg">
+                      {platform === 'youtube' && '🎥'}
+                      {platform === 'instagram' && '📱'}
+                      {platform === 'tiktok' && '🎵'}
+                      {platform === 'xiaohongshu' && '❤️'}
+                    </span>
+                    <div className="flex-1">
+                      <div className="font-semibold capitalize">{platform}</div>
+                      <div className="text-xs text-green-400/70">
+                        {result.status === 'sent_to_local_bot' ? '🤖 Webhook sent to local bot' : '⏳ Processing...'}
+                      </div>
+                    </div>
+                    <span className="text-xl">✓</span>
                   </div>
                 ))}
+                <div className="mt-3 p-3 bg-blue-900/20 rounded border border-blue-500/30">
+                  <p className="text-xs text-blue-300">
+                    💡 Your local Playwright automation will now execute the upload scripts for each platform.
+                    <br />
+                    Check your local bot console for progress.
+                  </p>
+                </div>
               </div>
             </div>
           )}

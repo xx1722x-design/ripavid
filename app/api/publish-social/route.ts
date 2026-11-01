@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import axios from 'axios';
 
 interface PublishRequest {
   videoUrl: string;
@@ -11,23 +12,19 @@ interface PublishRequest {
 interface PublishResponse {
   success: boolean;
   processingId?: string;
-  results?: Record<string, { success: boolean; url?: string; error?: string }>;
+  results?: Record<string, { success: boolean; status?: string; error?: string }>;
   message: string;
   error?: string;
 }
 
-// Platform API token storage (in production, use secure vault)
-const PLATFORM_TOKENS = {
-  youtube: process.env.YOUTUBE_API_KEY || 'mock_token',
-  instagram: process.env.INSTAGRAM_ACCESS_TOKEN || 'mock_token',
-  tiktok: process.env.TIKTOK_API_KEY || 'mock_token',
-  xiaohongshu: process.env.XIAOHONGSHU_API_KEY || 'mock_token',
-};
+// Webhook URL for local automation bot (n8n, Python server, etc.)
+const WEBHOOK_URL = process.env.WEBHOOK_URL || '';
+const WEBHOOK_TIMEOUT = 30000; // 30 seconds
 
 // In-memory storage for publishing jobs
 const publishingJobs = new Map<string, {
   status: 'processing' | 'success' | 'partial' | 'error';
-  results?: Record<string, { success: boolean; url?: string; error?: string }>;
+  results?: Record<string, { success: boolean; status?: string; error?: string }>;
   error?: string;
   createdAt: number;
 }>();
@@ -42,197 +39,146 @@ setInterval(() => {
   }
 }, 10 * 60 * 1000);
 
-// YouTube Shorts upload (mock implementation)
-async function publishToYouTube(videoUrl: string, title: string, description?: string, tags?: string[]): Promise<{ success: boolean; url?: string; error?: string }> {
+/**
+ * Send Webhook to local automation bot (Playwright scripts or n8n)
+ *
+ * SETUP GUIDE:
+ * ============
+ *
+ * Option A: n8n Webhook
+ * 1. In n8n, create a new workflow with "Webhook" trigger
+ * 2. Configure the Webhook: Set URL path like "/ripavid/publish"
+ * 3. Full URL: https://your-n8n.com/webhook/ripavid/publish
+ * 4. In your automation, receive the webhook and trigger your Python scripts:
+ *    - YouTube: exec("python open_youtube.py {videoUrl} '{title}'")
+ *    - TikTok: exec("python open_tiktok.py {videoUrl} '{title}'")
+ *    - Instagram: exec("python open_instagram.py {videoUrl} '{title}'")
+ *
+ * Option B: Local Python Server
+ * 1. Create a Flask/FastAPI server:
+ *    ```python
+ *    from fastapi import FastAPI
+ *    import subprocess
+ *
+ *    app = FastAPI()
+ *
+ *    @app.post("/webhook/publish")
+ *    async def handle_publish(data: dict):
+ *        video_url = data.get("videoUrl")
+ *        title = data.get("title")
+ *        platforms = data.get("platforms", [])
+ *
+ *        for platform in platforms:
+ *            script = f"open_{platform}.py"
+ *            subprocess.run(["python", script, video_url, title])
+ *
+ *        return {"success": True}
+ *    ```
+ * 2. Run: uvicorn app:app --port 8000
+ * 3. Set WEBHOOK_URL=http://localhost:8000/webhook/publish
+ *
+ * Option C: ngrok Tunnel (for local testing)
+ * 1. Run ngrok: ngrok http 8000
+ * 2. Copy HTTPS URL: https://xxxxx.ngrok.io
+ * 3. Set WEBHOOK_URL=https://xxxxx.ngrok.io/webhook/publish
+ */
+async function sendWebhook(
+  videoUrl: string,
+  title: string,
+  platforms: string[],
+  description?: string
+): Promise<{ success: boolean; status?: string; error?: string }> {
   try {
-    console.log('[YouTube] Publishing to YouTube Shorts...');
-
-    // TODO: Replace with actual YouTube Data API v3 implementation
-    // Current: Mock response for testing
-
-    if (!PLATFORM_TOKENS.youtube || PLATFORM_TOKENS.youtube === 'mock_token') {
-      console.warn('[YouTube] API token not configured. Using mock response.');
+    if (!WEBHOOK_URL) {
+      console.warn('[Webhook] WEBHOOK_URL not configured. Skipping webhook send.');
       return {
-        success: true,
-        url: `https://youtube.com/shorts/MOCK_${Date.now()}`,
+        success: false,
+        status: 'webhook_not_configured',
+        error: 'Webhook URL not configured in environment',
       };
     }
 
-    // Actual implementation would use:
-    // const youtube = google.youtube({
-    //   version: 'v3',
-    //   auth: PLATFORM_TOKENS.youtube,
-    // });
-    // const response = await youtube.videos.insert({ ... });
+    console.log(`[Webhook] Sending to ${WEBHOOK_URL}...`);
+
+    // Send webhook payload to local bot
+    const response = await axios.post(
+      WEBHOOK_URL,
+      {
+        videoUrl,
+        title,
+        description: description || '',
+        platforms,
+        timestamp: new Date().toISOString(),
+        source: 'ripavid',
+      },
+      {
+        timeout: WEBHOOK_TIMEOUT,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-RipAVid-Signature': 'v1',
+        },
+      }
+    );
+
+    console.log('[Webhook] Success:', response.data);
 
     return {
       success: true,
-      url: `https://youtube.com/shorts/PUBLISHED_${Date.now()}`,
+      status: 'webhook_sent',
     };
   } catch (error) {
-    console.error('[YouTube] Publishing error:', error);
+    console.error('[Webhook] Error:', error);
+
+    if (error instanceof axios.AxiosError) {
+      return {
+        success: false,
+        status: 'webhook_failed',
+        error: `Webhook failed: ${error.message} (${error.response?.status})`,
+      };
+    }
+
     return {
       success: false,
-      error: `YouTube publishing failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      status: 'webhook_error',
+      error: `Webhook error: ${error instanceof Error ? error.message : 'Unknown error'}`,
     };
   }
 }
 
-// Instagram Reels upload (mock implementation)
-async function publishToInstagram(videoUrl: string, title: string, description?: string): Promise<{ success: boolean; url?: string; error?: string }> {
-  try {
-    console.log('[Instagram] Publishing to Instagram Reels...');
-
-    // TODO: Replace with actual Instagram Graph API implementation
-    // Current: Mock response for testing
-
-    if (!PLATFORM_TOKENS.instagram || PLATFORM_TOKENS.instagram === 'mock_token') {
-      console.warn('[Instagram] API token not configured. Using mock response.');
-      return {
-        success: true,
-        url: `https://instagram.com/reel/MOCK_${Date.now()}`,
-      };
-    }
-
-    // Actual implementation would use:
-    // const response = await fetch('https://graph.instagram.com/v18.0/{user-id}/media', {
-    //   method: 'POST',
-    //   headers: { 'Authorization': `Bearer ${token}` },
-    //   body: JSON.stringify({ ... })
-    // });
-
-    return {
-      success: true,
-      url: `https://instagram.com/reel/PUBLISHED_${Date.now()}`,
-    };
-  } catch (error) {
-    console.error('[Instagram] Publishing error:', error);
-    return {
-      success: false,
-      error: `Instagram publishing failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-    };
-  }
-}
-
-// TikTok upload (mock implementation)
-async function publishToTikTok(videoUrl: string, title: string, tags?: string[]): Promise<{ success: boolean; url?: string; error?: string }> {
-  try {
-    console.log('[TikTok] Publishing to TikTok...');
-
-    // TODO: Replace with actual TikTok Open Platform API implementation
-    // Current: Mock response for testing
-
-    if (!PLATFORM_TOKENS.tiktok || PLATFORM_TOKENS.tiktok === 'mock_token') {
-      console.warn('[TikTok] API token not configured. Using mock response.');
-      return {
-        success: true,
-        url: `https://tiktok.com/@ripavid/video/MOCK_${Date.now()}`,
-      };
-    }
-
-    // Actual implementation would use:
-    // const response = await fetch('https://open.tiktokapis.com/v1/post/publish/video/init/', {
-    //   method: 'POST',
-    //   headers: { 'Authorization': `Bearer ${token}` },
-    //   body: JSON.stringify({ ... })
-    // });
-
-    return {
-      success: true,
-      url: `https://tiktok.com/@ripavid/video/PUBLISHED_${Date.now()}`,
-    };
-  } catch (error) {
-    console.error('[TikTok] Publishing error:', error);
-    return {
-      success: false,
-      error: `TikTok publishing failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-    };
-  }
-}
-
-// Xiaohongshu (Little Red Book) upload (mock implementation)
-async function publishToXiaohongshu(videoUrl: string, title: string, description?: string, tags?: string[]): Promise<{ success: boolean; url?: string; error?: string }> {
-  try {
-    console.log('[Xiaohongshu] Publishing to Xiaohongshu...');
-
-    // TODO: Replace with actual Xiaohongshu Creator API implementation
-    // Current: Mock response for testing
-    // Reference: https://creator.xiaohongshu.com/openapi/docs
-
-    if (!PLATFORM_TOKENS.xiaohongshu || PLATFORM_TOKENS.xiaohongshu === 'mock_token') {
-      console.warn('[Xiaohongshu] API token not configured. Using mock response.');
-      return {
-        success: true,
-        url: `https://xiaohongshu.com/discovery/item/MOCK_${Date.now()}`,
-      };
-    }
-
-    // Actual implementation would use:
-    // const response = await fetch('https://openapi.xiaohongshu.com/openapi/sns_v10/feed', {
-    //   method: 'POST',
-    //   headers: { 'Authorization': `Bearer ${token}` },
-    //   body: JSON.stringify({
-    //     feed: { title, desc: description, hashtags: tags }
-    //   })
-    // });
-
-    return {
-      success: true,
-      url: `https://xiaohongshu.com/discovery/item/PUBLISHED_${Date.now()}`,
-    };
-  } catch (error) {
-    console.error('[Xiaohongshu] Publishing error:', error);
-    return {
-      success: false,
-      error: `Xiaohongshu publishing failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-    };
-  }
-}
-
-// Main publishing orchestrator
+// Main publishing orchestrator - sends single webhook to local bot
 async function publishToAllPlatforms(
   videoUrl: string,
   title: string,
   platforms: ('youtube' | 'instagram' | 'tiktok' | 'xiaohongshu')[],
   description?: string,
   tags?: string[]
-): Promise<Record<string, { success: boolean; url?: string; error?: string }>> {
-  const results: Record<string, { success: boolean; url?: string; error?: string }> = {};
+): Promise<Record<string, { success: boolean; status?: string; error?: string }>> {
+  const results: Record<string, { success: boolean; status?: string; error?: string }> = {};
 
-  // Publish to each selected platform in parallel
-  const platformPromises = platforms.map(async (platform) => {
-    try {
-      let result;
+  // Send single webhook to local bot with all platform info
+  const webhookResult = await sendWebhook(videoUrl, title, platforms, description);
 
-      switch (platform) {
-        case 'youtube':
-          result = await publishToYouTube(videoUrl, title, description, tags);
-          break;
-        case 'instagram':
-          result = await publishToInstagram(videoUrl, title, description);
-          break;
-        case 'tiktok':
-          result = await publishToTikTok(videoUrl, title, tags);
-          break;
-        case 'xiaohongshu':
-          result = await publishToXiaohongshu(videoUrl, title, description, tags);
-          break;
-        default:
-          result = { success: false, error: `Unknown platform: ${platform}` };
-      }
-
-      results[platform] = result;
-      console.log(`[Publishing] ${platform}:`, result.success ? 'SUCCESS' : `FAILED - ${result.error}`);
-    } catch (error) {
+  // If webhook succeeded, mark all selected platforms as "sent_to_bot"
+  if (webhookResult.success) {
+    for (const platform of platforms) {
+      results[platform] = {
+        success: true,
+        status: 'sent_to_local_bot',
+      };
+      console.log(`[Publishing] ${platform}: Sent to local bot`);
+    }
+  } else {
+    // If webhook failed, mark all platforms as failed
+    for (const platform of platforms) {
       results[platform] = {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        status: webhookResult.status,
+        error: webhookResult.error,
       };
-      console.error(`[Publishing] ${platform} error:`, error);
+      console.error(`[Publishing] ${platform}: ${webhookResult.error}`);
     }
-  });
+  }
 
-  await Promise.all(platformPromises);
   return results;
 }
 
