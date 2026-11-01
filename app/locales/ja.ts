@@ -102,7 +102,7 @@ export const jaTranslations = {
   faq7Question: 'すべての動画を4Kまたは1080pでダウンロードできますか？',
   faq7Answer: 'Ripavid は、プラットフォーム サーバーに保存されている最高品質のファイルを抽出します。これは、元の作成者がその解像度で動画をアップロードした場合にのみ、4K または 1080p でダウンロードできることを意味します。元の品質を保つために、人為的にアップスケールしたり、解像度を偽ったりすることはありません。',
   // Pricing Section
-  pricingSave60: '60% 節約',
+  pricingSave60: '2ヶ月無料',
   pricingBilledYearly: '年間 $190 請求',
   freePlanTitle: '無料',
   freePlanDescription: '基本的なコンテンツインポートに最適',

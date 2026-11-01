@@ -151,7 +151,7 @@ export const enTranslations = {
   apiReadDocs: 'Read Documentation',
   apiTryRapidapi: 'Try on RapidAPI',
   // Pricing Section
-  pricingSave60: 'Save 60%',
+  pricingSave60: '2 Months Free',
   pricingBilledYearly: 'Billed $190 yearly',
   freePlanTitle: 'Free',
   freePlanDescription: 'Perfect for basic content import',

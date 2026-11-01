@@ -102,7 +102,7 @@ export const zhCNTranslations = {
   faq7Question: '我可以以4K或1080p的分辨率下载任何视频吗？',
   faq7Answer: 'Ripavid提取存储在平台服务器上的最高质量文件。这意味着您只能在原始创意工作者以该分辨率上传视频时才能以4K或1080p分辨率下载。为了保留原始质量，我们不进行人工放大或伪造分辨率。',
   // Pricing Section
-  pricingSave60: '节省 60%',
+  pricingSave60: '免费2个月',
   pricingBilledYearly: '每年计费 $190',
   freePlanTitle: '免费',
   freePlanDescription: '完美适合基本内容导入',

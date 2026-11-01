@@ -151,7 +151,7 @@ export const koTranslations = {
   apiReadDocs: '문서 읽기',
   apiTryRapidapi: 'RapidAPI에서 시도하기',
   // Pricing Section
-  pricingSave60: '60% 절약',
+  pricingSave60: '2개월 무료',
   pricingBilledYearly: '연 $190 청구',
   freePlanTitle: '무료',
   freePlanDescription: '기본 콘텐츠 가져오기에 최적',
