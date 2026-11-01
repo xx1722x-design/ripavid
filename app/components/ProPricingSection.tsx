@@ -157,67 +157,69 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Free Plan */}
-          <div className="relative p-8 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300">
-            <div className="mb-6">
+          <div className="relative p-6 sm:p-8 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col h-full min-h-[550px] sm:min-h-[600px]">
+            <div className="mb-4 sm:mb-6">
               <h3 className="text-2xl font-bold text-white mb-2">{t.freePlanTitle || 'Free'}</h3>
               <p className="text-zinc-400 text-sm">{t.freePlanDescription || 'Perfect for basic content imports'}</p>
             </div>
 
-            <div className="mb-8 pb-8 border-b border-zinc-700">
+            <div className="mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-zinc-700">
               <div className="text-4xl font-bold text-white">
                 $0<span className="text-lg text-zinc-400">/month</span>
               </div>
             </div>
 
-            <ul className="space-y-4 mb-8">
+            <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 flex-grow">
               {[
                 t.freeFeature1 || 'Up to 720p quality',
                 t.freeFeature2 || 'Standard content imports (3 per day)',
                 t.freeFeature3 || 'Basic video fetching'
               ].map((feature) => (
-                <li key={feature} className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-                  <span className="text-zinc-300">{feature}</span>
+                <li key={feature} className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
+                  <span className="text-zinc-300 text-sm sm:text-base">{feature}</span>
                 </li>
               ))}
             </ul>
 
-            {!isAuthenticated ? (
-              <button
-                onClick={handleFreeClick}
-                className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors"
-              >
-                {t.freeCtaButton || 'Get Started'}
-              </button>
-            ) : user?.tier === 'free' ? (
-              <button
-                onClick={handleFreeClick}
-                className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors"
-              >
-                {t.freeBackButton || 'Back to Importer'}
-              </button>
-            ) : null}
+            <div className="mt-auto pt-4 sm:pt-6">
+              {!isAuthenticated ? (
+                <button
+                  onClick={handleFreeClick}
+                  className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors text-sm sm:text-base"
+                >
+                  {t.freeCtaButton || 'Get Started'}
+                </button>
+              ) : user?.tier === 'free' ? (
+                <button
+                  onClick={handleFreeClick}
+                  className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors text-sm sm:text-base"
+                >
+                  {t.freeBackButton || 'Back to Importer'}
+                </button>
+              ) : null}
+            </div>
           </div>
 
           {/* Pro Plan - Featured */}
-          <div className="relative p-8 border-2 border-cyan-500 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-blue-900/20 hover:from-cyan-900/40 hover:to-blue-900/40 transition-all duration-300 md:scale-105">
+          <div className="relative p-6 sm:p-8 border-2 border-cyan-500 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-blue-900/20 hover:from-cyan-900/40 hover:to-blue-900/40 transition-all duration-300 md:scale-105 flex flex-col h-full min-h-[550px] sm:min-h-[600px]">
             <div className="absolute -top-4 left-6 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold">
               {t.proMostPopular || 'MOST POPULAR'}
             </div>
 
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <h3 className="text-2xl font-bold text-white mb-2">{t.proPlanTitle || 'Pro'}</h3>
               <p className="text-cyan-300 text-sm">{t.proPlanDescription || 'Professional content localization suite'}</p>
             </div>
 
-            <div className="mb-8 pb-8 border-b border-cyan-500/30">
+            <div className="mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-cyan-500/30">
               <div className="text-4xl font-bold text-white">
                 {proPrice}<span className="text-lg text-zinc-400">/month</span>
               </div>
               <p className="text-xs text-zinc-400 mt-2">{proBilledText}</p>
             </div>
 
-            <ul className="space-y-4 mb-8">
+            <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 flex-grow overflow-y-auto max-h-[250px]">
               {[
                 t.proFeature1 || '👑 1080p & 4K Unlimited Imports (Asia platforms incl.)',
                 t.proFeature2 || '👑 AI Subtitle Extraction (SRT)',
@@ -225,26 +227,28 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                 t.proFeature4 || '👑 Viral Shorts Timestamp Curation',
                 t.proFeature5 || '👑 Auto SEO Title & Tags Generation'
               ].map((feature) => (
-                <li key={feature} className="flex items-center gap-3">
-                  <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
-                  <span className="text-zinc-300">{feature}</span>
+                <li key={feature} className="flex items-start gap-3">
+                  <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                  <span className="text-zinc-300 text-sm sm:text-base">{feature}</span>
                 </li>
               ))}
             </ul>
 
-            {user?.tier === 'pro' ? (
-              <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg transition-all opacity-70 cursor-default">
-                Your Current Plan
-              </button>
-            ) : (
-              <button
-                onClick={handleUpgradeClick}
-                disabled={isLoading}
-                className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105"
-              >
-                {isLoading ? 'Loading...' : !isAuthenticated ? 'Sign In to Upgrade' : 'Upgrade Now'}
-              </button>
-            )}
+            <div className="mt-auto pt-4 sm:pt-6">
+              {user?.tier === 'pro' ? (
+                <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg transition-all opacity-70 cursor-default text-sm sm:text-base">
+                  Your Current Plan
+                </button>
+              ) : (
+                <button
+                  onClick={handleUpgradeClick}
+                  disabled={isLoading}
+                  className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-sm sm:text-base"
+                >
+                  {isLoading ? 'Loading...' : 'Upgrade Now'}
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
