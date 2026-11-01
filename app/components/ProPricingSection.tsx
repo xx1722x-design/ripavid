@@ -82,19 +82,9 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     }
   };
 
-  const handleUpgradeClick = async () => {
-    if (!isAuthenticated) {
-      window.location.href = '/api/auth/google';
-      return;
-    }
-
-    if (user?.tier === 'pro') {
-      alert('You are already a Pro member!');
-      return;
-    }
-
-    // Show payment method selection modal
-    setShowPaymentMethodModal(true);
+  const handleUpgradeClick = () => {
+    // Open Gumroad checkout in a new window
+    window.open('https://7760636545235.gumroad.com/l/hqxtu', '_blank');
   };
 
   const proPrice = '$19';
