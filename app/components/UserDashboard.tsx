@@ -133,6 +133,10 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
       setResult(null);
       setOriginalUrl(trimmedUrl);
 
+      let serverRawText = '';
+      let responseStatus = 0;
+      let responseHeaders: any = {};
+
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
@@ -148,41 +152,73 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
           });
 
           clearTimeout(timeoutId);
+          responseStatus = response.status;
+          responseHeaders = Object.fromEntries(response.headers.entries());
 
-          // Handle different response statuses with specific messages
+          // CRITICAL: Capture raw text first, before attempting JSON parse
+          serverRawText = await response.text();
+          console.log('[UserDashboard] Raw server response:', serverRawText);
+
           if (!response.ok) {
-            let errorMessage = `❌ Server Error (${response.status})`;
-
+            // Try JSON parse first
+            let errorData: any = null;
             try {
-              const errorData = await response.json();
-              if (errorData.error) {
-                errorMessage = `❌ ${errorData.error}`;
-              }
-            } catch (jsonError) {
-              // Response is not JSON, use status text
-              if (response.statusText) {
-                errorMessage = `❌ ${response.statusText}`;
-              }
+              errorData = JSON.parse(serverRawText);
+            } catch (parseError) {
+              // Not JSON, use raw text
+              console.error('[UserDashboard] Server returned non-JSON error:', serverRawText);
             }
 
-            throw new Error(errorMessage);
+            const errorMessage = errorData?.error ||
+                                 `Server Error ${response.status}: ${serverRawText.substring(0, 200)}`;
+
+            const fullError = `
+❌ API REQUEST FAILED
+
+Status: ${response.status} ${response.statusText}
+Headers: ${JSON.stringify(responseHeaders, null, 2)}
+
+Server Response (Raw Text):
+${serverRawText}
+
+Parsed Error (if JSON): ${errorData?.error || 'Not JSON'}
+Stack Trace (if available): ${errorData?.stack || 'Not available'}`;
+
+            throw new Error(fullError);
           }
 
-          // Try to parse response
+          // CRITICAL: Try to parse JSON response
           let data: VideoData | null = null;
           try {
-            data = await response.json();
+            data = JSON.parse(serverRawText);
           } catch (jsonError) {
+            const fullError = `
+❌ JSON PARSE ERROR
+
+Cannot parse server response as JSON.
+
+Server Response (Raw Text):
+${serverRawText}
+
+Parse Error: ${jsonError instanceof Error ? jsonError.message : String(jsonError)}
+Stack: ${jsonError instanceof Error ? jsonError.stack : 'N/A'}`;
+
             console.error('[UserDashboard] JSON parse error:', jsonError);
-            throw new Error(
-              '❌ Invalid server response format. The server returned data that could not be processed.'
-            );
+            throw new Error(fullError);
           }
 
           if (!data || !data.formats) {
-            throw new Error(
-              '❌ No video formats found. The video might be unavailable or restricted.'
-            );
+            const fullError = `
+❌ INVALID RESPONSE FORMAT
+
+Server returned valid JSON but missing required fields.
+
+Response Structure:
+${JSON.stringify(data, null, 2)}
+
+Required fields: title, formats (with free and premium arrays)`;
+
+            throw new Error(fullError);
           }
 
           setResult(data);
@@ -192,39 +228,46 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
 
           if (fetchError instanceof TypeError) {
             // Network error
-            if (fetchError.message.includes('Timeout')) {
+            const fullError = `
+❌ NETWORK ERROR
+
+${fetchError.message}
+
+Stack Trace:
+${fetchError.stack || 'Not available'}
+
+Server Raw Response: ${serverRawText || 'No response received'}`;
+
+            if (fetchError.message.includes('Timeout') || fetchError.message.includes('AbortError')) {
               throw new Error(
-                '⏱️ Request timed out. The video extraction took too long. Please try again.'
+                `⏱️ REQUEST TIMEOUT (60 seconds)\n\n${fullError}`
               );
             } else {
-              throw new Error(
-                `❌ Network error: ${fetchError.message}. Please check your connection.`
-              );
+              throw new Error(fullError);
             }
           } else if (fetchError instanceof Error) {
             throw fetchError;
           } else {
-            throw new Error('❌ Failed to extract video. Please try again.');
+            throw new Error(`❌ Unknown error: ${String(fetchError)}\n\nServer response: ${serverRawText}`);
           }
         }
       } catch (err) {
-        const errorMsg = (() => {
+        const fullErrorMsg = (() => {
           if (err instanceof Error) {
-            return err.message.startsWith('❌') || err.message.startsWith('⏱️')
-              ? err.message
-              : `❌ ${err.message}`;
+            return err.message;
           }
-          return '❌ Failed to extract video. Please try again.';
+          return `❌ UNEXPECTED ERROR\n\n${String(err)}\n\nServer Response: ${serverRawText}`;
         })();
 
-        setProcessingError(errorMsg);
+        setProcessingError(fullErrorMsg);
         console.error('[UserDashboard] Download error:', err);
+        console.error('[UserDashboard] Server raw response:', serverRawText);
       } finally {
         setProcessingLoading(false);
       }
     } catch (outerErr) {
-      const errorMsg = outerErr instanceof Error ? outerErr.message : 'An unexpected error occurred. Please try again.';
-      setProcessingError(`❌ ${errorMsg}`);
+      const errorMsg = outerErr instanceof Error ? outerErr.message : `❌ ${String(outerErr)}`;
+      setProcessingError(errorMsg);
       console.error('[UserDashboard] Unexpected error in handleRipVideo:', outerErr);
       setProcessingLoading(false);
     }
@@ -312,24 +355,30 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
           />
         </div>
 
-        {/* Error Display */}
+        {/* Error Display - Full Debug Mode */}
         {processingError && (
-          <div className="w-full max-w-2xl mx-auto bg-red-900/20 border border-red-500/50 text-red-200 px-6 py-4 rounded-lg flex items-start gap-3 mb-8">
-            <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-            </svg>
-            <div className="flex-1">
-              <p className="text-sm font-medium">Error</p>
-              <p className="text-sm mt-1">{processingError}</p>
+          <div className="w-full max-w-4xl mx-auto bg-red-900/30 border-2 border-red-500 text-red-100 px-6 py-4 rounded-lg mb-8">
+            <div className="flex items-start justify-between gap-3 mb-4">
+              <div className="flex items-center gap-2">
+                <svg className="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <p className="font-bold text-base">⚠️ ERROR DETAILS</p>
+              </div>
+              <button
+                onClick={() => setProcessingError('')}
+                className="text-red-200 hover:text-red-100 flex-shrink-0 p-1"
+                title="Close error"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-            <button
-              onClick={() => setProcessingError('')}
-              className="text-red-200 hover:text-red-100 flex-shrink-0"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <pre className="bg-black/40 rounded p-4 overflow-x-auto text-xs font-mono whitespace-pre-wrap break-words max-h-96 overflow-y-auto border border-red-700">
+{processingError}
+            </pre>
+            <p className="text-xs mt-4 text-red-300">💡 Please share this error message when reporting a bug. Copy the entire error box above.</p>
           </div>
         )}
 

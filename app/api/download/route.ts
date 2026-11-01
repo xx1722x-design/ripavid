@@ -71,8 +71,23 @@ export async function POST(request: NextRequest) {
   console.log('🎬 /api/download 요청 수신');
   console.log('═══════════════════════════════════════════════════════');
 
+  // CRITICAL: Wrap entire function in try-catch
   try {
-    const body: DownloadRequest = await request.json();
+    let body: DownloadRequest;
+    try {
+      body = await request.json();
+    } catch (jsonError) {
+      console.error('❌ Request JSON parsing failed:', jsonError);
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid JSON in request body',
+          details: jsonError instanceof Error ? jsonError.message : String(jsonError),
+          stack: jsonError instanceof Error ? jsonError.stack : undefined,
+        },
+        { status: 400 }
+      );
+    }
     const { url } = body;
 
     console.log('📥 요청 바디:', { url });
@@ -208,27 +223,42 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(responseData);
   } catch (error) {
-    console.error('❌ Download API fatal error:', error);
+    // CRITICAL: Capture and return full error details
+    console.error('❌ Download API FATAL error:', error);
+    console.error('Error type:', error instanceof Error ? error.constructor.name : typeof error);
+    console.error('Error message:', error instanceof Error ? error.message : String(error));
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack available');
 
-    // Provide specific error messages based on error type
     let errorMessage = 'Failed to extract video information. Please try again.';
+    let errorStack = 'No stack trace available';
 
     if (error instanceof Error) {
+      errorStack = error.stack || 'No stack trace available';
+
       if (error.message.includes('JSON')) {
         errorMessage = 'Backend returned invalid data format. Please try again.';
       } else if (error.message.includes('snagaclip')) {
         errorMessage = 'Video extraction service temporarily unavailable. Please try again later.';
       } else if (error.message.includes('fetch')) {
         errorMessage = 'Network error while contacting video service. Please check your connection.';
-      } else if (error.message.length < 200) {
+      } else if (error.message.length < 500) {
         errorMessage = error.message;
+      } else {
+        errorMessage = error.message.substring(0, 500) + '...';
       }
     }
 
+    // Return FULL error details to frontend for debugging
     return NextResponse.json(
       {
         success: false,
         error: errorMessage,
+        details: {
+          fullMessage: error instanceof Error ? error.message : String(error),
+          type: error instanceof Error ? error.constructor.name : typeof error,
+          stack: errorStack,
+        },
+        timestamp: new Date().toISOString(),
       },
       { status: 500 }
     );
