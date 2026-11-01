@@ -121,7 +121,8 @@ export const trTranslations = {
   proFeature3: '👑 1-Click Multi-language Translation (20+ languages)',
   proFeature4: '👑 Viral Shorts Timestamp Curation',
 
-  proFeature5: '👑 Auto SEO Title & Tags Generation',  proMostPopular: 'En Popüler',
+  proFeature5: '👑 Auto SEO Title & Tags Generation',
+  proMostPopular: 'En Popüler',
 
   // RRR Trick Feature
   rrrTipText: 'medyayı anında içe aktar!',

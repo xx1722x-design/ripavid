@@ -202,48 +202,50 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </div>
 
           {/* Pro Plan - Featured */}
-          <div className="relative p-6 sm:p-8 border-2 border-cyan-500 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-blue-900/20 hover:from-cyan-900/40 hover:to-blue-900/40 transition-all duration-300 md:scale-105 flex flex-col h-full min-h-[550px] sm:min-h-[600px]">
-            <div className="absolute -top-4 left-6 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-              {t.proMostPopular || 'MOST POPULAR'}
-            </div>
-
-            <div className="mb-4 sm:mb-6">
-              <h3 className="text-2xl font-bold text-white mb-2">{t.proPlanTitle || 'Pro'}</h3>
-              <p className="text-cyan-300 text-sm">{t.proPlanDescription || 'Professional content localization suite'}</p>
-            </div>
-
-            <div className="mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-cyan-500/30">
-              <div className="text-4xl font-bold text-white">
-                {proPrice}<span className="text-lg text-zinc-400">/month</span>
+          <div className="relative p-6 sm:p-8 border-2 border-cyan-500 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-blue-900/20 hover:from-cyan-900/40 hover:to-blue-900/40 transition-all duration-300 md:scale-105 flex flex-col justify-between h-full min-h-[600px] sm:min-h-[650px] overflow-hidden">
+            <div className="flex-1 overflow-y-auto">
+              <div className="absolute -top-4 left-6 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                {t.proMostPopular || 'MOST POPULAR'}
               </div>
-              <p className="text-xs text-zinc-400 mt-2">{proBilledText}</p>
+
+              <div className="mb-3">
+                <h3 className="text-2xl font-bold text-white mb-1">{t.proPlanTitle || 'Pro'}</h3>
+                <p className="text-cyan-300 text-sm">{t.proPlanDescription || 'Professional content localization suite'}</p>
+              </div>
+
+              <div className="mb-4 pb-4 border-b border-cyan-500/30">
+                <div className="text-4xl font-bold text-white">
+                  {proPrice}<span className="text-lg text-zinc-400">/month</span>
+                </div>
+                <p className="text-xs text-zinc-400 mt-1">{proBilledText}</p>
+              </div>
+
+              <ul className="space-y-2 sm:space-y-3">
+                {[
+                  t.proFeature1 || '👑 1080p & 4K Unlimited Imports (Asia platforms incl.)',
+                  t.proFeature2 || '👑 AI Subtitle Extraction (SRT)',
+                  t.proFeature3 || '👑 1-Click Multi-language Translation (20+ languages)',
+                  t.proFeature4 || '👑 Viral Shorts Timestamp Curation',
+                  t.proFeature5 || '👑 Auto SEO Title & Tags Generation'
+                ].map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 sm:gap-3">
+                    <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-zinc-300 text-xs sm:text-sm">{feature}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 flex-grow overflow-y-auto max-h-[250px]">
-              {[
-                t.proFeature1 || '👑 1080p & 4K Unlimited Imports (Asia platforms incl.)',
-                t.proFeature2 || '👑 AI Subtitle Extraction (SRT)',
-                t.proFeature3 || '👑 1-Click Multi-language Translation (20+ languages)',
-                t.proFeature4 || '👑 Viral Shorts Timestamp Curation',
-                t.proFeature5 || '👑 Auto SEO Title & Tags Generation'
-              ].map((feature) => (
-                <li key={feature} className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                  <span className="text-zinc-300 text-sm sm:text-base">{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-auto pt-4 sm:pt-6">
+            <div className="flex-shrink-0 pt-4 sm:pt-5 mt-4">
               {user?.tier === 'pro' ? (
-                <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg transition-all opacity-70 cursor-default text-sm sm:text-base">
+                <button className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg transition-all opacity-70 cursor-default text-xs sm:text-sm">
                   Your Current Plan
                 </button>
               ) : (
                 <button
                   onClick={handleUpgradeClick}
                   disabled={isLoading}
-                  className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-sm sm:text-base"
+                  className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
                 >
                   {isLoading ? 'Loading...' : 'Upgrade Now'}
                 </button>
