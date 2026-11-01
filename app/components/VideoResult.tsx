@@ -156,6 +156,10 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         } catch {
           // JSON parse failed, use status message
         }
+        // Mark 403 errors explicitly so they don't trigger error box
+        if (response.status === 403) {
+          throw new Error('DAILY_LIMIT_EXCEEDED');
+        }
         throw new Error(errorMessage);
       }
 
@@ -174,13 +178,16 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       setIsWaiting(false);
       setLoadingQuality(null);
 
-      // Don't show error dialog for 403 - DailyLimitPaywall is already shown
       const errorMessage = error instanceof Error ? error.message : 'Failed to prepare download. Please try again.';
 
-      // Only call onError if it's not a 403 (daily limit exceeded)
-      if (!errorMessage.includes('403') && !errorMessage.includes('DAILY_LIMIT_EXCEEDED')) {
-        onError?.(errorMessage);
+      // Don't call onError for 403 errors - DailyLimitPaywall handles it
+      if (errorMessage === 'DAILY_LIMIT_EXCEEDED') {
+        onShowDailyLimitPaywall?.();
+        return;
       }
+
+      // Only call onError for non-403 errors
+      onError?.(errorMessage);
     }
   };
 

@@ -7,6 +7,7 @@ import { useAuth } from '@/app/context/AuthContext';
 import { ErrorTrapBanner } from '@/app/components/ErrorTrapBanner';
 import { DashboardErrorBoundary } from '@/app/components/DashboardErrorBoundary';
 import RRRTipBanner from '@/app/components/RRRTipBanner';
+import RRRTrickModal from '@/app/components/RRRTrickModal';
 import Footer from '@/app/components/Footer';
 
 const UserDashboard = dynamic(
@@ -163,6 +164,9 @@ function DashboardContent() {
 
         {/* Footer */}
         <Footer language={language} />
+
+        {/* RRR Trick Modal */}
+        <RRRTrickModal isOpen={showRRRModal} onClose={() => setShowRRRModal(false)} language={language} />
       </div>
     );
   } catch (fatalError) {
