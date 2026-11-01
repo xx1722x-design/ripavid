@@ -44,6 +44,7 @@ export default function Footer({ language = 'en' }: FooterProps) {
             <ul className="space-y-2 text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600">
               <li><a href="/terms" className="hover:text-cyan-400 transition-colors">{t.footerTermsLink}</a></li>
               <li><a href="/privacy" className="hover:text-cyan-400 transition-colors">{t.footerPrivacyLink}</a></li>
+              <li><a href="/refund" className="hover:text-cyan-400 transition-colors">Refund Policy</a></li>
               <li><a href="/dmca" className="hover:text-cyan-400 transition-colors">{t.footerDmcaLink}</a></li>
             </ul>
           </div>

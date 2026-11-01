@@ -1,142 +1,153 @@
-import Link from 'next/link';
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: 'Privacy Policy - RipAVid',
-  description: 'Privacy Policy for RipAVid video downloader',
+export const metadata: Metadata = {
+  title: "Privacy Policy - RipAVid",
+  description: "Privacy Policy for RipAVid content localization platform",
 };
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black text-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black text-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
         <div className="mb-12">
-          <Link href="/" className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 mb-8">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Home
-          </Link>
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-4">
-            Privacy Policy
-          </h1>
-          <p className="text-zinc-400">Last updated: October 26, 2026</p>
+          <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
+          <p className="text-zinc-400">Last Updated: November 1, 2026</p>
         </div>
 
-        {/* Content */}
         <div className="prose prose-invert max-w-none space-y-8">
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">1. Introduction</h2>
+            <h2 className="text-2xl font-bold mt-8 mb-4">1. Introduction</h2>
             <p className="text-zinc-300 leading-relaxed">
-              RipAVid ("we", "us", "our", or "Company") operates the RipAVid website. This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data.
+              RipAVid ("we," "us," "our," or "Company") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website (ripavid.com) and use our Service. Please read this Privacy Policy carefully. If you do not agree with our policies and practices, please do not use our Service.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">2. Information Collection and Use</h2>
-            <p className="text-zinc-300 leading-relaxed mb-4">
-              We collect different types of information for various purposes to provide and improve our Service to you.
+            <h2 className="text-2xl font-bold mt-8 mb-4">2. Information We Collect</h2>
+            <p className="text-zinc-300 leading-relaxed mb-3">
+              <strong>Information You Provide Directly:</strong> We collect information you voluntarily provide when you create an account, including your name, email address, payment information, and account preferences. When you use our Service, we collect the video URLs, content links, and metadata you submit for processing.
             </p>
+            <p className="text-zinc-300 leading-relaxed mb-3">
+              <strong>Information Collected Automatically:</strong> We automatically collect certain information about your device and usage patterns, including IP address, browser type, operating system, pages visited, time spent on pages, and other analytics data. This information is collected through cookies, web beacons, and similar technologies.
+            </p>
+            <p className="text-zinc-300 leading-relaxed">
+              <strong>YouTube and API Data:</strong> When you submit YouTube URLs or other video links for processing, our Service accesses transcript data, metadata, and publicly available information associated with that content through YouTube'"'"'s APIs and similar services. This data is transmitted through Google'"'"'s infrastructure and is subject to Google'"'"'s privacy policies.
+            </p>
+          </section>
 
-            <h3 className="text-xl font-semibold text-cyan-300 mb-3">Types of Data Collected:</h3>
-            <ul className="list-disc list-inside space-y-2 text-zinc-300 mb-4">
-              <li><strong>Usage Data:</strong> Browser type, IP address, pages visited, and time spent</li>
-              <li><strong>Device Data:</strong> Device type, operating system, and unique identifiers</li>
-              <li><strong>Cookies and Tracking:</strong> We use cookies to track preferences and improve user experience</li>
-              <li><strong>Video URLs:</strong> We do not store the URLs you submit; they are processed temporarily and discarded</li>
+          <section>
+            <h2 className="text-2xl font-bold mt-8 mb-4">3. How We Use Your Information</h2>
+            <p className="text-zinc-300 leading-relaxed mb-3">
+              We use collected information for the following purposes:
+            </p>
+            <ul className="text-zinc-300 leading-relaxed space-y-2 list-disc list-inside">
+              <li>To provide, maintain, and improve our Service</li>
+              <li>To process your subscription and handle payments through Paddle</li>
+              <li>To communicate with you about your account, updates, and promotional offers</li>
+              <li>To process video content for subtitle extraction, translation, and localization</li>
+              <li>To analyze usage patterns and optimize our Service</li>
+              <li>To comply with legal obligations and enforce our Terms of Service</li>
+              <li>To detect, prevent, and address fraud, security issues, and technical problems</li>
+              <li>To provide customer support and respond to your inquiries</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">3. Use of Data</h2>
-            <p className="text-zinc-300 leading-relaxed">
-              RipAVid uses the collected data for various purposes:
+            <h2 className="text-2xl font-bold mt-8 mb-4">4. Google API Usage and Data Processing</h2>
+            <p className="text-zinc-300 leading-relaxed mb-3">
+              Our Service uses Google'"'"'s Generative AI APIs (Gemini) and YouTube Transcript APIs to process video content you submit. When you provide YouTube URLs:
             </p>
-            <ul className="list-disc list-inside space-y-2 text-zinc-300 mt-4">
-              <li>To provide and maintain our Service</li>
-              <li>To notify you about changes to our Service</li>
-              <li>To allow you to participate in interactive features of our Service</li>
-              <li>To provide customer care and support</li>
-              <li>To gather analysis or valuable information so that we can improve our Service</li>
-              <li>To monitor the usage of our Service</li>
-              <li>To detect, prevent, and address technical issues and fraudulent activity</li>
+            <ul className="text-zinc-300 leading-relaxed space-y-2 list-disc list-inside">
+              <li>YouTube transcript data is retrieved through official YouTube APIs</li>
+              <li>This data is temporarily processed by Google'"'"'s Generative AI services to generate translations and optimized content</li>
+              <li>The data is processed according to Google'"'"'s API Terms of Service and Privacy Policy</li>
+              <li>Your data may be used by Google to improve their AI models, as per their privacy terms</li>
+              <li>We do not retain raw YouTube data longer than necessary to complete your request</li>
+            </ul>
+            <p className="text-zinc-300 leading-relaxed mt-3">
+              You acknowledge that by using our Service with YouTube content, you agree to Google'"'"'s terms and privacy policies. Please review Google'"'"'s privacy documentation for complete information about how Google handles your data.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mt-8 mb-4">5. Data Sharing and Disclosure</h2>
+            <p className="text-zinc-300 leading-relaxed mb-3">
+              We do not sell your personal information. However, we may share your information with:
+            </p>
+            <ul className="text-zinc-300 leading-relaxed space-y-2 list-disc list-inside">
+              <li><strong>Service Providers:</strong> Paddle (payment processing), Google (AI processing), hosting providers, and analytics services</li>
+              <li><strong>Legal Compliance:</strong> When required by law, court order, or government request</li>
+              <li><strong>Business Transfers:</strong> In the event of merger, acquisition, or bankruptcy, your information may be transferred as part of that transaction</li>
+              <li><strong>Your Consent:</strong> When you explicitly authorize us to share information with third parties</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">4. Security of Data</h2>
+            <h2 className="text-2xl font-bold mt-8 mb-4">6. Data Security</h2>
             <p className="text-zinc-300 leading-relaxed">
-              The security of your data is important to us, but remember that no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your personal information, we cannot guarantee its absolute security.
+              We implement comprehensive security measures to protect your information, including SSL encryption, secure servers, regular security audits, and access controls. However, no method of transmission over the Internet is 100% secure. While we strive to protect your information, we cannot guarantee absolute security. You use our Service at your own risk, and we are not responsible for unauthorized access to your account due to factors beyond our control.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">5. Third-Party Service Providers</h2>
-            <p className="text-zinc-300 leading-relaxed mb-4">
-              We may employ third-party companies and individuals to facilitate our Service ("Service Providers"), provide the Service on our behalf, perform Service-related services, or assist us in analyzing how our Service is used.
-            </p>
+            <h2 className="text-2xl font-bold mt-8 mb-4">7. Data Retention</h2>
             <p className="text-zinc-300 leading-relaxed">
-              These third parties have access to your personal information only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.
+              We retain your personal information for as long as your account is active or as long as necessary to provide our Service. You may request deletion of your data at any time, subject to legal retention obligations. Account deletion will result in the removal of your profile, but some anonymized data may be retained for analytics purposes. Video content and processed data are typically deleted within 30 days of processing unless you request earlier deletion.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">6. Cookies</h2>
-            <p className="text-zinc-300 leading-relaxed">
-              We use cookies and similar tracking technologies to track activity on our Service and hold certain information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Service.
+            <h2 className="text-2xl font-bold mt-8 mb-4">8. Your Rights and Choices</h2>
+            <p className="text-zinc-300 leading-relaxed mb-3">
+              Depending on your location, you may have certain rights regarding your information:
             </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-bold text-white mb-4">7. Children's Privacy</h2>
-            <p className="text-zinc-300 leading-relaxed">
-              Our Service does not address anyone under the age of 18 ("Children"). We do not knowingly collect personally identifiable information from children under 18. If we become aware that we have collected personal information from a child under age 18 without verification of parental consent, we take steps to remove such information and terminate the child's account.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-bold text-white mb-4">8. Changes to This Privacy Policy</h2>
-            <p className="text-zinc-300 leading-relaxed">
-              We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "effective date" at the top of this Privacy Policy. You are advised to review this Privacy Policy periodically for any changes.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-bold text-white mb-4">9. Your Data Rights</h2>
-            <p className="text-zinc-300 leading-relaxed mb-4">
-              Depending on your location, you may have the following rights:
-            </p>
-            <ul className="list-disc list-inside space-y-2 text-zinc-300">
-              <li>The right to access your personal information</li>
-              <li>The right to correct inaccurate data</li>
-              <li>The right to request deletion of your data</li>
-              <li>The right to restrict processing of your data</li>
-              <li>The right to data portability</li>
+            <ul className="text-zinc-300 leading-relaxed space-y-2 list-disc list-inside">
+              <li>Right to access your personal information</li>
+              <li>Right to correct inaccurate information</li>
+              <li>Right to request deletion of your data</li>
+              <li>Right to opt-out of marketing communications</li>
+              <li>Right to data portability in a structured format</li>
+              <li>Right to withdraw consent for data processing</li>
             </ul>
-            <p className="text-zinc-300 leading-relaxed mt-4">
-              To exercise any of these rights, please contact us at support@ripavid.com
+            <p className="text-zinc-300 leading-relaxed mt-3">
+              To exercise these rights, contact us at xx1722x@gmail.com. We will respond to your request within 30 days.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4">10. Contact Us</h2>
+            <h2 className="text-2xl font-bold mt-8 mb-4">9. Third-Party Links</h2>
             <p className="text-zinc-300 leading-relaxed">
-              If you have any questions about this Privacy Policy, please contact us at:
-            </p>
-            <p className="text-zinc-300 leading-relaxed mt-4">
-              Email:{' '}
-              <a href="mailto:support@ripavid.com" className="text-cyan-400 hover:text-cyan-300">
-                support@ripavid.com
-              </a>
+              Our Service may contain links to third-party websites, including YouTube, Google services, and other platforms. We are not responsible for the privacy practices of these third-party sites. Please review the privacy policies of any third-party services before providing your information or submitting content.
             </p>
           </section>
-        </div>
 
-        {/* Footer */}
-        <div className="mt-16 pt-8 border-t border-zinc-800">
-          <p className="text-zinc-500 text-sm">
-            © 2026 RipAVid. All rights reserved.
-          </p>
+          <section>
+            <h2 className="text-2xl font-bold mt-8 mb-4">10. Children'"'"'s Privacy</h2>
+            <p className="text-zinc-300 leading-relaxed">
+              Our Service is not intended for children under 13 years old. We do not knowingly collect information from children under 13. If we become aware that we have collected information from a child under 13, we will delete such information and terminate the child'"'"'s account immediately. Parents or guardians who believe their child has provided information to our Service should contact us immediately.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mt-8 mb-4">11. Changes to This Privacy Policy</h2>
+            <p className="text-zinc-300 leading-relaxed">
+              We may update this Privacy Policy from time to time. Changes will be effective immediately upon posting to our website. Your continued use of our Service constitutes your acceptance of the updated Privacy Policy. We encourage you to review this Privacy Policy periodically to stay informed about how we protect your information.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mt-8 mb-4">12. Contact Us</h2>
+            <p className="text-zinc-300 leading-relaxed">
+              If you have questions about this Privacy Policy or our privacy practices, please contact us at:
+            </p>
+            <div className="bg-zinc-900 p-6 rounded-lg mt-4">
+              <p className="text-zinc-300">
+                <strong>RipAVid Privacy Team</strong><br/>
+                Email: <a href="mailto:xx1722x@gmail.com" className="text-cyan-400 hover:text-cyan-300">xx1722x@gmail.com</a><br/>
+                Website: <a href="https://ripavid.com" className="text-cyan-400 hover:text-cyan-300">ripavid.com</a>
+              </p>
+            </div>
+          </section>
         </div>
       </div>
     </div>
