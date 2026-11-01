@@ -17,7 +17,6 @@ import ErrorBoundary from './components/ErrorBoundary';
 import SocialShareBar from './components/SocialShareBar';
 import ProHeroBanner from './components/ProHeroBanner';
 import ProPricingSection from './components/ProPricingSection';
-import RRRTipBanner from './components/RRRTipBanner';
 import RRRTrickModal from './components/RRRTrickModal';
 import PricingComparisonModal from './components/PricingComparisonModal';
 import { translations, getTranslations } from './locales';
@@ -174,7 +173,7 @@ export default function Home() {
 
   return (
     <ErrorBoundary onError={(error) => setError(`Runtime error: ${error.message}`)}>
-      <div className="min-h-screen bg-gradient-to-br from-black via-zinc-900 to-black dark:from-black dark:via-zinc-900 dark:to-black light:from-white light:via-gray-50 light:to-gray-100 text-gray-900 dark:text-white light:text-gray-900 overflow-hidden transition-colors">
+      <div className="min-h-screen w-full bg-gradient-to-br from-black via-zinc-900 to-black dark:from-black dark:via-zinc-900 dark:to-black light:from-white light:via-gray-50 light:to-gray-100 text-gray-900 dark:text-white light:text-gray-900 transition-colors flex flex-col">
         {/* Animated background elements */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 dark:bg-cyan-500/10 light:bg-cyan-500/5 rounded-full blur-3xl opacity-20"></div>
@@ -182,7 +181,7 @@ export default function Home() {
         </div>
 
 
-        <main className="relative z-10 flex flex-col items-center justify-start min-h-full px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 md:pt-6 pb-0">
+        <main className="relative z-10 flex flex-col items-center justify-start flex-grow px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 md:pt-6 pb-8 sm:pb-12 md:pb-16">
         {/* Logo / Branding */}
         <div className="mb-2 flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center font-bold">
@@ -236,9 +235,6 @@ export default function Home() {
 
         {/* Pro Hero Banner */}
         <ProHeroBanner onOpenPricingModal={() => setShowPricingModal(true)} />
-
-        {/* RRR Trick Tip Banner */}
-        <RRRTipBanner onClick={() => setShowRRRModal(true)} language={language} />
 
         {/* Platform Selector - with max height to prevent layout shift */}
         <div className="w-full max-w-5xl mx-auto mb-2 overflow-hidden">
@@ -352,7 +348,7 @@ export default function Home() {
         {!result && (
           <>
             {/* @ts-ignore */}
-            <ProPricingSection language={language} onScrollToDownloader={scrollToDownloader} />
+            <ProPricingSection language={language} onScrollToDownloader={scrollToDownloader} onOpenRRRModal={() => setShowRRRModal(true)} />
           </>
         )}
 

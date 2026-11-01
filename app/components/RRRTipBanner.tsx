@@ -5,13 +5,23 @@ import { translations } from '../locales';
 interface RRRTipBannerProps {
   onClick: () => void;
   language: string;
+  onScrollToDownloader?: () => void;
 }
 
-export default function RRRTipBanner({ onClick, language }: RRRTipBannerProps) {
+export default function RRRTipBanner({ onClick, language, onScrollToDownloader }: RRRTipBannerProps) {
   const t = translations[language as keyof typeof translations] || translations['en'];
+
+  const handleClick = () => {
+    onClick();
+    // Smooth scroll to downloader after a short delay for visual feedback
+    if (onScrollToDownloader) {
+      setTimeout(() => onScrollToDownloader(), 300);
+    }
+  };
+
   return (
     <div
-      onClick={onClick}
+      onClick={handleClick}
       className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 cursor-pointer"
     >
       <div className="relative px-5 sm:px-7 py-4 rounded-xl bg-gradient-to-r from-black via-zinc-900 to-black border border-yellow-400/30 hover:border-yellow-300/50 transition-all duration-300 group overflow-hidden shadow-lg hover:shadow-xl hover:shadow-yellow-500/20">

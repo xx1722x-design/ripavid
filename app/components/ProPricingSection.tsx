@@ -4,13 +4,15 @@ import { useState } from 'react';
 import { Check } from 'lucide-react';
 import { useAuth } from '@/app/context/AuthContext';
 import { translations } from '@/app/locales';
+import RRRTipBanner from './RRRTipBanner';
 
 interface ProPricingSectionProps {
   language?: string;
   onScrollToDownloader?: () => void;
+  onOpenRRRModal?: () => void;
 }
 
-export default function ProPricingSection({ language = 'en', onScrollToDownloader }: ProPricingSectionProps) {
+export default function ProPricingSection({ language = 'en', onScrollToDownloader, onOpenRRRModal }: ProPricingSectionProps) {
   const { user, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showApprovalMessage, setShowApprovalMessage] = useState(false);
@@ -104,6 +106,27 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
             <p className="text-xs">Pro pass checkout will be available soon. Please check back later!</p>
           </div>
         )}
+
+        {/* View Plans & Features Comparison Smart Banner */}
+        <div className="w-full max-w-4xl mx-auto mb-4 px-4">
+          <button
+            onClick={onScrollToDownloader}
+            className="w-full bg-gradient-to-r from-indigo-900/30 via-purple-900/20 to-indigo-900/30 border border-indigo-500/30 rounded-lg p-4 text-center hover:border-indigo-400/50 hover:bg-indigo-900/40 transition-all duration-300 group cursor-pointer"
+          >
+            <p className="text-sm text-indigo-300">
+              💰 <span className="font-semibold">View Plans & Features Comparison</span> - Choose what works best for your needs
+            </p>
+          </button>
+        </div>
+
+        {/* RRR Tip Banner - Right Below Comparison Banner */}
+        <div className="w-full max-w-4xl mx-auto mb-12 px-4">
+          <RRRTipBanner
+            onClick={onOpenRRRModal || (() => {})}
+            language={language}
+            onScrollToDownloader={onScrollToDownloader}
+          />
+        </div>
 
         {/* Section Header */}
         <div className="text-center mb-16">
