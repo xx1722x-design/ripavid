@@ -180,7 +180,11 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
             </div>
 
             <ul className="space-y-4 mb-8">
-              {[t.freeFeature1 || 'Up to 720p quality', t.freeFeature2 || 'Standard content imports', t.freeFeature3 || 'No sign-up required'].map((feature) => (
+              {[
+                t.freeFeature1 || 'Up to 720p quality',
+                t.freeFeature2 || 'Standard content imports (3 per day)',
+                t.freeFeature3 || 'Basic video fetching'
+              ].map((feature) => (
                 <li key={feature} className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-cyan-400 flex-shrink-0" />
                   <span className="text-zinc-300">{feature}</span>
@@ -224,7 +228,13 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
             </div>
 
             <ul className="space-y-4 mb-8">
-              {[t.proFeature1 || '👑 AI Subtitle Extraction (SRT)', t.proFeature2 || '1080p & 4K quality', t.proFeature3 || 'Unlimited premium imports', t.proFeature4 || 'Priority support'].map((feature) => (
+              {[
+                t.proFeature1 || '👑 1080p & 4K Unlimited Imports (Asia platforms incl.)',
+                t.proFeature2 || '👑 AI Subtitle Extraction (SRT)',
+                t.proFeature3 || '👑 1-Click Multi-language Translation (20+ languages)',
+                t.proFeature4 || '👑 Viral Shorts Timestamp Curation',
+                t.proFeature5 || '👑 Auto SEO Title & Tags Generation'
+              ].map((feature) => (
                 <li key={feature} className="flex items-center gap-3">
                   <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
                   <span className="text-zinc-300">{feature}</span>
