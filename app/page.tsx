@@ -204,7 +204,7 @@ export default function Home() {
         </div>
 
 
-        <main className="relative z-10 flex flex-col items-center justify-start flex-grow px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 md:pt-6 pb-8 sm:pb-12 md:pb-16">
+        <main className="relative z-10 flex flex-col items-center justify-start flex-grow px-4 sm:px-6 lg:px-8 pt-1 sm:pt-2 md:pt-3 pb-8 sm:pb-12 md:pb-16">
         {/* Logo / Branding */}
         <div className="mb-2 flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center font-bold">

@@ -22,7 +22,7 @@ export default function RRRTipBanner({ onClick, language, onScrollToDownloader }
   return (
     <div
       onClick={handleClick}
-      className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 cursor-pointer"
+      className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-2 cursor-pointer"
     >
       <div className="relative px-5 sm:px-7 py-4 rounded-xl bg-gradient-to-r from-black via-zinc-900 to-black border border-yellow-400/30 hover:border-yellow-300/50 transition-all duration-300 group overflow-hidden shadow-lg hover:shadow-xl hover:shadow-yellow-500/20">
         {/* Animated neon glow background */}
