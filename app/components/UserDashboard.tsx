@@ -69,10 +69,10 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
 
   const getJobTypeLabel = (type: string): string => {
     const labels: Record<string, string> = {
-      extract_subtitles: '자막 추출',
-      translate_subtitles: '다국어 번역',
-      curate_highlights: '바이럴 하이라이트',
-      render_short: '쇼츠 렌더링',
+      extract_subtitles: 'Extract Subtitles',
+      translate_subtitles: 'Multi-Language Translation',
+      curate_highlights: 'Viral Highlights',
+      render_short: 'Short Clip Rendering',
     };
     return labels[type] || type;
   };
@@ -102,15 +102,15 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
   const formatDate = (dateStr: string | undefined): string => {
     if (!dateStr) return '';
     const date = new Date(dateStr);
-    return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
   if (!isAuthenticated) {
     return (
       <div className="w-full max-w-4xl mx-auto px-4 py-12">
         <div className="bg-blue-900/30 border border-blue-500/50 rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-blue-300 mb-2">로그인이 필요합니다</h2>
-          <p className="text-blue-400">작업 히스토리를 확인하려면 먼저 로그인해주세요.</p>
+          <h2 className="text-2xl font-bold text-blue-300 mb-2">Login Required</h2>
+          <p className="text-blue-400">Please sign in to view your job history.</p>
         </div>
       </div>
     );
@@ -121,9 +121,9 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent mb-2">
-          작업 히스토리
+          Job History
         </h1>
-        <p className="text-zinc-400">당신의 모든 작업 결과를 한 곳에서 관리하세요</p>
+        <p className="text-zinc-400">Manage all your processing results in one place</p>
       </div>
 
       {/* Filter Buttons */}
@@ -136,7 +136,7 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
               : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
           }`}
         >
-          전체 ({history.length})
+          All ({history.length})
         </button>
         <button
           onClick={() => setFilterType('extract_subtitles')}
@@ -146,7 +146,7 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
               : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
           }`}
         >
-          🎬 자막 추출 ({history.filter(h => h.job_type === 'extract_subtitles').length})
+          🎬 Subtitles ({history.filter(h => h.job_type === 'extract_subtitles').length})
         </button>
         <button
           onClick={() => setFilterType('translate_subtitles')}
@@ -156,7 +156,7 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
               : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
           }`}
         >
-          🌍 번역 ({history.filter(h => h.job_type === 'translate_subtitles').length})
+          🌍 Translation ({history.filter(h => h.job_type === 'translate_subtitles').length})
         </button>
         <button
           onClick={() => setFilterType('curate_highlights')}
@@ -166,7 +166,7 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
               : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
           }`}
         >
-          ✨ 하이라이트 ({history.filter(h => h.job_type === 'curate_highlights').length})
+          ✨ Highlights ({history.filter(h => h.job_type === 'curate_highlights').length})
         </button>
         <button
           onClick={() => setFilterType('render_short')}
@@ -176,7 +176,7 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
               : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
           }`}
         >
-          🎥 렌더링 ({history.filter(h => h.job_type === 'render_short').length})
+          🎥 Rendering ({history.filter(h => h.job_type === 'render_short').length})
         </button>
       </div>
 
@@ -184,12 +184,12 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
       {isLoading ? (
         <div className="text-center py-12">
           <div className="animate-spin inline-block mb-4">⏳</div>
-          <p className="text-zinc-400">히스토리를 불러오는 중...</p>
+          <p className="text-zinc-400">Loading history...</p>
         </div>
       ) : filteredHistory.length === 0 ? (
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-12 text-center">
-          <p className="text-zinc-400 text-lg mb-2">아직 작업 히스토리가 없습니다</p>
-          <p className="text-zinc-500">자막을 추출하거나 비디오를 처리하면 여기에 표시됩니다</p>
+          <p className="text-zinc-400 text-lg mb-2">No job history yet</p>
+          <p className="text-zinc-500">Your processing jobs will appear here</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -215,17 +215,17 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
                   <div className="ml-11 space-y-2">
                     {item.job_type === 'translate_subtitles' && item.data?.translatedLanguages && (
                       <p className="text-xs text-blue-400">
-                        📝 번역 언어: {item.data.translatedLanguages.join(', ')}
+                        📝 Languages: {item.data.translatedLanguages.join(', ')}
                       </p>
                     )}
                     {item.job_type === 'curate_highlights' && item.data?.highlights && (
                       <p className="text-xs text-orange-400">
-                        ✨ 하이라이트: {item.data.highlights.length}개 발견
+                        ✨ Highlights: {item.data.highlights.length} found
                       </p>
                     )}
                     {item.job_type === 'render_short' && item.data?.clipUrl && (
                       <p className="text-xs text-indigo-400">
-                        ✓ 렌더링 완료 ({item.data?.startTime} ~ {item.data?.endTime})
+                        ✓ Rendering complete ({item.data?.startTime} ~ {item.data?.endTime})
                       </p>
                     )}
                     <p className="text-xs text-zinc-500">
@@ -261,7 +261,7 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
                       rel="noopener noreferrer"
                       className="px-3 py-2 bg-indigo-600/50 hover:bg-indigo-600 rounded text-xs text-indigo-100 transition-all"
                     >
-                      🎬 보기
+                      🎬 Watch
                     </a>
                   )}
 

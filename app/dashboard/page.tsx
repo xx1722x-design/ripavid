@@ -16,13 +16,13 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black flex items-center justify-center px-4">
         <div className="text-center max-w-2xl">
-          <h1 className="text-4xl font-bold text-white mb-4">로그인이 필요합니다</h1>
-          <p className="text-zinc-400 mb-8">작업 히스토리와 대시보드를 사용하려면 먼저 로그인해주세요.</p>
+          <h1 className="text-4xl font-bold text-white mb-4">Login Required</h1>
+          <p className="text-zinc-400 mb-8">Please sign in to access your job history and dashboard.</p>
           <a
             href="/"
             className="inline-block px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-semibold rounded-lg transition-all"
           >
-            홈으로 돌아가기
+            Return to Home
           </a>
         </div>
       </div>
@@ -41,7 +41,7 @@ export default function DashboardPage() {
             <div>
               <h2 className="text-white font-semibold">{user?.name || user?.email || 'User'}</h2>
               <p className="text-xs text-zinc-400">
-                {user?.tier === 'pro' ? '✨ Pro 사용자' : '📦 무료 사용자'}
+                {user?.tier === 'pro' ? '✨ Pro User' : '📦 Free User'}
               </p>
             </div>
           </div>
@@ -50,7 +50,7 @@ export default function DashboardPage() {
             onClick={logout}
             className="px-4 py-2 bg-red-600/30 hover:bg-red-600/50 text-red-300 rounded-lg text-sm transition-all"
           >
-            로그아웃
+            Logout
           </button>
         </div>
       </div>
