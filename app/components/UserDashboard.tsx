@@ -4,17 +4,48 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/app/context/AuthContext';
 import { getUserHistory, deleteHistoryEntry, type JobHistory } from '@/lib/supabase';
 import { translations } from '../locales';
+import UrlForm from './UrlForm';
+import VideoResult from './VideoResult';
 
 interface UserDashboardProps {
   language?: string;
+  initialUrl?: string;
+  autoSubmit?: boolean;
 }
 
-export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
+interface Format {
+  quality?: string;
+  resolution?: string;
+  ext: string;
+  url: string;
+  isPremium?: boolean;
+  filesize?: number;
+}
+
+interface VideoData {
+  title: string;
+  thumbnail?: string;
+  duration?: number;
+  formats: {
+    free: Format[];
+    premium: Format[];
+  };
+}
+
+export default function UserDashboard({ language = 'en', initialUrl = '', autoSubmit = false }: UserDashboardProps) {
   const { user, isAuthenticated } = useAuth();
   const t = translations[language as keyof typeof translations] || translations['en'];
 
+  // For guest users - new processing
+  const [processingLoading, setProcessingLoading] = useState(false);
+  const [result, setResult] = useState<VideoData | null>(null);
+  const [processingError, setProcessingError] = useState('');
+  const [originalUrl, setOriginalUrl] = useState('');
+  const [hasAutoSubmitted, setHasAutoSubmitted] = useState(false);
+
+  // For authenticated users - history
   const [history, setHistory] = useState<JobHistory[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [historyLoading, setHistoryLoading] = useState(true);
   const [filterType, setFilterType] = useState<'all' | 'extract_subtitles' | 'translate_subtitles' | 'curate_highlights' | 'render_short'>('all');
   const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
 
@@ -23,15 +54,32 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
     if (isAuthenticated && user?.uid) {
       loadHistory();
     } else {
-      setIsLoading(false);
+      setHistoryLoading(false);
     }
   }, [isAuthenticated, user?.uid]);
+
+  // Auto-submit initial URL if provided
+  useEffect(() => {
+    if (initialUrl && !hasAutoSubmitted && autoSubmit) {
+      try {
+        setHasAutoSubmitted(true);
+        // Delay auto-submit by 100ms to match spec
+        const timer = setTimeout(() => {
+          handleRipVideo(initialUrl);
+        }, 100);
+        return () => clearTimeout(timer);
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Failed to process initial URL';
+        setProcessingError(errorMsg);
+      }
+    }
+  }, [initialUrl, autoSubmit, hasAutoSubmitted]);
 
   const loadHistory = async () => {
     if (!user?.uid) return;
 
     try {
-      setIsLoading(true);
+      setHistoryLoading(true);
       const { data, error } = await getUserHistory(user.uid);
 
       if (error) {
@@ -42,7 +90,55 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
     } catch (error) {
       console.error('Failed to load history:', error);
     } finally {
-      setIsLoading(false);
+      setHistoryLoading(false);
+    }
+  };
+
+  const handleRipVideo = async (url: string) => {
+    try {
+      if (!url || typeof url !== 'string') {
+        setProcessingError('Invalid URL provided.');
+        return;
+      }
+
+      const trimmedUrl = url.trim();
+      if (trimmedUrl.length === 0) {
+        setProcessingError('Please enter a valid URL.');
+        return;
+      }
+
+      setProcessingLoading(true);
+      setProcessingError('');
+      setResult(null);
+      setOriginalUrl(trimmedUrl);
+
+      try {
+        const response = await fetch('/api/download', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url: trimmedUrl }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Server error: ${response.status}`);
+        }
+
+        const data: VideoData = await response.json();
+        setResult(data);
+        console.log('Video extracted successfully:', data);
+      } catch (err) {
+        setProcessingError(err instanceof Error ? err.message : 'Failed to extract video. Please try again.');
+        console.error('Download error:', err);
+      } finally {
+        setProcessingLoading(false);
+      }
+    } catch (outerErr) {
+      setProcessingError('An unexpected error occurred. Please try again.');
+      console.error('Unexpected error in handleRipVideo:', outerErr);
+      setProcessingLoading(false);
     }
   };
 
@@ -105,17 +201,67 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
+  // Guest user mode - show processing form only
   if (!isAuthenticated) {
     return (
-      <div className="w-full max-w-4xl mx-auto px-4 py-12">
-        <div className="bg-blue-900/30 border border-blue-500/50 rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-blue-300 mb-2">Login Required</h2>
-          <p className="text-blue-400">Please sign in to view your job history.</p>
+      <div className="w-full max-w-6xl mx-auto px-4 py-8">
+        {/* Guest Mode Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+            Quick Processing
+          </h1>
+          <p className="text-zinc-400">Process videos without sign-up • Free tier features available</p>
         </div>
+
+        {/* Processing Form */}
+        <div className="mb-8">
+          <UrlForm
+            onSubmit={handleRipVideo}
+            isLoading={processingLoading}
+            language={language}
+            onError={(errorMessage) => setProcessingError(errorMessage)}
+          />
+        </div>
+
+        {/* Error Display */}
+        {processingError && (
+          <div className="w-full max-w-2xl mx-auto bg-red-900/20 border border-red-500/50 text-red-200 px-6 py-4 rounded-lg flex items-start gap-3 mb-8">
+            <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+            <div className="flex-1">
+              <p className="text-sm font-medium">Error</p>
+              <p className="text-sm mt-1">{processingError}</p>
+            </div>
+            <button
+              onClick={() => setProcessingError('')}
+              className="text-red-200 hover:text-red-100 flex-shrink-0"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {/* Video Result */}
+        {result && (
+          <VideoResult
+            title={result.title}
+            thumbnail={result.thumbnail}
+            duration={result.duration}
+            formats={result.formats as any}
+            onClose={() => setResult(null)}
+            language={language}
+            originalUrl={originalUrl}
+            onError={(errorMessage) => setProcessingError(errorMessage)}
+          />
+        )}
       </div>
     );
   }
 
+  // Authenticated user mode - show history + processing form
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
@@ -181,7 +327,7 @@ export default function UserDashboard({ language = 'en' }: UserDashboardProps) {
       </div>
 
       {/* History List */}
-      {isLoading ? (
+      {historyLoading ? (
         <div className="text-center py-12">
           <div className="animate-spin inline-block mb-4">⏳</div>
           <p className="text-zinc-400">Loading history...</p>

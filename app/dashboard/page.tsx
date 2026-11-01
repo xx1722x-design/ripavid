@@ -1,16 +1,44 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { useAuth } from '@/app/context/AuthContext';
+import { useSearchParams } from 'next/navigation';
 
 const UserDashboard = dynamic(() => import('@/app/components/UserDashboard'), {
   ssr: false,
 });
 
-export default function DashboardPage() {
+function DashboardContent() {
   const { user, isAuthenticated, isGuest, logout } = useAuth();
   const [language] = useState('en');
+  const searchParams = useSearchParams();
+  const [initialUrl, setInitialUrl] = useState('');
+
+  useEffect(() => {
+    // Extract video ID or URL from query parameters
+    // Support both ?v= (video ID) and ?url= (full URL)
+    try {
+      const videoId = searchParams.get('v');
+      const videoUrl = searchParams.get('url');
+
+      if (videoUrl) {
+        const decodedUrl = decodeURIComponent(videoUrl);
+        if (typeof decodedUrl === 'string' && decodedUrl.trim().length > 0) {
+          setInitialUrl(decodedUrl);
+        }
+      } else if (videoId) {
+        // If only video ID is provided, normalize to YouTube URL
+        const id = decodeURIComponent(videoId);
+        if (/^[a-zA-Z0-9_-]{11}$/.test(id)) {
+          setInitialUrl(`https://www.youtube.com/watch?v=${id}`);
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing dashboard URL parameters:', error);
+    }
+  }, [searchParams]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black">
@@ -42,8 +70,28 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <div className="py-12">
-        <UserDashboard language={language} />
+        <UserDashboard language={language} initialUrl={initialUrl} autoSubmit={!!initialUrl} />
       </div>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block p-4 bg-blue-900/20 rounded-full mb-4">
+            <svg className="w-12 h-12 text-blue-400 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+          <p className="text-white text-lg font-semibold">Loading dashboard...</p>
+        </div>
+      </div>
+    }>
+      <DashboardContent />
+    </Suspense>
   );
 }

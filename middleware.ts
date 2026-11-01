@@ -48,6 +48,9 @@ function normalizeYouTubeUrl(input: string): string {
 export function middleware(request: NextRequest) {
   const { pathname, searchParams, hostname } = request.nextUrl;
 
+  // Handle /shorts/:id redirects (already handled by next.config.ts)
+  // This middleware ensures the video ID is properly passed to dashboard
+
   // Detect if the request is for /watch path (rrryoutube.com/watch?v=...)
   // rrryoutube.com, www.rrryoutube.com에서 들어오는 모든 /watch 요청을 처리
   if (pathname === '/watch' || pathname === '/watch/') {
@@ -62,6 +65,21 @@ export function middleware(request: NextRequest) {
       redirectUrl.searchParams.set('url', youtubeUrl);
 
       return NextResponse.redirect(redirectUrl);
+    }
+  }
+
+  // Handle /dashboard with video ID parameter
+  // Allow both ?v= (video ID) and ?url= (full URL) parameters to pass through
+  if (pathname === '/dashboard' || pathname === '/dashboard/') {
+    const videoId = searchParams.get('v');
+    const videoUrl = searchParams.get('url');
+
+    if (videoId || videoUrl) {
+      // Let the request pass through - dashboard will handle the parameters
+      // and auto-submit to the processing function
+      const response = NextResponse.next();
+      // Preserve the original query parameters
+      return response;
     }
   }
 
