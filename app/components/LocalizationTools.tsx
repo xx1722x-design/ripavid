@@ -15,6 +15,15 @@ interface TranslatedSubtitle {
   srtContent: string;
 }
 
+interface Highlight {
+  startTime: string;
+  endTime: string;
+  viralScore: number;
+  hookTitle: string;
+  summary: string;
+  durationSeconds: number;
+}
+
 const SUPPORTED_LANGUAGES = [
   'en', 'es', 'ja', 'zh-CN', 'zh-TW', 'fr', 'de', 'pt', 'vi', 'th',
   'id', 'ms', 'tl', 'hi', 'ar', 'ru', 'tr', 'nl', 'pl', 'it', 'ko'
@@ -35,6 +44,10 @@ export default function LocalizationTools({
   const [translateStatus, setTranslateStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [translatedSubtitles, setTranslatedSubtitles] = useState<TranslatedSubtitle[]>([]);
   const [translateProcessingId, setTranslateProcessingId] = useState<string | null>(null);
+
+  const [isHighlighting, setIsHighlighting] = useState(false);
+  const [highlightStatus, setHighlightStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
+  const [highlights, setHighlights] = useState<Highlight[]>([]);
 
   const handleExtractSubtitles = async () => {
     try {
@@ -198,6 +211,60 @@ export default function LocalizationTools({
     document.body.removeChild(element);
   };
 
+  const handleCurateHighlights = async () => {
+    if (!subtitleContent) return;
+
+    try {
+      setIsHighlighting(true);
+      setHighlightStatus('processing');
+      setHighlights([]);
+
+      // Call API to curate highlights
+      const response = await fetch('/api/curate-highlights', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          srtContent: subtitleContent,
+          videoTitle: videoTitle,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to curate highlights');
+      }
+
+      const data = await response.json();
+      if (data.success && data.highlights) {
+        setHighlightStatus('success');
+        setHighlights(data.highlights);
+      } else {
+        throw new Error(data.error || 'Failed to parse highlights');
+      }
+      setIsHighlighting(false);
+    } catch (error) {
+      console.error('Highlight curation error:', error);
+      setHighlightStatus('error');
+      setIsHighlighting(false);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      // Optional: Show toast notification
+      console.log('Copied to clipboard:', text);
+    });
+  };
+
+  const getViralScoreColor = (score: number): string => {
+    if (score >= 8.5) return 'bg-red-500 border-red-400';
+    if (score >= 7.5) return 'bg-orange-500 border-orange-400';
+    if (score >= 6.5) return 'bg-yellow-500 border-yellow-400';
+    return 'bg-green-500 border-green-400';
+  };
+
   return (
     <div className="mt-8 w-full max-w-2xl">
       <div className="bg-gradient-to-r from-purple-900/30 via-pink-900/20 to-purple-900/30 border border-purple-500/40 rounded-xl p-6 backdrop-blur-sm">
@@ -309,19 +376,118 @@ export default function LocalizationTools({
             </div>
           )}
 
+          {/* Curate Viral Shorts Button */}
+          {extractStatus === 'success' && subtitleContent && highlightStatus !== 'success' && (
+            <button
+              onClick={handleCurateHighlights}
+              disabled={isHighlighting || highlightStatus === 'processing'}
+              className={`w-full py-3 px-4 rounded-lg font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 ${
+                highlightStatus === 'error'
+                  ? 'bg-red-500/20 border border-red-500/50 text-red-300 hover:bg-red-500/30'
+                  : 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-400 hover:to-red-400 text-white border border-orange-400/50'
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              {isHighlighting || highlightStatus === 'processing' ? (
+                <>
+                  <span className="animate-spin">⏳</span>
+                  <span>Analyzing Viral Hooks...</span>
+                </>
+              ) : highlightStatus === 'error' ? (
+                <>
+                  <span>✗</span>
+                  <span>Curation Failed</span>
+                </>
+              ) : (
+                <>
+                  <span>🎬</span>
+                  <span>Curate Viral Shorts (AI)</span>
+                </>
+              )}
+            </button>
+          )}
+
+          {/* Highlights Grid */}
+          {highlightStatus === 'success' && highlights.length > 0 && (
+            <div className="space-y-3 mt-4">
+              <p className="text-xs text-orange-400 font-semibold">✨ Viral Shorts Recommendations:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {highlights.map((highlight, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-black/40 border border-orange-500/30 rounded-lg p-3 hover:bg-black/60 transition-all"
+                  >
+                    {/* Viral Score Badge */}
+                    <div className="flex items-start justify-between mb-2">
+                      <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold text-white border ${getViralScoreColor(highlight.viralScore)}`}>
+                        🔥 {highlight.viralScore.toFixed(1)}/10
+                      </div>
+                      <span className="text-xs text-gray-400">{highlight.durationSeconds}s</span>
+                    </div>
+
+                    {/* Hook Title */}
+                    <h4 className="text-sm font-bold text-orange-300 mb-2 line-clamp-2">
+                      {highlight.hookTitle}
+                    </h4>
+
+                    {/* Summary */}
+                    <p className="text-xs text-gray-400 mb-3 line-clamp-2">
+                      {highlight.summary}
+                    </p>
+
+                    {/* Timestamps */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between bg-black/50 rounded p-2">
+                        <span className="text-xs text-gray-500">Start:</span>
+                        <span className="text-xs font-mono text-cyan-300">{highlight.startTime}</span>
+                        <button
+                          onClick={() => copyToClipboard(highlight.startTime)}
+                          className="ml-2 px-2 py-1 bg-cyan-600/50 hover:bg-cyan-600 rounded text-xs transition-colors"
+                          title="Copy start time"
+                        >
+                          📋
+                        </button>
+                      </div>
+                      <div className="flex items-center justify-between bg-black/50 rounded p-2">
+                        <span className="text-xs text-gray-500">End:</span>
+                        <span className="text-xs font-mono text-cyan-300">{highlight.endTime}</span>
+                        <button
+                          onClick={() => copyToClipboard(highlight.endTime)}
+                          className="ml-2 px-2 py-1 bg-cyan-600/50 hover:bg-cyan-600 rounded text-xs transition-colors"
+                          title="Copy end time"
+                        >
+                          📋
+                        </button>
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard(`${highlight.startTime} --> ${highlight.endTime}`)}
+                        className="w-full py-1.5 px-2 bg-orange-600/50 hover:bg-orange-600 rounded text-xs text-orange-100 transition-all font-semibold"
+                      >
+                        📋 Copy Timespan
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Info Text */}
           <p className="text-xs text-gray-400 text-center mt-3">
             {extractStatus === 'processing'
               ? 'Processing your video... This may take up to 30 seconds.'
-              : extractStatus === 'success' && translateStatus === 'idle'
-              ? 'Subtitles extracted! Now translate to 21 languages for global distribution.'
+              : highlightStatus === 'processing'
+              ? 'Analyzing video for viral hooks... This may take 30-60 seconds.'
+              : highlightStatus === 'success'
+              ? 'Viral shorts identified! Copy timestamps to create your clips.'
+              : extractStatus === 'success' && translateStatus === 'idle' && highlightStatus === 'idle'
+              ? 'Subtitles extracted! Translate to 21 languages or curate viral shorts.'
               : translateStatus === 'processing'
               ? 'Translating subtitles to 21 languages... This may take 2-3 minutes.'
               : translateStatus === 'success'
               ? 'Translation complete! Download your files in all supported languages.'
               : extractStatus === 'error'
               ? 'Failed to extract subtitles. Please try again.'
-              : 'AI-powered subtitle extraction and multi-language translation. Pro feature for global content distribution.'}
+              : 'AI-powered subtitle extraction, translation, and viral clip curation. Pro feature for global content distribution.'}
           </p>
         </div>
 
@@ -333,6 +499,7 @@ export default function LocalizationTools({
           <ul className="text-xs text-purple-300 mt-2 space-y-1 ml-4">
             <li>✓ AI Subtitle Extraction (SRT) from YouTube videos</li>
             <li>✓ 1-Click Multi-language Translation (21 languages)</li>
+            <li>✓ AI Viral Shorts Curation (Timestamp Recommendations)</li>
             <li>✓ Batch Download for Global Distribution</li>
             <li>Coming Soon: AI Dubbing & Cross-Platform Auto-Upload</li>
           </ul>
