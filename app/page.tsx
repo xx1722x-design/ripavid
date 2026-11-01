@@ -17,8 +17,10 @@ import ErrorBoundary from './components/ErrorBoundary';
 import SocialShareBar from './components/SocialShareBar';
 import ProHeroBanner from './components/ProHeroBanner';
 import ProPricingSection from './components/ProPricingSection';
+import RRRTipBanner from './components/RRRTipBanner';
 import RRRTrickModal from './components/RRRTrickModal';
 import PricingComparisonModal from './components/PricingComparisonModal';
+import DailyLimitPaywall from './components/DailyLimitPaywall';
 import { translations, getTranslations } from './locales';
 
 interface Format {
@@ -55,6 +57,7 @@ export default function Home() {
   });
   const [showRRRModal, setShowRRRModal] = useState(false);
   const [showPricingModal, setShowPricingModal] = useState(false);
+  const [showDailyLimitPaywall, setShowDailyLimitPaywall] = useState(false);
 
   // Ref for UrlForm (for smooth scroll from Pricing section)
   const urlFormRef = useRef<HTMLDivElement>(null);
@@ -148,6 +151,14 @@ export default function Home() {
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
+
+          // 403 에러 (일일 제한 초과) 특별 처리: 에러 박스 표시 안 함, DailyLimitPaywall만 표시
+          if (response.status === 403 || errorData.error === 'DAILY_LIMIT_EXCEEDED') {
+            setIsLoading(false);
+            setShowDailyLimitPaywall(true);
+            return;
+          }
+
           throw new Error(errorData.error || `Server error: ${response.status}`);
         }
 
@@ -236,6 +247,9 @@ export default function Home() {
         {/* Pro Hero Banner */}
         <ProHeroBanner onOpenPricingModal={() => setShowPricingModal(true)} />
 
+        {/* RRR Trick Tip Banner */}
+        <RRRTipBanner onClick={() => setShowRRRModal(true)} language={language} />
+
         {/* Platform Selector - with max height to prevent layout shift */}
         <div className="w-full max-w-5xl mx-auto mb-2 overflow-hidden">
           <PlatformSelector
@@ -259,7 +273,7 @@ export default function Home() {
         </div>
 
         {/* API Error Display */}
-        {error && (
+        {error && !showDailyLimitPaywall && (
           <div className="w-full max-w-2xl mx-auto bg-red-900/20 border border-red-500/50 text-red-200 px-6 py-4 rounded-lg flex items-start gap-3 mt-4">
             <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
@@ -367,6 +381,9 @@ export default function Home() {
 
       {/* Pricing Comparison Modal */}
       <PricingComparisonModal isOpen={showPricingModal} onClose={() => setShowPricingModal(false)} />
+
+      {/* Daily Limit Paywall Modal */}
+      <DailyLimitPaywall isOpen={showDailyLimitPaywall} onClose={() => setShowDailyLimitPaywall(false)} />
 
         {/* Footer */}
         {/* @ts-ignore */}
