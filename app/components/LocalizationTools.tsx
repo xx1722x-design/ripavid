@@ -52,6 +52,46 @@ export default function LocalizationTools({
   const [renderingIds, setRenderingIds] = useState<Set<number>>(new Set());
   const [renderingErrors, setRenderingErrors] = useState<Record<number, string>>({});
 
+  const [dubbingIds, setDubbingIds] = useState<Set<number>>(new Set());
+  const [dubbingErrors, setDubbingErrors] = useState<Record<number, string>>({});
+  const [selectedDubbingLanguage, setSelectedDubbingLanguage] = useState<string>('en');
+  const [selectedVoice, setSelectedVoice] = useState<string>('EXAVITQu4vr4xnSDxMaL');
+
+  // ElevenLabs voices mapping
+  const VOICES_BY_LANGUAGE: Record<string, Array<{ id: string; name: string }>> = {
+    'en': [
+      { id: 'EXAVITQu4vr4xnSDxMaL', name: '🇺🇸 Bella (Female)' },
+      { id: 'adam', name: '🇺🇸 Adam (Male)' },
+    ],
+    'es': [
+      { id: '9PqLzQJE9B8i6j6P9R5G', name: '🇪🇸 Diego (Male)' },
+    ],
+    'fr': [
+      { id: 'VR6AewLTigWG4xSOuZ2b', name: '🇫🇷 Sophia (Female)' },
+    ],
+    'de': [
+      { id: 'MF3mGyEYCHltNXP5OPLn', name: '🇩🇪 Klaus (Male)' },
+    ],
+    'it': [
+      { id: 'pFZP5JQG7iQjIQuC4Hyc', name: '🇮🇹 Marco (Male)' },
+    ],
+    'pt': [
+      { id: 'Y5dL2VBD6WL0dRVx8w8W', name: '🇵🇹 Carlos (Male)' },
+    ],
+    'ja': [
+      { id: '21m00Tcm4TlvDq8ikWAM', name: '🇯🇵 Aiko (Female)' },
+    ],
+    'ko': [
+      { id: 'b7d50908-b456-4d3b-9b5d-f1d2a5c4e7f9', name: '🇰🇷 Sung (Male)' },
+    ],
+    'zh-CN': [
+      { id: 'c24dd89a-1c0d-4a60-a7c9-f8e1b3c5a9d2', name: '🇨🇳 Liang (Male)' },
+    ],
+    'zh-TW': [
+      { id: 'e7f2a1c3-b8d6-4e5a-c1b2-f3a4e5c6d7e8', name: '🇹🇼 Wei (Male)' },
+    ],
+  };
+
   const handleExtractSubtitles = async () => {
     try {
       setIsExtracting(true);
@@ -266,6 +306,105 @@ export default function LocalizationTools({
     if (score >= 7.5) return 'bg-orange-500 border-orange-400';
     if (score >= 6.5) return 'bg-yellow-500 border-yellow-400';
     return 'bg-green-500 border-green-400';
+  };
+
+  const handleGenerateDubbedClip = async (highlight: Highlight, idx: number) => {
+    try {
+      setDubbingIds(prev => new Set(prev).add(idx));
+      setDubbingErrors(prev => ({ ...prev, [idx]: '' }));
+
+      // Extract text from highlight summary
+      const textForDubbing = highlight.summary || highlight.hookTitle;
+
+      // Call API to start dubbing
+      const response = await fetch('/api/dub-video', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          videoUrl,
+          text: textForDubbing,
+          targetLanguage: selectedDubbingLanguage,
+          voiceId: selectedVoice,
+          videoTitle,
+          includeSubtitles: true,
+          subtitleText: highlight.summary,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to start dubbing');
+      }
+
+      const data = await response.json();
+      const processingId = data.processingId;
+
+      if (!processingId) {
+        throw new Error('No processing ID returned');
+      }
+
+      // Poll for dubbing status
+      let isComplete = false;
+      let pollCount = 0;
+      const maxPolls = 180; // Max 10 minutes
+
+      while (!isComplete && pollCount < maxPolls) {
+        await new Promise(resolve => setTimeout(resolve, 3300));
+        pollCount++;
+
+        try {
+          const statusResponse = await fetch(`/api/dub-video?processingId=${processingId}`);
+
+          if (statusResponse.ok) {
+            const statusData = await statusResponse.json();
+
+            if (statusData.success && statusData.processingId) {
+              isComplete = true;
+
+              // Download the dubbed file
+              const downloadResponse = await fetch(`/api/dub-video?processingId=${processingId}&action=download`);
+
+              if (downloadResponse.ok) {
+                const blob = await downloadResponse.blob();
+                const downloadUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = `${videoTitle.slice(0, 30)}-dubbed-${selectedDubbingLanguage}-${idx + 1}.mp4`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(downloadUrl);
+
+                setDubbingIds(prev => {
+                  const newSet = new Set(prev);
+                  newSet.delete(idx);
+                  return newSet;
+                });
+              } else {
+                throw new Error('Failed to download dubbed video');
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Dubbing status check error:', err);
+        }
+      }
+
+      if (!isComplete) {
+        throw new Error('Dubbing timeout. Please try again.');
+      }
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('Video dubbing error:', error);
+      setDubbingErrors(prev => ({ ...prev, [idx]: errorMsg }));
+      setDubbingIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(idx);
+        return newSet;
+      });
+    }
   };
 
   const handleGenerateVideoClip = async (highlight: Highlight, idx: number) => {
@@ -508,6 +647,65 @@ export default function LocalizationTools({
             </button>
           )}
 
+          {/* Dubbing Options (shown when highlights available) */}
+          {highlightStatus === 'success' && highlights.length > 0 && (
+            <div className="bg-indigo-900/30 border border-indigo-500/30 rounded-lg p-4 space-y-3 mt-4">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-lg">🎙️</span>
+                <h4 className="text-sm font-bold text-indigo-300">AI Dubbing Options</h4>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Language Selection */}
+                <div>
+                  <label className="text-xs text-zinc-400 font-semibold block mb-1">Target Language:</label>
+                  <select
+                    value={selectedDubbingLanguage}
+                    onChange={(e) => {
+                      setSelectedDubbingLanguage(e.target.value);
+                      const voices = VOICES_BY_LANGUAGE[e.target.value] || [];
+                      if (voices.length > 0) {
+                        setSelectedVoice(voices[0].id);
+                      }
+                    }}
+                    className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded text-xs text-white focus:border-indigo-500 transition-all"
+                  >
+                    <option value="en">🇺🇸 English</option>
+                    <option value="es">🇪🇸 Spanish</option>
+                    <option value="fr">🇫🇷 French</option>
+                    <option value="de">🇩🇪 German</option>
+                    <option value="it">🇮🇹 Italian</option>
+                    <option value="pt">🇵🇹 Portuguese</option>
+                    <option value="ja">🇯🇵 Japanese</option>
+                    <option value="ko">🇰🇷 Korean</option>
+                    <option value="zh-CN">🇨🇳 Mandarin</option>
+                    <option value="zh-TW">🇹🇼 Traditional Chinese</option>
+                  </select>
+                </div>
+
+                {/* Voice Selection */}
+                <div>
+                  <label className="text-xs text-zinc-400 font-semibold block mb-1">Voice:</label>
+                  <select
+                    value={selectedVoice}
+                    onChange={(e) => setSelectedVoice(e.target.value)}
+                    className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded text-xs text-white focus:border-indigo-500 transition-all"
+                  >
+                    {(VOICES_BY_LANGUAGE[selectedDubbingLanguage] || []).map((voice) => (
+                      <option key={voice.id} value={voice.id}>
+                        {voice.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <p className="text-xs text-indigo-300">
+                💡 AI dubbing will generate voiceover in your selected language and burn subtitles onto the video.
+              </p>
+            </div>
+          )}
+
           {/* Highlights Grid */}
           {highlightStatus === 'success' && highlights.length > 0 && (
             <div className="space-y-3 mt-4">
@@ -588,6 +786,36 @@ export default function LocalizationTools({
                         )}
                       </button>
 
+                      {/* AI Dubbing Button */}
+                      <button
+                        onClick={() => handleGenerateDubbedClip(highlight, idx)}
+                        disabled={dubbingIds.has(idx)}
+                        className={`w-full py-1.5 px-2 rounded text-xs transition-all font-semibold flex items-center justify-center gap-1 ${
+                          dubbingIds.has(idx)
+                            ? 'bg-indigo-600/30 text-indigo-300 cursor-not-allowed'
+                            : 'bg-indigo-600/50 hover:bg-indigo-600 text-indigo-100'
+                        }`}
+                      >
+                        {dubbingIds.has(idx) ? (
+                          <>
+                            <span className="animate-spin">⏳</span>
+                            <span>Dubbing...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>🎙️</span>
+                            <span>AI Dub ({selectedDubbingLanguage.toUpperCase()})</span>
+                          </>
+                        )}
+                      </button>
+
+                      {/* Dubbing Error message */}
+                      {dubbingErrors[idx] && (
+                        <div className="w-full py-1.5 px-2 bg-red-600/30 rounded text-xs text-red-300">
+                          ⚠️ {dubbingErrors[idx]}
+                        </div>
+                      )}
+
                       {/* Error message */}
                       {renderingErrors[idx] && (
                         <div className="w-full py-1.5 px-2 bg-red-600/30 rounded text-xs text-red-300">
@@ -630,8 +858,11 @@ export default function LocalizationTools({
             <li>✓ AI Subtitle Extraction (SRT) from YouTube videos</li>
             <li>✓ 1-Click Multi-language Translation (21 languages)</li>
             <li>✓ AI Viral Shorts Curation (Timestamp Recommendations)</li>
+            <li>✓ 9:16 Shorts Video Rendering with Letterboxing</li>
+            <li>✓ 🆕 AI Multi-language Dubbing & Voiceover (ElevenLabs)</li>
+            <li>✓ Subtitle Burn-in & Auto-Caption Overlay</li>
             <li>✓ Batch Download for Global Distribution</li>
-            <li>Coming Soon: AI Dubbing & Cross-Platform Auto-Upload</li>
+            <li>Coming Soon: Cross-Platform Auto-Upload & Analytics</li>
           </ul>
         </div>
       </div>
