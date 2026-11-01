@@ -161,11 +161,20 @@ export default function Home() {
           body: JSON.stringify({ url: trimmedUrl }),
         });
 
+        // 403 에러 - 절대 에러 박스가 아니라 Paywall 모달만
+        if (response.status === 403) {
+          console.log('Daily limit exceeded - showing paywall');
+          setIsLoading(false);
+          setShowDailyLimitPaywall(true);
+          return;
+        }
+
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
 
-          // 403 에러 (일일 제한 초과) 특별 처리: 에러 박스 표시 안 함, DailyLimitPaywall만 표시
-          if (response.status === 403 || errorData.error === 'DAILY_LIMIT_EXCEEDED') {
+          // 추가 체크: DAILY_LIMIT_EXCEEDED 문자열도 감지
+          if (errorData.error === 'DAILY_LIMIT_EXCEEDED') {
+            console.log('DAILY_LIMIT_EXCEEDED detected - showing paywall');
             setIsLoading(false);
             setShowDailyLimitPaywall(true);
             return;
@@ -178,6 +187,14 @@ export default function Home() {
         setResult(data);
         console.log('Video extracted successfully:', data);
       } catch (err) {
+        // 403 에러는 여기서도 걸러내기
+        if (err instanceof Error && (err.message.includes('403') || err.message.includes('DAILY_LIMIT_EXCEEDED'))) {
+          console.log('403 caught in error handler - showing paywall');
+          setIsLoading(false);
+          setShowDailyLimitPaywall(true);
+          return;
+        }
+
         setError(err instanceof Error ? err.message : 'Failed to extract video. Please try again.');
         console.error('Download error:', err);
       } finally {
