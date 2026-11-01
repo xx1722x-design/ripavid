@@ -8,7 +8,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import { translations } from '@/app/locales';
 
 export default function Header() {
-  const { user, isLoading, logout, isAuthenticated } = useAuth();
+  const { user, isLoading, logout, isAuthenticated, isGuest } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -103,12 +103,12 @@ export default function Header() {
     >
       <div className="p-4 border-b border-zinc-700">
         <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wide">Profile</p>
-        <p className="text-sm font-medium text-white mt-2">{user?.name || user?.email}</p>
-        <p className="text-xs text-zinc-500 mt-1">{user?.email}</p>
+        <p className="text-sm font-medium text-white mt-2">{user?.name || user?.email || 'Guest User'}</p>
+        {user?.email && <p className="text-xs text-zinc-500 mt-1">{user.email}</p>}
         <p className={`text-xs mt-2 font-medium uppercase tracking-wide ${
           user?.tier === 'pro' ? 'text-purple-400' : 'text-cyan-400'
         }`}>
-          {user?.tier === 'pro' ? '👑 Pro Tier' : 'Free Tier'}
+          {user?.tier === 'pro' ? '👑 Pro Tier' : 'Free Tier'} {isGuest && '(Not Signed In)'}
         </p>
       </div>
 
@@ -125,47 +125,50 @@ export default function Header() {
         </button>
       )}
 
-      <button
-        onClick={handleLogout}
-        className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-900/20 transition-colors flex items-center gap-2 pointer-events-auto"
-      >
-        <LogOut className="w-4 h-4" />
-        {t.logout || 'Log out'}
-      </button>
+      {isAuthenticated && !isGuest && (
+        <button
+          onClick={handleLogout}
+          className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-900/20 transition-colors flex items-center gap-2 pointer-events-auto"
+        >
+          <LogOut className="w-4 h-4" />
+          {t.logout || 'Log out'}
+        </button>
+      )}
+
+      {isGuest && (
+        <button
+          onClick={handleLoginClick}
+          className="w-full px-4 py-3 text-left text-sm text-cyan-400 hover:bg-cyan-900/20 transition-colors flex items-center gap-2 pointer-events-auto"
+        >
+          <User className="w-4 h-4" />
+          Sign in to Save History
+        </button>
+      )}
     </div>
   );
 
   return (
     <div className="fixed top-0 right-0 z-50 pr-4 sm:pr-8 pt-4 sm:pt-6 flex items-center gap-3">
       <LanguageSwitcher />
-      {!isAuthenticated ? (
-        <button
-          onClick={handleLoginClick}
-          className="relative inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium text-sm hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 pointer-events-auto"
-        >
-          🔐 {t.continueWithGoogle}
-        </button>
-      ) : (
-        <button
-          ref={buttonRef}
-          type="button"
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 overflow-hidden pointer-events-auto group"
-          aria-label="User menu"
-        >
-          {user?.avatar ? (
-            <img
-              src={user.avatar}
-              alt={user.name || 'User'}
-              className="w-full h-full rounded-lg object-cover"
-            />
-          ) : (
-            <User className="w-5 h-5" />
-          )}
-        </button>
-      )}
+      <button
+        ref={buttonRef}
+        type="button"
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="relative inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 overflow-hidden pointer-events-auto group"
+        aria-label="User menu"
+      >
+        {user?.avatar ? (
+          <img
+            src={user.avatar}
+            alt={user.name || 'User'}
+            className="w-full h-full rounded-lg object-cover"
+          />
+        ) : (
+          <User className="w-5 h-5" />
+        )}
+      </button>
 
-      {isMounted && isDropdownOpen && isAuthenticated && createPortal(dropdownContent, document.body)}
+      {isMounted && isDropdownOpen && createPortal(dropdownContent, document.body)}
     </div>
   );
 }

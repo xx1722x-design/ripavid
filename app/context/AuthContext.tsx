@@ -3,18 +3,20 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface User {
-  uid: string;
-  email: string;
+  uid?: string;
+  email?: string;
   name?: string;
   avatar?: string;
   tier: 'free' | 'pro' | 'enterprise';
-  createdAt: string;
+  createdAt?: string;
+  isGuest?: boolean;
 }
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isGuest: boolean;
   login: (email: string, password?: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
@@ -38,11 +40,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const userData = await response.json();
         setUser(userData);
       } else {
-        setUser(null);
+        // Set user as guest with free tier access
+        setUser({
+          tier: 'free',
+          isGuest: true,
+        });
       }
     } catch (error) {
       console.error('Failed to fetch user:', error);
-      setUser(null);
+      // Set user as guest with free tier access
+      setUser({
+        tier: 'free',
+        isGuest: true,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +66,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
-      setUser(null);
+      // Keep guest user after logout
+      setUser({
+        tier: 'free',
+        isGuest: true,
+      });
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -67,7 +81,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         isLoading,
-        isAuthenticated: !!user,
+        isAuthenticated: !!user && !user.isGuest,
+        isGuest: user?.isGuest || false,
         login,
         logout,
         refreshUser,
