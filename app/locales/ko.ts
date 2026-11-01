@@ -172,5 +172,10 @@ export const koTranslations = {
   signInToUpgrade: '업그레이드하려면 로그인하세요',
   upgradeNow: '지금 업그레이드',
   yourCurrentPlan: '✓ 현재 플랜',
-};
 
+  // RRR Trick Feature
+  rrrTipText: '미디어를 즉시 불러올 수 있어요!',
+  rrrWantImport: '이걸 즉시 불러오고 싶으신가요?',
+  rrrToolName: 'RipAVid 빠른 불러오기 도구',
+  rrrExtractButton: 'MP4 추출 (1080p)',
+};

@@ -236,7 +236,7 @@ export default function Home() {
         <ProHeroBanner />
 
         {/* RRR Trick Tip Banner */}
-        <RRRTipBanner onClick={() => setShowRRRModal(true)} />
+        <RRRTipBanner onClick={() => setShowRRRModal(true)} language={language} />
 
         {/* Platform Selector - with max height to prevent layout shift */}
         <div className="w-full max-w-5xl mx-auto mb-2 overflow-hidden">
@@ -365,7 +365,7 @@ export default function Home() {
       </main>
 
       {/* RRR Trick Modal */}
-      <RRRTrickModal isOpen={showRRRModal} onClose={() => setShowRRRModal(false)} />
+      <RRRTrickModal isOpen={showRRRModal} onClose={() => setShowRRRModal(false)} language={language} />
 
         {/* Footer */}
         {/* @ts-ignore */}

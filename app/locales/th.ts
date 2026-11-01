@@ -116,5 +116,10 @@ export const thTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'เพื่อนำเข้าสื่อทันที!',
+  rrrWantImport: 'คุณต้องการนำเข้าสิ่งนี้ทันที?',
+  rrrToolName: 'เครื่องมือนำเข้าอย่างรวดเร็ว RipAVid',
+  rrrExtractButton: 'แยก MP4 (1080p)',
+};

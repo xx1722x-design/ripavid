@@ -115,5 +115,10 @@ export const jaTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'メディアをインスタントにインポート!',
+  rrrWantImport: 'これを即座にインポートしたいですか？',
+  rrrToolName: 'RipAVid クイックインポートツール',
+  rrrExtractButton: 'MP4を抽出 (1080p)',
+};

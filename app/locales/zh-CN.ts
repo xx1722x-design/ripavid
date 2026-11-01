@@ -115,5 +115,10 @@ export const zhCNTranslations = {
   signInToUpgrade: '登录以升级',
   upgradeNow: '立即升级',
   yourCurrentPlan: '✓ 当前计划',
-};
 
+  // RRR Trick Feature
+  rrrTipText: '立即导入媒体!',
+  rrrWantImport: '想立即导入这个吗?',
+  rrrToolName: 'RipAVid 快速导入工具',
+  rrrExtractButton: '提取 MP4 (1080p)',
+};

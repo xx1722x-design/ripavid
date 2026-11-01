@@ -116,5 +116,10 @@ export const trTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'medyayı anında içe aktar!',
+  rrrWantImport: 'Bunu anında içe almak ister misiniz?',
+  rrrToolName: 'RipAVid Hızlı İçe Aktarma Aracı',
+  rrrExtractButton: 'MP4 Çıkart (1080p)',
+};

@@ -116,5 +116,10 @@ export const zhTWTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: '立即導入媒體!',
+  rrrWantImport: '想立即導入這個嗎?',
+  rrrToolName: 'RipAVid 快速匯入工具',
+  rrrExtractButton: '提取 MP4 (1080p)',
+};

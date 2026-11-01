@@ -1,10 +1,14 @@
 'use client';
 
+import { translations } from '../locales';
+
 interface RRRTipBannerProps {
   onClick: () => void;
+  language: string;
 }
 
-export default function RRRTipBanner({ onClick }: RRRTipBannerProps) {
+export default function RRRTipBanner({ onClick, language }: RRRTipBannerProps) {
+  const t = translations[language as keyof typeof translations] || translations['en'];
   return (
     <div
       onClick={onClick}
@@ -24,7 +28,7 @@ export default function RRRTipBanner({ onClick }: RRRTipBannerProps) {
             </span>
             before youtube.com (or use
             <span className="text-cyan-400 font-bold mx-1">rrryoutube.com</span>
-            ) to download instantly!
+            ) {t.rrrTipText}
           </span>
           <span className="text-cyan-400 font-bold group-hover:translate-x-1 transition-transform">
             See how it works ✨

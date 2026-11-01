@@ -116,5 +116,10 @@ export const idTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'untuk mengimpor media secara instan!',
+  rrrWantImport: 'Ingin mengimpor ini secara instan?',
+  rrrToolName: 'Alat Impor Cepat RipAVid',
+  rrrExtractButton: 'Ekstrak MP4 (1080p)',
+};

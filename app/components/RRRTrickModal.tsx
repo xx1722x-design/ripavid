@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { translations } from '../locales';
 
 interface RRRTrickModalProps {
   isOpen: boolean;
   onClose: () => void;
+  language: string;
 }
 
-export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
+export default function RRRTrickModal({ isOpen, onClose, language }: RRRTrickModalProps) {
+  const t = translations[language as keyof typeof translations] || translations['en'];
   const [isTriggered, setIsTriggered] = useState(false);
 
   useEffect(() => {
@@ -138,7 +141,7 @@ export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
                   </div>
                 </div>
                 <p className="text-xs text-gray-100 flex items-center gap-1">
-                  <span>Want to download this instantly?</span>
+                  <span>{t.rrrWantImport}</span>
                   <span className="text-cyan-400 font-medium">
                     Just add <b className="underline">rrr</b> in front!
                   </span>
@@ -158,7 +161,7 @@ export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
                       <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-400 to-blue-600 flex items-center justify-center text-white font-bold text-xs">
                         ⚡
                       </div>
-                      <span className="font-bold text-white text-sm">RipAVid Instant Downloader</span>
+                      <span className="font-bold text-white text-sm">{t.rrrToolName}</span>
                     </div>
                     <span className="bg-emerald-500/10 text-emerald-400 text-[10px] px-2.5 py-1 rounded-full font-semibold border border-emerald-500/20">
                       ✓ Video Detected
@@ -181,7 +184,7 @@ export default function RRRTrickModal({ isOpen, onClose }: RRRTrickModalProps) {
                   {/* Download Button */}
                   <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-cyan-500/25 transition flex items-center justify-center gap-2">
                     <span>⬇️</span>
-                    <span>Download MP4 (1080p)</span>
+                    <span>{t.rrrExtractButton}</span>
                   </button>
                 </div>
               </div>

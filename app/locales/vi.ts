@@ -116,5 +116,10 @@ export const viTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'để nhập phương tiện ngay lập tức!',
+  rrrWantImport: 'Bạn muốn nhập cái này ngay lập tức?',
+  rrrToolName: 'Công cụ Nhập nhanh RipAVid',
+  rrrExtractButton: 'Trích xuất MP4 (1080p)',
+};

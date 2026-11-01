@@ -116,5 +116,10 @@ export const hiTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'तुरंत मीडिया आयात करने के लिए!',
+  rrrWantImport: 'क्या आप इसे तुरंत आयात करना चाहते हैं?',
+  rrrToolName: 'RipAVid त्वरित आयात उपकरण',
+  rrrExtractButton: 'MP4 निकालें (1080p)',
+};

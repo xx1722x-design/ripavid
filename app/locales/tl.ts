@@ -116,5 +116,10 @@ export const tlTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'upang mag-import ng media kaagad!',
+  rrrWantImport: 'Gusto mong mag-import nito kaagad?',
+  rrrToolName: 'Mabilis na Werkang Pang-import RipAVid',
+  rrrExtractButton: 'Ekstrahin ang MP4 (1080p)',
+};

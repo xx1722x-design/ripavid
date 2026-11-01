@@ -116,5 +116,10 @@ export const plTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'aby natychmiast zaimportować media!',
+  rrrWantImport: 'Chcesz to natychmiast zaimportować?',
+  rrrToolName: 'Narzędzie Szybkiego Importu RipAVid',
+  rrrExtractButton: 'Wyodrębnij MP4 (1080p)',
+};

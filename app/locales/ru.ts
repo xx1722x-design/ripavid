@@ -116,5 +116,10 @@ export const ruTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'для мгновенного импорта медиа!',
+  rrrWantImport: 'Хотите мгновенно импортировать это?',
+  rrrToolName: 'Инструмент быстрого импорта RipAVid',
+  rrrExtractButton: 'Извлечь MP4 (1080p)',
+};

@@ -116,5 +116,10 @@ export const msTranslations = {
   signInToUpgrade: 'Sign in to Upgrade',
   upgradeNow: 'Upgrade Now',
   yourCurrentPlan: '✓ Your Current Plan',
-};
 
+  // RRR Trick Feature
+  rrrTipText: 'untuk mengimport media secara instan!',
+  rrrWantImport: 'Ingin mengimport ini secara instan?',
+  rrrToolName: 'Alat Import Pantas RipAVid',
+  rrrExtractButton: 'Ekstrak MP4 (1080p)',
+};
