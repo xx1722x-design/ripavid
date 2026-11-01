@@ -145,17 +145,19 @@ function DashboardContent() {
 
               {/* Guest Download Counter Badge */}
               {isGuest && (
-                <div className={`ml-auto mr-auto hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
+                <div className={`ml-auto mr-auto hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-lg border font-bold ${
                   guestDownloadCount >= 3
-                    ? 'bg-red-500/10 border-red-500/30'
-                    : 'bg-cyan-500/10 border-cyan-500/30'
+                    ? 'bg-orange-500/25 border-orange-400 shadow-lg shadow-orange-500/20'
+                    : 'bg-cyan-500/25 border-cyan-400 shadow-lg shadow-cyan-500/20'
                 }`}>
-                  <span className={`text-xs font-semibold whitespace-nowrap ${
+                  <span className={`text-base font-extrabold whitespace-nowrap ${
                     guestDownloadCount >= 3
-                      ? 'text-red-300'
-                      : 'text-cyan-300'
+                      ? 'text-orange-200'
+                      : 'text-cyan-100'
                   }`}>
-                    {guestDownloadCount >= 3 ? 'Limit Reached' : `Free: ${3 - guestDownloadCount}/3 Left`}
+                    {guestDownloadCount >= 3
+                      ? `Import Limit Reached (${guestDownloadCount}/3)`
+                      : `${3 - guestDownloadCount}/${3} Downloads Left`}
                   </span>
                 </div>
               )}
@@ -180,17 +182,17 @@ function DashboardContent() {
 
             {/* Mobile Guest Download Counter Badge */}
             {isGuest && !isAuthenticated && (
-              <div className={`sm:hidden flex items-center gap-1.5 px-2.5 py-1 rounded-md border ${
+              <div className={`sm:hidden flex items-center gap-1.5 px-3 py-2 rounded-lg border font-bold ${
                 guestDownloadCount >= 3
-                  ? 'bg-red-500/10 border-red-500/30'
-                  : 'bg-cyan-500/10 border-cyan-500/30'
+                  ? 'bg-orange-500/25 border-orange-400 shadow-lg shadow-orange-500/20'
+                  : 'bg-cyan-500/25 border-cyan-400 shadow-lg shadow-cyan-500/20'
               }`}>
-                <span className={`text-xs font-semibold whitespace-nowrap ${
+                <span className={`text-sm font-extrabold whitespace-nowrap ${
                   guestDownloadCount >= 3
-                    ? 'text-red-300'
-                    : 'text-cyan-300'
+                    ? 'text-orange-200'
+                    : 'text-cyan-100'
                 }`}>
-                  {guestDownloadCount >= 3 ? 'Limit' : `${3 - guestDownloadCount}/3`}
+                  {guestDownloadCount >= 3 ? `${guestDownloadCount}/3` : `${3 - guestDownloadCount}/3`}
                 </span>
               </div>
             )}
