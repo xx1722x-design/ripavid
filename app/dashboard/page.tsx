@@ -63,9 +63,19 @@ function DashboardContent() {
         }
       } else if (videoId) {
         try {
-          const id = decodeURIComponent(videoId);
-          if (/^[a-zA-Z0-9_-]{11}$/.test(id)) {
-            setInitialUrl(`https://www.youtube.com/watch?v=${id}`);
+          let id = decodeURIComponent(videoId);
+
+          // Extract video ID from complex URLs (e.g., ?v=ID&list=...&start_radio=...)
+          // Handle cases like: "QX9UUxvGJQ4&list=PLxxx" -> extract just "QX9UUxvGJQ4"
+          if (id.includes('&')) {
+            id = id.split('&')[0];
+          }
+
+          // Validate video ID format (11 characters, alphanumeric + _ - )
+          if (/^[a-zA-Z0-9_-]{11}$/.test(id.trim())) {
+            setInitialUrl(`https://www.youtube.com/watch?v=${id.trim()}`);
+          } else {
+            console.warn('[Dashboard] Invalid video ID format:', id);
           }
         } catch (decodeError) {
           console.error('[Dashboard] Error decoding video ID:', decodeError);

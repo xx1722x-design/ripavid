@@ -118,13 +118,13 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
   const handleRipVideo = async (url: string) => {
     try {
       if (!url || typeof url !== 'string') {
-        setProcessingError('Invalid URL provided.');
+        setProcessingError('❌ Invalid URL provided. Please enter a valid video URL.');
         return;
       }
 
       const trimmedUrl = url.trim();
       if (trimmedUrl.length === 0) {
-        setProcessingError('Please enter a valid URL.');
+        setProcessingError('❌ Please enter a valid video URL.');
         return;
       }
 
@@ -134,31 +134,98 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
       setOriginalUrl(trimmedUrl);
 
       try {
-        const response = await fetch('/api/download', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ url: trimmedUrl }),
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
 
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.error || `Server error: ${response.status}`);
+        try {
+          const response = await fetch('/api/download', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url: trimmedUrl }),
+            signal: controller.signal,
+          });
+
+          clearTimeout(timeoutId);
+
+          // Handle different response statuses with specific messages
+          if (!response.ok) {
+            let errorMessage = `❌ Server Error (${response.status})`;
+
+            try {
+              const errorData = await response.json();
+              if (errorData.error) {
+                errorMessage = `❌ ${errorData.error}`;
+              }
+            } catch (jsonError) {
+              // Response is not JSON, use status text
+              if (response.statusText) {
+                errorMessage = `❌ ${response.statusText}`;
+              }
+            }
+
+            throw new Error(errorMessage);
+          }
+
+          // Try to parse response
+          let data: VideoData | null = null;
+          try {
+            data = await response.json();
+          } catch (jsonError) {
+            console.error('[UserDashboard] JSON parse error:', jsonError);
+            throw new Error(
+              '❌ Invalid server response format. The server returned data that could not be processed.'
+            );
+          }
+
+          if (!data || !data.formats) {
+            throw new Error(
+              '❌ No video formats found. The video might be unavailable or restricted.'
+            );
+          }
+
+          setResult(data);
+          console.log('✅ Video extracted successfully:', data);
+        } catch (fetchError) {
+          clearTimeout(timeoutId);
+
+          if (fetchError instanceof TypeError) {
+            // Network error
+            if (fetchError.message.includes('Timeout')) {
+              throw new Error(
+                '⏱️ Request timed out. The video extraction took too long. Please try again.'
+              );
+            } else {
+              throw new Error(
+                `❌ Network error: ${fetchError.message}. Please check your connection.`
+              );
+            }
+          } else if (fetchError instanceof Error) {
+            throw fetchError;
+          } else {
+            throw new Error('❌ Failed to extract video. Please try again.');
+          }
         }
-
-        const data: VideoData = await response.json();
-        setResult(data);
-        console.log('Video extracted successfully:', data);
       } catch (err) {
-        setProcessingError(err instanceof Error ? err.message : 'Failed to extract video. Please try again.');
-        console.error('Download error:', err);
+        const errorMsg = (() => {
+          if (err instanceof Error) {
+            return err.message.startsWith('❌') || err.message.startsWith('⏱️')
+              ? err.message
+              : `❌ ${err.message}`;
+          }
+          return '❌ Failed to extract video. Please try again.';
+        })();
+
+        setProcessingError(errorMsg);
+        console.error('[UserDashboard] Download error:', err);
       } finally {
         setProcessingLoading(false);
       }
     } catch (outerErr) {
-      setProcessingError('An unexpected error occurred. Please try again.');
-      console.error('Unexpected error in handleRipVideo:', outerErr);
+      const errorMsg = outerErr instanceof Error ? outerErr.message : 'An unexpected error occurred. Please try again.';
+      setProcessingError(`❌ ${errorMsg}`);
+      console.error('[UserDashboard] Unexpected error in handleRipVideo:', outerErr);
       setProcessingLoading(false);
     }
   };

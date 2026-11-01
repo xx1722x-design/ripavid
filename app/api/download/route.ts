@@ -210,10 +210,25 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('❌ Download API fatal error:', error);
 
+    // Provide specific error messages based on error type
+    let errorMessage = 'Failed to extract video information. Please try again.';
+
+    if (error instanceof Error) {
+      if (error.message.includes('JSON')) {
+        errorMessage = 'Backend returned invalid data format. Please try again.';
+      } else if (error.message.includes('snagaclip')) {
+        errorMessage = 'Video extraction service temporarily unavailable. Please try again later.';
+      } else if (error.message.includes('fetch')) {
+        errorMessage = 'Network error while contacting video service. Please check your connection.';
+      } else if (error.message.length < 200) {
+        errorMessage = error.message;
+      }
+    }
+
     return NextResponse.json(
       {
         success: false,
-        error: 'Failed to extract video information. Please try again.',
+        error: errorMessage,
       },
       { status: 500 }
     );
