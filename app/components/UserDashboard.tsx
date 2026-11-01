@@ -34,7 +34,19 @@ interface VideoData {
 }
 
 export default function UserDashboard({ language = 'en', initialUrl = '', autoSubmit = false, onError }: UserDashboardProps) {
-  const { user, isAuthenticated } = useAuth() || { user: null, isAuthenticated: false };
+  let user = null;
+  let isAuthenticated = false;
+
+  try {
+    const authContext = useAuth();
+    user = authContext?.user || null;
+    isAuthenticated = authContext?.isAuthenticated || false;
+  } catch (authError) {
+    console.error('[UserDashboard] Error getting auth context:', authError);
+    if (onError && authError instanceof Error) {
+      onError(authError);
+    }
+  }
 
   const t = (() => {
     try {
