@@ -6,6 +6,10 @@ import { getUserHistory, deleteHistoryEntry, type JobHistory } from '@/lib/supab
 import { translations } from '../locales';
 import UrlForm from './UrlForm';
 import VideoResult from './VideoResult';
+import PlatformSelector from './PlatformSelector';
+import SocialProofTicker from './SocialProofTicker';
+import FeaturesGrid from './FeaturesGrid';
+import ProHeroBanner from './ProHeroBanner';
 
 interface UserDashboardProps {
   language?: string;
@@ -251,21 +255,48 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
-  // Guest user mode - show processing form only
+  // Guest user mode - show premium landing page with processing form
   if (!isAuthenticated) {
     try {
       return (
-      <div className="w-full max-w-6xl mx-auto px-4 py-8">
-        {/* Guest Mode Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
-            Quick Processing
-          </h1>
-          <p className="text-zinc-400">Process videos without sign-up • Free tier features available</p>
+      <div className="w-full flex flex-col items-center justify-start min-h-full px-4 sm:px-6 lg:px-8 py-8">
+        {/* Logo */}
+        <div className="mb-4 flex items-center gap-2">
+          <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center font-bold text-white">
+            ⚡
+          </div>
+          <span className="text-lg font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+            RipAVid
+          </span>
         </div>
 
-        {/* Processing Form */}
-        <div className="mb-8">
+        {/* Hero Section */}
+        <div className="text-center mb-4 max-w-3xl">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 leading-tight">
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              Expand Your Global Reach
+            </span>
+          </h1>
+          <p className="text-base sm:text-lg text-zinc-400 mb-1">
+            Download videos from any platform, instantly
+          </p>
+          <p className="text-xs sm:text-sm text-zinc-500">
+            Fast • Secure • No Sign-up Required
+          </p>
+        </div>
+
+        {/* Pro Hero Banner */}
+        <ProHeroBanner />
+
+        {/* Platform Selector */}
+        <div className="w-full max-w-5xl mb-4 overflow-hidden">
+          {/* @ts-ignore */}
+          <PlatformSelector selectedPlatform="" onSelectPlatform={() => {}} showLabel={true} />
+        </div>
+
+        {/* URL Input Form */}
+        <div className="w-full">
+          {/* @ts-ignore */}
           <UrlForm
             onSubmit={handleRipVideo}
             isLoading={processingLoading}
@@ -278,7 +309,7 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
 
         {/* Error Display - Full Debug Mode */}
         {processingError && (
-          <div className="w-full max-w-4xl mx-auto bg-red-900/30 border-2 border-red-500 text-red-100 px-6 py-4 rounded-lg mb-8">
+          <div className="w-full max-w-4xl mx-auto bg-red-900/30 border-2 border-red-500 text-red-100 px-6 py-4 rounded-lg mb-8 mt-4">
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="flex items-center gap-2">
                 <svg className="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -315,6 +346,22 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
             originalUrl={originalUrl}
             onError={(errorMessage) => setProcessingError(errorMessage)}
           />
+        )}
+
+        {/* Social Proof Ticker */}
+        {!result && (
+          <>
+            {/* @ts-ignore */}
+            <SocialProofTicker />
+          </>
+        )}
+
+        {/* Features Grid */}
+        {!result && (
+          <>
+            {/* @ts-ignore */}
+            <FeaturesGrid language={language} />
+          </>
         )}
       </div>
     );
