@@ -107,40 +107,61 @@ async function fetchFromSnagaclip(url: string): Promise<any> {
     const requestBody = { url };
     console.log('📦 요청 Body:', JSON.stringify(requestBody));
 
-    const response = await fetch('http://snagaclip.com:3002/api/extract', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    });
+    // CRITICAL: Add 45-second timeout to prevent infinite hanging
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      console.warn('⏱️ snagaclip.com 요청 타임아웃 (45초)');
+      controller.abort();
+    }, 45000); // 45 second timeout
 
-    console.log('📊 응답 상태:', response.status, response.statusText);
-
-    const responseText = await response.text();
-    console.log('📥 응답 Body (Raw):', responseText);
-
-    let data;
     try {
-      data = JSON.parse(responseText);
-      console.log('✅ JSON 파싱 성공:', JSON.stringify(data).substring(0, 500));
-    } catch (parseError) {
-      console.error('❌ JSON 파싱 실패:', parseError);
-      throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`);
-    }
-
-    if (!response.ok || !data.success) {
-      const errorDetail = data.detail ?? data.error ?? `HTTP ${response.status}`;
-      console.error('❌ snagaclip.com 에러 응답:', {
-        status: response.status,
-        error: errorDetail,
-        data: data,
+      const response = await fetch('http://snagaclip.com:3002/api/extract', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+        signal: controller.signal,
       });
-      throw new Error(`snagaclip error: ${errorDetail}`);
-    }
 
-    console.log('✅ snagaclip.com 요청 성공!');
-    return data;
+      clearTimeout(timeoutId);
+      console.log('📊 응답 상태:', response.status, response.statusText);
+
+      const responseText = await response.text();
+      console.log('📥 응답 Body (Raw):', responseText);
+
+      let data;
+      try {
+        data = JSON.parse(responseText);
+        console.log('✅ JSON 파싱 성공:', JSON.stringify(data).substring(0, 500));
+      } catch (parseError) {
+        console.error('❌ JSON 파싱 실패:', parseError);
+        throw new Error(`Invalid JSON response: ${responseText.substring(0, 200)}`);
+      }
+
+      if (!response.ok || !data.success) {
+        const errorDetail = data.detail ?? data.error ?? `HTTP ${response.status}`;
+        console.error('❌ snagaclip.com 에러 응답:', {
+          status: response.status,
+          error: errorDetail,
+          data: data,
+        });
+        throw new Error(`snagaclip error: ${errorDetail}`);
+      }
+
+      console.log('✅ snagaclip.com 요청 성공!');
+      return data;
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+
+      // Handle timeout specifically
+      if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+        console.error('❌ snagaclip.com 요청 타임아웃: 45초 초과');
+        throw new Error('EXTRACTION_TIMEOUT: Video extraction took too long. Please try again.');
+      }
+
+      throw fetchError;
+    }
   } catch (error) {
     console.error('❌ snagaclip.com 요청 실패:', error instanceof Error ? error.message : error);
     throw error;

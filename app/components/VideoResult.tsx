@@ -173,16 +173,31 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       }
 
       // ✅ ONLY IF CREDITS APPROVED - proceed with download
-      // Verify the download is allowed by making a HEAD request
+      // Verify the download is allowed by making a HEAD request with 60-second timeout
       let response: Response | null = null;
       try {
-        response = await fetch(
-          `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`,
-          { method: 'HEAD' }
-        );
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+
+        try {
+          response = await fetch(
+            `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`,
+            {
+              method: 'HEAD',
+              signal: controller.signal
+            }
+          );
+          clearTimeout(timeoutId);
+        } catch (fetchError) {
+          clearTimeout(timeoutId);
+          if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+            throw new Error('Download preparation timed out. Please try again.');
+          }
+          const errorMsg = fetchError instanceof Error ? fetchError.message : 'Network request failed';
+          throw new Error(`Connection error: ${errorMsg}`);
+        }
       } catch (fetchError) {
-        const errorMsg = fetchError instanceof Error ? fetchError.message : 'Network request failed';
-        throw new Error(`Connection error: ${errorMsg}`);
+        throw fetchError;
       }
 
       // If not ok, handle errors
@@ -204,7 +219,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       window.location.href = targetUrl;
       window.open(MONETAG_DIRECT_URL, '_blank');
 
-      // Backup: Reset waiting state after 10 seconds
+      // Backup: Reset waiting state after 10 seconds (in case download completes quickly)
       setTimeout(() => {
         setIsWaiting(false);
         setLoadingQuality(null);
