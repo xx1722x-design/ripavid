@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { checkRateLimit } from '@/lib/rate-limiter';
 
 // Explicitly use Node.js runtime
 export const runtime = 'nodejs';
@@ -149,6 +150,27 @@ export async function POST(request: NextRequest) {
   console.log('═══════════════════════════════════════════════════════');
   console.log('🎬 /api/download 요청 수신');
   console.log('═══════════════════════════════════════════════════════');
+
+  // [BOT DEFENSE 1] Rate Limiting: Check IP and authentication status
+  const ipAddress = getClientIp(request);
+  const token = request.cookies.get('auth_token')?.value;
+  const isAuthenticated = !!token;
+
+  const rateLimitResult = checkRateLimit(ipAddress, isAuthenticated);
+  if (!rateLimitResult.allowed) {
+    console.warn(`[RateLimit] IP ${ipAddress} exceeded limit. Rejecting request.`);
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Too many download requests. Please wait before trying again.',
+        resetIn: rateLimitResult.resetIn
+      },
+      {
+        status: 429,
+        headers: { 'Retry-After': String(Math.ceil(rateLimitResult.resetIn / 1000)) }
+      }
+    );
+  }
 
   // CRITICAL: Wrap entire function in try-catch
   try {

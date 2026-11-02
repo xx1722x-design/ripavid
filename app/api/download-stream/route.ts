@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from '@/lib/jwt';
 import { getUserById } from '@/lib/users';
+import { checkRateLimit } from '@/lib/rate-limiter';
 
 // Explicitly use Node.js runtime (required for JWT verification and file access)
 export const runtime = 'nodejs';
@@ -60,6 +61,19 @@ async function validateDownloadPermission(req: NextRequest, height: number) {
 
 export async function HEAD(req: NextRequest) {
   try {
+    // Rate Limiting: Check IP and authentication status
+    const ipAddress = req.headers.get('x-forwarded-for')?.split(',')[0] || req.headers.get('x-real-ip') || '0.0.0.0';
+    const token = req.cookies.get('auth_token')?.value;
+    const isAuthenticated = !!token; // Check if user is logged in
+
+    const rateLimitResult = checkRateLimit(ipAddress, isAuthenticated);
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please wait before trying again.', resetIn: rateLimitResult.resetIn },
+        { status: 429, headers: { 'Retry-After': String(Math.ceil(rateLimitResult.resetIn / 1000)) } }
+      );
+    }
+
     const height = parseInt(req.nextUrl.searchParams.get('height') ?? '0', 10);
     const validation = await validateDownloadPermission(req, height);
 

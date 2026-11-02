@@ -73,6 +73,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const [remainingCredits, setRemainingCredits] = useState(0);
   const [loadingQuality, setLoadingQuality] = useState<string | null>(null);
   const [hoveredResolution, setHoveredResolution] = useState<string | null>(null);
+  const [lastDownloadTime, setLastDownloadTime] = useState(0); // [BOT DEFENSE 2] Track last download click
   const waitingContainerRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
 
@@ -118,6 +119,14 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const maxResolution = getMaxResolution();
 
   const handleDownloadClick = async (height: number, resolution: string) => {
+    // [BOT DEFENSE 2] Human Verification: Debounce rapid clicks (1.5 second cooldown)
+    const now = Date.now();
+    if (now - lastDownloadTime < 1500) {
+      console.warn('[BotDefense] Rapid click detected. Ignoring request.');
+      return;
+    }
+    setLastDownloadTime(now);
+
     // Check if height > 720p and user is not Pro
     if (height > 720 && user?.tier !== 'pro') {
       setShowPaymentModal(true);
