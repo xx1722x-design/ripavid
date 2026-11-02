@@ -447,21 +447,66 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       {isWaiting && (
         <div
           ref={waitingContainerRef}
-          className="w-full max-w-2xl mx-auto mt-6 p-8 bg-gradient-to-br from-blue-950/60 to-blue-900/60 border-4 border-blue-400/80 rounded-xl shadow-2xl animate-pulse"
+          className="w-full max-w-2xl mx-auto mt-6 p-8 bg-gradient-to-br from-blue-950/60 to-blue-900/60 border-4 border-blue-400/80 rounded-xl shadow-2xl"
         >
-          <div className="text-center mb-6">
-            <div className="inline-block p-4 bg-blue-600/80 rounded-full mb-4 animate-pulse">
-              <svg className="w-10 h-10 text-blue-200 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
+          {/* Step-by-Step Process Guide */}
+          <div className="mb-8">
+            <h3 className="text-lg font-bold text-blue-200 mb-6 text-center">Download Process</h3>
+
+            <div className="space-y-4">
+              {/* Step 1 - Completed */}
+              <div className="flex items-center gap-4 p-3 bg-blue-800/40 rounded-lg border border-green-500/50">
+                <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-green-500/80 rounded-full">
+                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-green-300">Step 1: Click Quality</p>
+                  <p className="text-xs text-green-200">{loadingQuality} selected ✓</p>
+                </div>
+              </div>
+
+              {/* Step 2 - Current */}
+              <div className="flex items-center gap-4 p-3 bg-blue-600/40 rounded-lg border border-blue-400/80 animate-pulse">
+                <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-500/80 rounded-full animate-spin">
+                  <div className="w-4 h-4 border-2 border-blue-200 border-t-blue-400 rounded-full"></div>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-blue-300">Step 2: Preparing Download</p>
+                  <p className="text-xs text-blue-200">Server preparing your file...</p>
+                </div>
+              </div>
+
+              {/* Step 3 - Upcoming */}
+              <div className="flex items-center gap-4 p-3 bg-blue-800/30 rounded-lg border border-blue-500/30 opacity-60">
+                <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-700/60 rounded-full">
+                  <span className="text-sm font-bold text-blue-300">🔄</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-blue-300">Step 3: Browser Processing</p>
+                  <p className="text-xs text-blue-200">Tab will show loading icon</p>
+                </div>
+              </div>
+
+              {/* Step 4 - Final */}
+              <div className="flex items-center gap-4 p-3 bg-blue-800/30 rounded-lg border border-blue-500/30 opacity-60">
+                <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-blue-700/60 rounded-full">
+                  <span className="text-sm font-bold text-blue-300">📥</span>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold text-blue-300">Step 4: Download Starts</p>
+                  <p className="text-xs text-blue-200">File saves automatically</p>
+                </div>
+              </div>
             </div>
-            <p className="text-2xl lg:text-3xl font-bold text-blue-200 mb-3 animate-bounce">
-              ⏳ Preparing your download...
+          </div>
+
+          <div className="text-center mb-6 py-4 border-t border-blue-500/30">
+            <p className="text-xl lg:text-2xl font-bold text-blue-200 mb-2 animate-pulse">
+              ⏳ Please wait...
             </p>
-            <p className="text-base text-blue-300 font-semibold mb-2">
-              Quality: <span className="text-yellow-300 font-bold">{loadingQuality}</span>
-            </p>
-            <p className="text-sm text-blue-300">(Takes 1-2 mins, please do not close this window)</p>
+            <p className="text-xs text-blue-300">Do not close this window</p>
           </div>
 
           {/* 가치 제공형 슬라이드 */}
