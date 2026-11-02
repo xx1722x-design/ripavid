@@ -69,10 +69,8 @@ export default function Home() {
   // Ref for Pricing Section (for smooth scroll from Hero Banner)
   const pricingSectionRef = useRef<HTMLDivElement>(null);
   const scrollToPricing = () => {
-    // Scroll with proper offset to ensure CTA buttons are visible
-    setTimeout(() => {
-      pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 0);
+    // Scroll to pricing section with minimal offset
+    pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   };
 
   // Ref for VideoResult (for smooth scroll when formats appear)
@@ -355,7 +353,7 @@ export default function Home() {
 
         {/* Pro Pricing Section */}
         {!result && (
-          <div ref={pricingSectionRef} className="w-full scroll-mt-8 pt-24">
+          <div ref={pricingSectionRef} className="w-full scroll-mt-2 pt-4">
             {/* @ts-ignore */}
             <ProPricingSection language={language} onScrollToDownloader={scrollToDownloader} onOpenRRRModal={() => setShowRRRModal(true)} onOpenPricingModal={() => setShowPricingModal(true)} />
           </div>
