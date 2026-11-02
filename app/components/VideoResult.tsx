@@ -6,7 +6,6 @@ import TipSlider from './TipSlider';
 import AffiliateBanner from './AffiliateBanner';
 import LocalizationTools from './LocalizationTools';
 import PaymentUpgradeModal from './PaymentUpgradeModal';
-import AdWaitTimer from './AdWaitTimer';
 import QualityUpgradeModal from './QualityUpgradeModal';
 import { useAuth } from '@/app/context/AuthContext';
 
@@ -76,9 +75,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const [loadingQuality, setLoadingQuality] = useState<string | null>(null);
   const [hoveredResolution, setHoveredResolution] = useState<string | null>(null);
   const [lastDownloadTime, setLastDownloadTime] = useState(0);
-  const [showAdWaitTimer, setShowAdWaitTimer] = useState(false);
-  const [adTimerHeight, setAdTimerHeight] = useState(720);
-  const [adTimerResolution, setAdTimerResolution] = useState('720p');
   const [showQualityUpgrade, setShowQualityUpgrade] = useState(false);
   const waitingContainerRef = useRef<HTMLDivElement>(null);
   const { user, isGuest } = useAuth();
@@ -242,33 +238,16 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       return;
     }
 
-    // Check if height > 720p and user is not Pro/Starter+
+    // Check if height > 720p and user is not Pro/Starter/Max
+    // Free/Guest users capped at 720p - show upgrade modal for higher quality
     if (height > 720 && user?.tier !== 'pro' && user?.tier !== 'starter' && user?.tier !== 'max') {
       setShowQualityUpgrade(true);
-      setAdTimerHeight(height);
-      setAdTimerResolution(resolution);
       return;
     }
 
-    // TIER BRANCHING:
-    // Free/Guest users: Show 10-second ad-wait timer before download
-    if (isGuest || user?.tier === 'free') {
-      setAdTimerHeight(height);
-      setAdTimerResolution(resolution);
-      setShowAdWaitTimer(true);
-      return;
-    }
-
-    // Starter/Pro/Max logged-in users: Execute download immediately (no timer)
-    if (user?.tier === 'starter' || user?.tier === 'pro' || user?.tier === 'max') {
-      await executeDownload(height, resolution);
-      return;
-    }
-
-    // Fallback for undefined tier: Show timer as safety measure
-    setAdTimerHeight(height);
-    setAdTimerResolution(resolution);
-    setShowAdWaitTimer(true);
+    // All users (Free/Guest/Starter/Pro/Max): Execute download immediately
+    // No waiting timers - simple, fast, reliable
+    await executeDownload(height, resolution);
   };
 
   return (
@@ -469,19 +448,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         isOpen={showPaymentModal}
         onClose={() => setShowPaymentModal(false)}
         remainingCredits={remainingCredits}
-      />
-
-      {/* Ad Wait Timer - Free users must wait 5 seconds before download */}
-      <AdWaitTimer
-        isOpen={showAdWaitTimer}
-        onSkip={async () => {
-          setShowAdWaitTimer(false);
-          await executeDownload(adTimerHeight, adTimerResolution);
-        }}
-        onUpgrade={() => {
-          setShowAdWaitTimer(false);
-          window.location.href = '/pricing?plan=starter';
-        }}
       />
 
       {/* Quality Upgrade Modal - Show when user tries to download 1080p+ without Starter */}
