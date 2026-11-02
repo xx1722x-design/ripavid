@@ -56,6 +56,10 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                     <div className="text-xs text-zinc-300">(Free Member)</div>
                   </th>
                   <th className="text-center py-4 px-4 font-bold">
+                    <div className="text-green-300 drop-shadow-md">💚 Starter</div>
+                    <div className="text-xs text-zinc-300">(Light)</div>
+                  </th>
+                  <th className="text-center py-4 px-4 font-bold">
                     <div className="text-violet-300 drop-shadow-md">🚀 Pro Pass</div>
                     <div className="text-xs text-zinc-300">(Premium)</div>
                   </th>
@@ -68,6 +72,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="py-3 px-4 text-zinc-200 font-medium text-sm">Pricing</td>
                   <td className="text-center py-3 px-4 text-sm text-zinc-400">$0</td>
                   <td className="text-center py-3 px-4 text-sm text-zinc-400 border-l border-r border-blue-500/20">$0</td>
+                  <td className="text-center py-3 px-4 text-sm text-zinc-400">$4.99/mo</td>
                   <td className="text-center py-3 px-4 text-sm text-zinc-400">$19/mo</td>
                   <td className="text-center py-3 px-4 text-sm text-zinc-400">$49/mo</td>
                 </tr>
@@ -77,6 +82,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="py-4 px-4 text-zinc-200 font-medium">Maximum Video Quality</td>
                   <td className="text-center py-4 px-4 text-zinc-300">720p</td>
                   <td className="text-center py-4 px-4 text-zinc-300 border-l border-r border-blue-500/20">720p</td>
+                  <td className="text-center py-4 px-4 font-bold text-green-200">720p • 1080p</td>
                   <td className="text-center py-4 px-4 font-bold text-violet-200">1080p • 2K • 4K</td>
                   <td className="text-center py-4 px-4 font-bold text-amber-200">1080p • 2K • 4K</td>
                 </tr>
@@ -84,6 +90,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="py-4 px-4 text-zinc-200 font-medium">Download Limit</td>
                   <td className="text-center py-4 px-4 text-zinc-400">1 per day</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-emerald-300 font-bold">3 per day ↑</td>
+                  <td className="text-center py-4 px-4 font-bold text-emerald-300">Unlimited ✓</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">Unlimited ✓</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">Unlimited ✓</td>
                 </tr>
@@ -95,11 +102,13 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   </td>
                   <td className="text-center py-4 px-4 text-emerald-300 font-bold">Lifetime Saved ✓</td>
                   <td className="text-center py-4 px-4 text-emerald-300 font-bold">Lifetime Saved ✓</td>
+                  <td className="text-center py-4 px-4 text-emerald-300 font-bold">Lifetime Saved ✓</td>
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
                   <td className="py-4 px-4 text-zinc-200 font-medium">AI Subtitle Extraction (SRT)</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
+                  <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (21 Languages)</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (21 Languages)</td>
                 </tr>
@@ -107,6 +116,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="py-4 px-4 text-zinc-200 font-medium">AI Multi-Language Translation</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
+                  <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (Auto-Sync)</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (Auto-Sync)</td>
                 </tr>
@@ -114,6 +124,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="py-4 px-4 text-zinc-200 font-medium">Viral Clip Timestamp Curation</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
+                  <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (9:16 Format)</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (9:16 Format)</td>
                 </tr>
@@ -121,6 +132,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="py-4 px-4 text-zinc-200 font-medium">ElevenLabs AI Dubbing</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
+                  <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (40+ Voices)</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (40+ Voices)</td>
                 </tr>
@@ -128,6 +140,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="py-4 px-4 text-zinc-200 font-medium">Subtitle Burn-in & Overlay</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
+                  <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓</td>
                 </tr>
@@ -135,6 +148,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="py-4 px-4 text-zinc-200 font-medium">Batch Download (Multi-language)</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
+                  <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓</td>
                 </tr>

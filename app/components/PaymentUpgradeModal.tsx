@@ -45,6 +45,24 @@ export default function PaymentUpgradeModal({ isOpen, onClose, remainingCredits 
 
         {/* Content - Upgrade Options */}
         <div className="p-6 sm:p-8 space-y-4">
+          {/* Starter Plan */}
+          <button
+            onClick={() => router.push('/pricing?plan=starter')}
+            className="w-full p-5 bg-gradient-to-r from-green-950/40 to-emerald-950/40 border-2 border-green-500/50 hover:border-green-400/80 rounded-xl transition-all hover:shadow-lg hover:shadow-green-500/30 transform hover:scale-105"
+          >
+            <div className="flex items-center justify-between">
+              <div className="text-left">
+                <h3 className="text-lg font-bold text-white mb-1">💚 Starter</h3>
+                <p className="text-sm text-zinc-300">Ad-free basic downloads</p>
+                <p className="text-xs text-zinc-400 mt-1">Great for casual users</p>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold text-green-300">$4.99</p>
+                <p className="text-xs text-zinc-400">/month</p>
+              </div>
+            </div>
+          </button>
+
           {/* Pro Plan */}
           <button
             onClick={() => router.push('/pricing?plan=pro')}

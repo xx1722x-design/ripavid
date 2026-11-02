@@ -92,9 +92,18 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     window.open(gumroadLink, '_blank');
   };
 
+  // Pricing Structure
+  const starterPrice = billingPeriod === 'yearly' ? '$39.99' : '$4.99';
+  const starterBilledText = billingPeriod === 'yearly' ? 'Billed $39.99 yearly' : 'Billed monthly';
+
   const proPrice = '$19';
   const proBilledText = billingPeriod === 'yearly'
-    ? (t.pricingBilledYearly || 'Billed $190 yearly')
+    ? 'Billed $150 yearly'
+    : 'Billed monthly';
+
+  const maxPrice = '$49';
+  const maxBilledText = billingPeriod === 'yearly'
+    ? 'Billed $390 yearly'
     : 'Billed monthly';
 
   return (
@@ -181,7 +190,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {/* Free Plan */}
           <div className="relative p-6 sm:p-8 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col justify-between h-full">
             <div>
@@ -226,6 +235,51 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                   {t.freeBackButton || 'Back to Importer'}
                 </button>
               ) : null}
+            </div>
+          </div>
+
+          {/* Starter Plan - Light Users */}
+          <div className="relative p-6 sm:p-8 border-2 border-green-500/40 rounded-2xl bg-gradient-to-br from-green-900/20 to-emerald-900/20 hover:from-green-900/40 hover:to-emerald-900/40 transition-all duration-300 flex flex-col justify-between h-full overflow-visible">
+            <div className="absolute -top-3 left-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold z-10">
+              POPULAR
+            </div>
+
+            <div>
+              <div className="mb-2">
+                <h3 className="text-2xl font-bold text-white mb-0.5">Starter</h3>
+                <p className="text-green-300 text-sm">Ad-free downloads</p>
+              </div>
+
+              <div className="mb-3 pb-3 border-b border-green-500/30">
+                <div className="text-4xl font-bold text-white">
+                  {starterPrice}<span className="text-lg text-zinc-400">/month</span>
+                </div>
+                <p className="text-xs text-zinc-400 mt-0.5">{starterBilledText}</p>
+              </div>
+
+              <ul className="space-y-1.5 sm:space-y-2">
+                {[
+                  '✓ Up to 720p/1080p quality',
+                  '✓ Ad-free downloads',
+                  '✓ Unlimited basic imports',
+                  '✓ Download history'
+                ].map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 sm:gap-3">
+                    <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-zinc-300 text-xs sm:text-sm">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="flex-shrink-0 pt-3 sm:pt-4 mt-3">
+              <button
+                onClick={handleUpgradeClick}
+                disabled={isLoading}
+                className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
+              >
+                {isLoading ? 'Loading...' : 'Get Starter'}
+              </button>
             </div>
           </div>
 
@@ -295,11 +349,9 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
               <div className="mb-3 pb-3 border-b border-amber-500/30">
                 <div className="text-4xl font-bold text-white">
-                  $49<span className="text-lg text-zinc-400">/month</span>
+                  {maxPrice}<span className="text-lg text-zinc-400">/month</span>
                 </div>
-                <p className="text-xs text-zinc-400 mt-0.5">
-                  {billingPeriod === 'yearly' ? 'Billed $490 yearly' : 'Billed monthly'}
-                </p>
+                <p className="text-xs text-zinc-400 mt-0.5">{maxBilledText}</p>
               </div>
 
               <ul className="space-y-1.5 sm:space-y-2">
