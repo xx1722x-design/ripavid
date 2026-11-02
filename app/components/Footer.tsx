@@ -23,7 +23,7 @@ export default function Footer({ language = 'en' }: FooterProps) {
 
   return (
     <footer className="mt-24 w-full border-t border-zinc-800 dark:border-zinc-800 light:border-gray-200 bg-zinc-950/50 dark:bg-zinc-950/50 light:bg-gray-50 backdrop-blur-sm">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-[env(safe-area-inset-bottom)]">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-8">
           {/* Brand */}

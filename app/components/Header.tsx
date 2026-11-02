@@ -148,7 +148,7 @@ export default function Header() {
   );
 
   return (
-    <div className="fixed top-0 right-0 z-50 pr-4 sm:pr-8 pt-4 sm:pt-6 flex items-center gap-3">
+    <div className="fixed top-0 right-0 z-50 pr-4 sm:pr-8 pt-[calc(1rem+env(safe-area-inset-top))] sm:pt-[calc(1.5rem+env(safe-area-inset-top))] flex items-center gap-3">
       <LanguageSwitcher />
       <button
         ref={buttonRef}

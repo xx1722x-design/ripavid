@@ -210,7 +210,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-6 max-w-7xl mx-auto">
           {/* Free Plan */}
           <div className="relative p-3 sm:p-4 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col justify-between h-full">
             <div>
