@@ -7,7 +7,7 @@ interface User {
   email?: string;
   name?: string;
   avatar?: string;
-  tier: 'free' | 'pro' | 'enterprise';
+  tier: 'free' | 'starter' | 'pro' | 'max';
   createdAt?: string;
   isGuest?: boolean;
 }

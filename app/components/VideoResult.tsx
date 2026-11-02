@@ -152,10 +152,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           const creditData = await creditDeductRes.json().catch(() => ({}));
           console.warn('[VideoResult] Insufficient credits:', creditData);
 
-          setIsWaiting(false);
-          setLoadingQuality(null);
-          setRemainingCredits(creditData.remainingCredits || 0);
-
           // Show login/payment prompt for guests or payment upgrade for free users
           if (creditData.shouldPromptLogin) {
             onShowDailyLimitBanner?.();
@@ -174,8 +170,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         console.log('[VideoResult] Credits deducted. Remaining:', creditData.remainingCredits);
       } catch (creditError) {
         console.error('[VideoResult] Credit deduction failed:', creditError);
-        setIsWaiting(false);
-        setLoadingQuality(null);
 
         // If credit system fails, show generic error instead of risking unlimited downloads
         onError?.('Payment verification failed. Please try again.');
@@ -221,11 +215,15 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       }, 10000);
     } catch (error) {
       console.error('Download verification failed:', error);
-      setIsWaiting(false);
-      setLoadingQuality(null);
-
       const errorMessage = error instanceof Error ? error.message : 'Failed to prepare download. Please try again.';
       onError?.(errorMessage);
+    } finally {
+      // CRITICAL: Always reset loading state, no matter what happens
+      // This prevents infinite "Processing..." loops
+      setTimeout(() => {
+        setIsWaiting(false);
+        setLoadingQuality(null);
+      }, 500);
     }
   };
 
@@ -238,24 +236,39 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
     }
     setLastDownloadTime(now);
 
-    // Check if height > 720p and user is not Pro
-    if (height > 720 && user?.tier !== 'pro') {
+    // Prevent clicking while download is in progress
+    if (isWaiting) {
+      console.warn('[VideoResult] Download already in progress. Ignoring click.');
+      return;
+    }
+
+    // Check if height > 720p and user is not Pro/Starter+
+    if (height > 720 && user?.tier !== 'pro' && user?.tier !== 'starter' && user?.tier !== 'max') {
       setShowQualityUpgrade(true);
       setAdTimerHeight(height);
       setAdTimerResolution(resolution);
       return;
     }
 
-    // Free/Guest users: Show 5-second ad-wait timer, then execute download
-    if ((isGuest || user?.tier === 'free') && !isWaiting) {
+    // TIER BRANCHING:
+    // Free/Guest users: Show 10-second ad-wait timer before download
+    if (isGuest || user?.tier === 'free') {
       setAdTimerHeight(height);
       setAdTimerResolution(resolution);
       setShowAdWaitTimer(true);
       return;
     }
 
-    // Otherwise execute download immediately
-    await executeDownload(height, resolution);
+    // Starter/Pro/Max logged-in users: Execute download immediately (no timer)
+    if (user?.tier === 'starter' || user?.tier === 'pro' || user?.tier === 'max') {
+      await executeDownload(height, resolution);
+      return;
+    }
+
+    // Fallback for undefined tier: Show timer as safety measure
+    setAdTimerHeight(height);
+    setAdTimerResolution(resolution);
+    setShowAdWaitTimer(true);
   };
 
   return (

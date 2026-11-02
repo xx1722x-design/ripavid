@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface AdWaitTimerProps {
@@ -12,26 +12,64 @@ interface AdWaitTimerProps {
 export default function AdWaitTimer({ isOpen, onSkip, onUpgrade }: AdWaitTimerProps) {
   const [remaining, setRemaining] = useState(10);
   const router = useRouter();
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const hasExecutedRef = useRef(false);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      hasExecutedRef.current = false;
+      return;
+    }
 
     // Reset timer to 10 seconds when modal opens
     setRemaining(10);
+    hasExecutedRef.current = false;
 
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setRemaining((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          onSkip?.();
+        const newValue = prev - 1;
+        // Trigger download when reaching 0
+        if (newValue <= 0) {
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          }
+          // Force execute onSkip only once
+          if (!hasExecutedRef.current && onSkip) {
+            hasExecutedRef.current = true;
+            // Use setTimeout to ensure state update completes first
+            setTimeout(() => {
+              onSkip();
+            }, 50);
+          }
           return 0;
         }
-        return prev - 1;
+        return newValue;
       });
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
   }, [isOpen, onSkip]);
+
+  const handleSkipNow = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    if (!hasExecutedRef.current && onSkip) {
+      hasExecutedRef.current = true;
+      onSkip();
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -55,6 +93,15 @@ export default function AdWaitTimer({ isOpen, onSkip, onUpgrade }: AdWaitTimerPr
           <p className="text-sm text-zinc-300">We're preparing your file for maximum speed</p>
         </div>
 
+        {/* Manual Skip Button - For impatient users */}
+        <button
+          onClick={handleSkipNow}
+          className="w-full mb-6 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-bold rounded-lg transition-all transform hover:scale-105 shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2"
+        >
+          <span className="text-xl">⚡</span>
+          <span>Download Now (Skip {remaining}s)</span>
+        </button>
+
         {/* Upgrade Nudge - Premium CTA */}
         <div className="bg-gradient-to-br from-green-900/50 to-emerald-900/50 border-2 border-emerald-400/70 rounded-lg p-5 mb-6 shadow-lg shadow-emerald-500/20">
           <p className="text-base font-bold text-emerald-200 mb-4">
@@ -73,16 +120,13 @@ export default function AdWaitTimer({ isOpen, onSkip, onUpgrade }: AdWaitTimerPr
           </button>
         </div>
 
-        {/* Wait Button - Disabled during countdown */}
-        <button
-          disabled={true}
-          className="w-full py-4 bg-gradient-to-r from-zinc-700/50 to-zinc-600/50 text-zinc-300 font-semibold rounded-lg transition-colors cursor-not-allowed flex items-center justify-center gap-3 border border-zinc-500/30"
-        >
+        {/* Auto-Download Progress - Passive display */}
+        <div className="w-full py-4 bg-gradient-to-r from-zinc-700/30 to-zinc-600/30 text-zinc-300 font-semibold rounded-lg flex items-center justify-center gap-3 border border-zinc-500/30">
           <span className="inline-block w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-          <span>Preparing download</span>
-          <span className="font-mono font-bold text-blue-300">({remaining}s)</span>
+          <span>Auto-download in {remaining}s...</span>
+          <span className="font-mono font-bold text-blue-300">{remaining.toString().padStart(2, '0')}</span>
           <span className="inline-block w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-        </button>
+        </div>
 
         <style>{`
           @keyframes fadeIn {
