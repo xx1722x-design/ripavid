@@ -236,10 +236,10 @@ function DashboardContent() {
             <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="flex-grow">
                 <p className="text-sm sm:text-base text-amber-200 font-semibold mb-2">
-                  You have used all 3 free downloads for today.
+                  Daily limit reached! Sign in for 3x more downloads.
                 </p>
                 <p className="text-xs sm:text-sm text-amber-100/80">
-                  Sign in to enjoy unlimited downloads up to 720p/HD!
+                  Login to get <strong>3 free downloads per day</strong> + save unlimited history!
                 </p>
               </div>
               <div className="flex gap-2 w-full sm:w-auto">
