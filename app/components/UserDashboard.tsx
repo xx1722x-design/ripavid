@@ -293,7 +293,7 @@ export default function UserDashboard({ language = 'en', initialUrl = '', autoSu
 
         {/* Pro Hero Banner */}
         <div className="w-full max-w-3xl px-4 mb-0.5">
-          <ProHeroBanner onOpenPricingModal={() => setShowPricingModal(true)} />
+          <ProHeroBanner />
         </div>
 
         {/* Platform Selector */}

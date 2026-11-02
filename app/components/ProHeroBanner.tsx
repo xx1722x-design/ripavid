@@ -1,13 +1,13 @@
 'use client';
 
 interface ProHeroBannerProps {
-  onOpenPricingModal?: () => void;
+  onScrollToPricing?: () => void;
 }
 
-export default function ProHeroBanner({ onOpenPricingModal }: ProHeroBannerProps) {
+export default function ProHeroBanner({ onScrollToPricing }: ProHeroBannerProps) {
   const handleClick = () => {
-    if (onOpenPricingModal) {
-      onOpenPricingModal();
+    if (onScrollToPricing) {
+      onScrollToPricing();
     } else {
       // Fallback: Smooth scroll to pricing section
       const pricingSection = document.getElementById('pricing');

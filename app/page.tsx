@@ -68,6 +68,12 @@ export default function Home() {
     urlFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  // Ref for Pricing Section (for smooth scroll from Hero Banner)
+  const pricingSectionRef = useRef<HTMLDivElement>(null);
+  const scrollToPricing = () => {
+    pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   // Ref for VideoResult (for smooth scroll when formats appear)
   const videoResultRef = useRef<HTMLDivElement>(null);
   const scrollToVideoResult = () => {
@@ -289,7 +295,7 @@ export default function Home() {
         */}
 
         {/* Pro Hero Banner */}
-        <ProHeroBanner onOpenPricingModal={() => setShowPricingModal(true)} />
+        <ProHeroBanner onScrollToPricing={scrollToPricing} />
 
         {/* RRR Trick Tip Banner */}
         <RRRTipBanner onClick={() => setShowRRRModal(true)} language={language} />
@@ -432,10 +438,10 @@ export default function Home() {
 
         {/* Pro Pricing Section */}
         {!result && (
-          <>
+          <div ref={pricingSectionRef}>
             {/* @ts-ignore */}
-            <ProPricingSection language={language} onScrollToDownloader={scrollToDownloader} onOpenRRRModal={() => setShowRRRModal(true)} />
-          </>
+            <ProPricingSection language={language} onScrollToDownloader={scrollToDownloader} onOpenRRRModal={() => setShowRRRModal(true)} onOpenPricingModal={() => setShowPricingModal(true)} />
+          </div>
         )}
 
         {/* Marketing Copy & Social Sharing */}

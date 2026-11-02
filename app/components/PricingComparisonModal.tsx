@@ -17,7 +17,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
     <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-[9999] flex items-center justify-center p-4">
       {/* Fade-in animation */}
       <div
-        className="bg-zinc-950 border-2 border-cyan-500/40 rounded-2xl shadow-2xl shadow-cyan-500/20 max-w-5xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-zinc-950 border-2 border-cyan-500/40 rounded-2xl shadow-2xl shadow-cyan-500/20 max-w-5xl w-full max-h-[85vh] overflow-y-auto"
         style={{ animation: 'fadeIn 0.3s ease-out' }}
       >
         {/* Header with Close Button - Neon Glow */}

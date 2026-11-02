@@ -10,9 +10,10 @@ interface ProPricingSectionProps {
   language?: string;
   onScrollToDownloader?: () => void;
   onOpenRRRModal?: () => void;
+  onOpenPricingModal?: () => void;
 }
 
-export default function ProPricingSection({ language = 'en', onScrollToDownloader, onOpenRRRModal }: ProPricingSectionProps) {
+export default function ProPricingSection({ language = 'en', onScrollToDownloader, onOpenRRRModal, onOpenPricingModal }: ProPricingSectionProps) {
   const { user, isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showApprovalMessage, setShowApprovalMessage] = useState(false);
@@ -328,8 +329,18 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </div>
         </div>
 
+        {/* Compare All Features Link */}
+        <div className="text-center mt-6">
+          <button
+            onClick={onOpenPricingModal}
+            className="text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition-colors"
+          >
+            Compare all features in detail →
+          </button>
+        </div>
+
         {/* Trust Badge */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-6">
           <p className="text-zinc-500 text-sm">
             🔒 Secure payments powered by Lemon Squeezy & NOWPayments • Cancel anytime, no hidden fees
           </p>

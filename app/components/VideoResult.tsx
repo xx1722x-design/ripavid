@@ -90,6 +90,18 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const allFormats = [...formats.free, ...formats.premium];
   const isPro = user?.tier === 'pro';
 
+  // Calculate credits required for video download based on resolution
+  const getDownloadCredits = (height: number): number => {
+    if (height >= 2160) return 20; // 4K = 20 credits
+    if (height >= 1080) return 10; // 1080p/2K = 10 credits
+    return 10; // 720p = 10 credits (default)
+  };
+
+  // Calculate credits for AI features
+  const SUBTITLE_EXTRACTION_CREDITS = 50; // AI 자막 추출
+  const TRANSLATION_CREDITS = 30; // 다국어 번역 (총 -80)
+  const TOTAL_AI_FEATURES_CREDITS = SUBTITLE_EXTRACTION_CREDITS + TRANSLATION_CREDITS;
+
   // Find the maximum resolution available - NOW SAFE TO CALL getHeightFromResolution
   const getMaxResolution = (): number => {
     let maxHeight = 0;
@@ -127,10 +139,11 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       // ⚡ CRITICAL: Check credit balance BEFORE video download
       // This is the first gate - if credits insufficient, stop immediately
       try {
+        const creditsRequired = getDownloadCredits(height);
         const creditDeductRes = await fetch('/api/credits/deduct', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: 10, reason: 'Video download' })
+          body: JSON.stringify({ amount: creditsRequired, reason: `Video download (${resolution})` })
         });
 
         // 402 Payment Required = insufficient credits or guest limit exceeded

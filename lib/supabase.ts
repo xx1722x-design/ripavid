@@ -3,6 +3,24 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
+// Credit Package Structure (Golden Ratio Pricing)
+export const CREDIT_PACKAGES = [
+  { id: 'starter', label: 'Starter', credits: 500, price: 4.99, pricePerCredit: 0.01 },
+  { id: 'popular', label: 'Popular', credits: 1100, price: 9.99, pricePerCredit: 0.0091 },
+  { id: 'best_value', label: 'Best Value', credits: 2500, price: 19.99, pricePerCredit: 0.008 }
+];
+
+// Credit Burn Rates (Credits required per feature)
+export const CREDIT_BURN_RATES = {
+  download_720p: 10,      // Standard quality
+  download_1080p: 10,     // Full HD
+  download_2k: 10,        // 2K
+  download_4k: 20,        // Ultra HD (2x cost)
+  subtitle_extraction: 50, // AI 자막 추출
+  translation: 30,        // 다국어 번역
+  total_ai_features: 80   // 자막 + 번역
+};
+
 // Initialize Supabase client (only if URL and key are configured)
 export const supabase = supabaseUrl && supabaseAnonKey
   ? createClient(supabaseUrl, supabaseAnonKey)
