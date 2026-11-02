@@ -26,6 +26,31 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     onScrollToDownloader?.();
   };
 
+  // Gumroad URL Mapping by Plan & Billing Period
+  const gumroadLinks: Record<string, Record<'monthly' | 'yearly', string>> = {
+    starter: {
+      monthly: 'https://7760636545235.gumroad.com/l/spvsfb',
+      yearly: 'https://7760636545235.gumroad.com/l/rdvthz',
+    },
+    pro: {
+      monthly: 'https://7760636545235.gumroad.com/l/faqur',
+      yearly: 'https://7760636545235.gumroad.com/l/ytyllv',
+    },
+    max: {
+      monthly: 'https://7760636545235.gumroad.com/l/jwogeik',
+      yearly: 'https://7760636545235.gumroad.com/l/usjkjb',
+    },
+  };
+
+  const getGumroadLink = (plan: 'starter' | 'pro' | 'max'): string => {
+    return gumroadLinks[plan][billingPeriod];
+  };
+
+  const handleGumroadCheckout = (plan: 'starter' | 'pro' | 'max') => {
+    const checkoutLink = getGumroadLink(plan);
+    window.open(checkoutLink, '_blank', 'noopener,noreferrer');
+  };
+
   const initiateLemonSqueezyCheckout = async () => {
     if (!isAuthenticated) {
       window.location.href = '/api/auth/google';
@@ -85,12 +110,6 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     }
   };
 
-  const handleUpgradeClick = () => {
-    const gumroadLink = billingPeriod === 'monthly'
-      ? 'https://7760636545235.gumroad.com/l/hqxtu'
-      : 'https://7760636545235.gumroad.com/l/fzuboe';
-    window.open(gumroadLink, '_blank');
-  };
 
   // Pricing Structure
   // Starter: $4.99/month or $3.33/month when billed yearly ($39.99/year)
@@ -276,7 +295,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
             <div className="flex-shrink-0 pt-3 sm:pt-4 mt-3">
               <button
-                onClick={handleUpgradeClick}
+                onClick={() => handleGumroadCheckout('starter')}
                 disabled={isLoading}
                 className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
               >
@@ -327,7 +346,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                 </button>
               ) : (
                 <button
-                  onClick={handleUpgradeClick}
+                  onClick={() => handleGumroadCheckout('pro')}
                   disabled={isLoading}
                   className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
                 >
@@ -373,7 +392,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
             <div className="flex-shrink-0 pt-3 sm:pt-4 mt-3">
               <button
-                onClick={handleUpgradeClick}
+                onClick={() => handleGumroadCheckout('max')}
                 disabled={isLoading}
                 className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
               >
