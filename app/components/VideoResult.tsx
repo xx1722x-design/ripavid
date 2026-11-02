@@ -10,6 +10,7 @@ import QualityUpgradeModal from './QualityUpgradeModal';
 import { useAuth } from '@/app/context/AuthContext';
 
 // 📺 Advertisement Link Pool (Rotation Strategy)
+// Direct ad links - verified accurate
 // Adsterra pool (3 links for rotation)
 const ADSTERRA_LINKS = [
   "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550",
@@ -17,11 +18,11 @@ const ADSTERRA_LINKS = [
   "https://asiafilm.org/4/935a5b936cb4b6c0027a9d48b0051d73"
 ];
 
-// Monetag pool (3 links for rotation)
+// Monetag pool (3 links for rotation) - CORRECTED
 const MONETAG_LINKS = [
   "https://uplcm.com/4/12146496",
-  "https://uplcm.com/4/12177623",
-  "https://uplcm.com/4/12177628"
+  "https://uplcm.com/4/12177679",
+  "https://uplcm.com/4/12177680"
 ];
 
 // Global ad rotation state (tracks which link to show next)
