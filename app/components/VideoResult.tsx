@@ -222,14 +222,20 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
 
       // Otherwise proceed with download + open Monetag ad in new tab
       const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
+      console.log('[VideoResult] Triggering download:', { targetUrl, height, resolution });
+
       window.location.href = targetUrl;
       window.open(MONETAG_DIRECT_URL, '_blank');
 
-      // Backup: Reset waiting state after 10 seconds (in case download completes quickly)
+      // IMPORTANT: Keep loading spinner visible until download actually starts (8+ seconds)
+      // User needs to see "Preparing download..." while browser processes the file
+      console.log('[VideoResult] Download triggered. Spinner will remain for 8 seconds.');
       setTimeout(() => {
+        console.log('[VideoResult] Clearing loading state after download initiation');
         setIsWaiting(false);
         setLoadingQuality(null);
-      }, 10000);
+      }, 8000); // 8 seconds - enough time for browser to start file download
+
     } catch (error) {
       console.error('Download verification failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to prepare download. Please try again.';
@@ -240,13 +246,16 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
 
       // Also call parent error handler for logging
       onError?.(errorMessage);
+
+      // Error case: Reset immediately since download won't happen
+      setIsWaiting(false);
+      setLoadingQuality(null);
+
     } finally {
-      // CRITICAL: Always reset loading state, no matter what happens
-      // This prevents infinite "Processing..." loops
-      setTimeout(() => {
-        setIsWaiting(false);
-        setLoadingQuality(null);
-      }, 500);
+      // CRITICAL: Only handle cleanup that's needed for both paths
+      // Success path: 8-second timeout handles reset
+      // Error path: Immediately reset above
+      // So finally block doesn't need to do anything
     }
   };
 
