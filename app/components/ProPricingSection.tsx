@@ -127,7 +127,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     : 'Billed monthly';
 
   return (
-    <div id="pricing" className="w-full py-32 px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
+    <div id="pricing" className="w-full scroll-mt-20 py-12 px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
       <div className="max-w-6xl mx-auto">
         {/* Domain Approval Pending Message */}
         {showApprovalMessage && (
@@ -212,20 +212,20 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {/* Free Plan */}
-          <div className="relative p-5 sm:p-6 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col justify-between h-full">
+          <div className="relative p-4 sm:p-5 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col justify-between h-full">
             <div>
-              <div className="mb-2">
+              <div className="mb-1.5">
                 <h3 className="text-2xl font-bold text-white mb-0.5">{t.freePlanTitle || 'Free'}</h3>
                 <p className="text-cyan-300 text-sm">{t.freePlanDescription || 'Ad-supported unlimited downloads'}</p>
               </div>
 
-              <div className="mb-3 pb-3 border-b border-zinc-700">
+              <div className="mb-2 pb-2 border-b border-zinc-700">
                 <div className="text-4xl font-bold text-white">
                   $0<span className="text-lg text-zinc-400">/month</span>
                 </div>
               </div>
 
-              <ul className="space-y-1.5 sm:space-y-2">
+              <ul className="space-y-1">
                 {[
                   t.freeFeature1 || 'Up to 720p quality',
                   t.freeFeature2 || 'Unlimited downloads (with ads)',
@@ -239,18 +239,18 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
               </ul>
             </div>
 
-            <div className="flex-shrink-0 pt-3 sm:pt-4 mt-3">
+            <div className="flex-shrink-0 pt-2 sm:pt-3 mt-2">
               {!isAuthenticated ? (
                 <button
                   onClick={handleFreeClick}
-                  className="w-full py-2.5 sm:py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors text-xs sm:text-sm"
+                  className="w-full py-2 sm:py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors text-xs sm:text-sm"
                 >
                   {t.freeCtaButton || 'Get Started'}
                 </button>
               ) : user?.tier === 'free' ? (
                 <button
                   onClick={handleFreeClick}
-                  className="w-full py-2.5 sm:py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors text-xs sm:text-sm"
+                  className="w-full py-2 sm:py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors text-xs sm:text-sm"
                 >
                   {t.freeBackButton || 'Back to Importer'}
                 </button>
@@ -259,26 +259,26 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </div>
 
           {/* Starter Plan - Light Users */}
-          <div className="relative p-5 sm:p-6 border-2 border-green-500/50 rounded-2xl bg-gradient-to-br from-green-900/30 to-emerald-900/30 hover:from-green-900/50 hover:to-emerald-900/50 transition-all duration-300 flex flex-col justify-between h-full overflow-visible shadow-lg shadow-green-500/10">
-            <div className="absolute -top-3 left-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-1 rounded-full text-xs font-bold z-10 shadow-lg">
+          <div className="relative p-4 sm:p-5 border-2 border-green-500/50 rounded-2xl bg-gradient-to-br from-green-900/30 to-emerald-900/30 hover:from-green-900/50 hover:to-emerald-900/50 transition-all duration-300 flex flex-col justify-between h-full overflow-visible shadow-lg shadow-green-500/10">
+            <div className="absolute -top-3 left-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-0.5 rounded-full text-xs font-bold z-10 shadow-lg">
               ⭐ MOST POPULAR
             </div>
 
             <div>
-              <div className="mb-2">
+              <div className="mb-1.5">
                 <h3 className="text-2xl font-bold text-white mb-0.5">Starter</h3>
                 <p className="text-green-300 text-sm font-semibold">☕ Just a coffee! No ads + Fast downloads</p>
-                <p className="text-xs text-zinc-400 mt-1">Popular choice for casual creators</p>
+                <p className="text-xs text-zinc-400 mt-0.5">Popular choice for casual creators</p>
               </div>
 
-              <div className="mb-3 pb-3 border-b border-green-500/30">
+              <div className="mb-2 pb-2 border-b border-green-500/30">
                 <div className="text-4xl font-bold text-white">
                   {starterPrice}<span className="text-lg text-zinc-400">/month</span>
                 </div>
                 <p className="text-xs text-zinc-400 mt-0.5">{starterBilledText}</p>
               </div>
 
-              <ul className="space-y-1.5 sm:space-y-2">
+              <ul className="space-y-1">
                 {[
                   '✓ Up to 720p/1080p quality',
                   '✓ Ad-free downloads',
@@ -305,25 +305,25 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </div>
 
           {/* Pro Plan - Featured */}
-          <div className="relative p-5 sm:p-6 border-2 border-cyan-500 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-blue-900/20 hover:from-cyan-900/40 hover:to-blue-900/40 transition-all duration-300 md:scale-105 flex flex-col justify-between h-full overflow-visible">
-            <div className="absolute -top-3 left-6 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-1 rounded-full text-xs sm:text-sm font-bold z-10">
+          <div className="relative p-4 sm:p-5 border-2 border-cyan-500 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-blue-900/20 hover:from-cyan-900/40 hover:to-blue-900/40 transition-all duration-300 md:scale-105 flex flex-col justify-between h-full overflow-visible">
+            <div className="absolute -top-3 left-6 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-0.5 rounded-full text-xs sm:text-sm font-bold z-10">
               {t.proMostPopular || 'MOST POPULAR'}
             </div>
 
             <div>
-              <div className="mb-2">
+              <div className="mb-1.5">
                 <h3 className="text-2xl font-bold text-white mb-0.5">{t.proPlanTitle || 'Pro'}</h3>
                 <p className="text-cyan-300 text-sm">{t.proPlanDescription || 'Professional content localization suite'}</p>
               </div>
 
-              <div className="mb-3 pb-3 border-b border-cyan-500/30">
+              <div className="mb-2 pb-2 border-b border-cyan-500/30">
                 <div className="text-4xl font-bold text-white">
                   {proPrice}<span className="text-lg text-zinc-400">/month</span>
                 </div>
                 <p className="text-xs text-zinc-400 mt-0.5">{proBilledText}</p>
               </div>
 
-              <ul className="space-y-1.5 sm:space-y-2">
+              <ul className="space-y-1">
                 {[
                   t.proFeature1 || '👑 1080p & 4K Unlimited Imports (Asia platforms incl.)',
                   t.proFeature2 || '👑 AI Subtitle Extraction (SRT)',
@@ -357,25 +357,25 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </div>
 
           {/* MAX Plan - Ultimate */}
-          <div className="relative p-5 sm:p-6 border-2 border-amber-500/60 rounded-2xl bg-gradient-to-br from-amber-900/20 to-orange-900/20 hover:from-amber-900/40 hover:to-orange-900/40 transition-all duration-300 flex flex-col justify-between h-full overflow-visible">
-            <div className="absolute -top-3 left-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-1 rounded-full text-xs sm:text-sm font-bold z-10">
+          <div className="relative p-4 sm:p-5 border-2 border-amber-500/60 rounded-2xl bg-gradient-to-br from-amber-900/20 to-orange-900/20 hover:from-amber-900/40 hover:to-orange-900/40 transition-all duration-300 flex flex-col justify-between h-full overflow-visible">
+            <div className="absolute -top-3 left-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-0.5 rounded-full text-xs sm:text-sm font-bold z-10">
               ULTIMATE
             </div>
 
             <div>
-              <div className="mb-2">
+              <div className="mb-1.5">
                 <h3 className="text-2xl font-bold text-white mb-0.5">MAX</h3>
                 <p className="text-amber-300 text-sm">Professional creators & teams</p>
               </div>
 
-              <div className="mb-3 pb-3 border-b border-amber-500/30">
+              <div className="mb-2 pb-2 border-b border-amber-500/30">
                 <div className="text-4xl font-bold text-white">
                   {maxPrice}<span className="text-lg text-zinc-400">/month</span>
                 </div>
                 <p className="text-xs text-zinc-400 mt-0.5">{maxBilledText}</p>
               </div>
 
-              <ul className="space-y-1.5 sm:space-y-2">
+              <ul className="space-y-1">
                 {[
                   'Everything in Pro',
                   'ElevenLabs AI Dubbing (40+ Voices)',

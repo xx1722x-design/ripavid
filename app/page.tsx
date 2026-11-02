@@ -69,8 +69,10 @@ export default function Home() {
   // Ref for Pricing Section (for smooth scroll from Hero Banner)
   const pricingSectionRef = useRef<HTMLDivElement>(null);
   const scrollToPricing = () => {
-    // Scroll to center for perfect golden ratio positioning
-    pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Scroll with proper offset to ensure CTA buttons are visible
+    setTimeout(() => {
+      pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
   };
 
   // Ref for VideoResult (for smooth scroll when formats appear)
