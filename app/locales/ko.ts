@@ -156,7 +156,7 @@ export const koTranslations = {
   freePlanTitle: '무료',
   freePlanDescription: '기본 콘텐츠 가져오기에 최적',
   freeFeature1: 'Up to 720p quality',
-  freeFeature2: 'Standard content imports (3 per day)',
+  freeFeature2: 'Unlimited standard downloads',
   freeFeature3: 'Basic video fetching',
   freeCtaButton: '시작하기',
   freeBackButton: '가져오기로 돌아가기',

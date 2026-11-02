@@ -107,7 +107,7 @@ export const hiTranslations = {
   freePlanTitle: 'मुफ़्त',
   freePlanDescription: 'बुनियादी सामग्री आयात के लिए आदर्श',
   freeFeature1: 'Up to 720p quality',
-  freeFeature2: 'Standard content imports (3 per day)',
+  freeFeature2: 'Unlimited standard downloads',
   freeFeature3: 'Basic video fetching',
   freeCtaButton: 'शुरुआत करें',
   freeBackButton: 'इम्पोर्टर पर वापस जाएं',

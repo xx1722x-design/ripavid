@@ -107,7 +107,7 @@ export const thTranslations = {
   freePlanTitle: 'ฟรี',
   freePlanDescription: 'เหมาะสำหรับการนำเข้าเนื้อหาพื้นฐาน',
   freeFeature1: 'Up to 720p quality',
-  freeFeature2: 'Standard content imports (3 per day)',
+  freeFeature2: 'Unlimited standard downloads',
   freeFeature3: 'Basic video fetching',
   freeCtaButton: 'เริ่มต้น',
   freeBackButton: 'กลับไปที่ผู้นำเข้า',

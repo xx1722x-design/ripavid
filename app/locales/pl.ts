@@ -107,7 +107,7 @@ export const plTranslations = {
   freePlanTitle: 'Bezpłatnie',
   freePlanDescription: 'Idealne do podstawowego importu zawartości',
   freeFeature1: 'Up to 720p quality',
-  freeFeature2: 'Standard content imports (3 per day)',
+  freeFeature2: 'Unlimited standard downloads',
   freeFeature3: 'Basic video fetching',
   freeCtaButton: 'Zacznij',
   freeBackButton: 'Wróć do importera',

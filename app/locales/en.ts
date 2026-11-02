@@ -156,7 +156,7 @@ export const enTranslations = {
   freePlanTitle: 'Free',
   freePlanDescription: 'Perfect for basic content import',
   freeFeature1: 'Up to 720p quality',
-  freeFeature2: 'Standard content imports (3 per day)',
+  freeFeature2: 'Unlimited standard downloads',
   freeFeature3: 'Basic video fetching',
   freeCtaButton: 'Get Started',
   freeBackButton: 'Back to Importer',
