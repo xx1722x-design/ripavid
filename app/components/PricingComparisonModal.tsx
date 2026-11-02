@@ -64,6 +64,13 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                     <div className="text-xs text-zinc-300">(Ultimate)</div>
                   </th>
                 </tr>
+                <tr className="border-b border-cyan-500/20 bg-zinc-950/50">
+                  <td className="py-3 px-4 text-zinc-200 font-medium text-sm">Pricing</td>
+                  <td className="text-center py-3 px-4 text-sm text-zinc-400">$0</td>
+                  <td className="text-center py-3 px-4 text-sm text-zinc-400 border-l border-r border-blue-500/20">$0</td>
+                  <td className="text-center py-3 px-4 text-sm text-zinc-400">$19/mo</td>
+                  <td className="text-center py-3 px-4 text-sm text-zinc-400">$49/mo</td>
+                </tr>
               </thead>
               <tbody>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">

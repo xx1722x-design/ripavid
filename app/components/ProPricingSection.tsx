@@ -180,7 +180,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Free Plan */}
           <div className="relative p-6 sm:p-8 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col justify-between h-full">
             <div>
@@ -277,6 +277,53 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                   {isLoading ? 'Loading...' : 'Upgrade Now'}
                 </button>
               )}
+            </div>
+          </div>
+
+          {/* MAX Plan - Ultimate */}
+          <div className="relative p-6 sm:p-8 border-2 border-amber-500/60 rounded-2xl bg-gradient-to-br from-amber-900/20 to-orange-900/20 hover:from-amber-900/40 hover:to-orange-900/40 transition-all duration-300 flex flex-col justify-between h-full overflow-visible">
+            <div className="absolute -top-3 left-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-1 rounded-full text-xs sm:text-sm font-bold z-10">
+              ULTIMATE
+            </div>
+
+            <div>
+              <div className="mb-2">
+                <h3 className="text-2xl font-bold text-white mb-0.5">MAX</h3>
+                <p className="text-amber-300 text-sm">Professional creators & teams</p>
+              </div>
+
+              <div className="mb-3 pb-3 border-b border-amber-500/30">
+                <div className="text-4xl font-bold text-white">
+                  $49<span className="text-lg text-zinc-400">/month</span>
+                </div>
+                <p className="text-xs text-zinc-400 mt-0.5">
+                  {billingPeriod === 'yearly' ? 'Billed $490 yearly' : 'Billed monthly'}
+                </p>
+              </div>
+
+              <ul className="space-y-1.5 sm:space-y-2">
+                {[
+                  'Everything in Pro',
+                  'ElevenLabs AI Dubbing (40+ Voices)',
+                  'Batch Download (Multi-language)',
+                  'Priority Server Processing'
+                ].map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 sm:gap-3">
+                    <Check className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-zinc-300 text-xs sm:text-sm">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="flex-shrink-0 pt-3 sm:pt-4 mt-3">
+              <button
+                onClick={handleUpgradeClick}
+                disabled={isLoading}
+                className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
+              >
+                {isLoading ? 'Loading...' : 'Upgrade to MAX'}
+              </button>
             </div>
           </div>
         </div>
