@@ -315,7 +315,7 @@ export default function Home() {
           <div className="w-full max-w-3xl mx-auto mb-4 px-4">
             <div className="inline-flex items-center gap-2 px-3 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
               <span className="text-xs sm:text-sm text-cyan-300 font-semibold">
-                Guest: {guestDownloadCount}/1 used today
+                Guest: {guestDownloadCount}/3 used today
               </span>
             </div>
           </div>
