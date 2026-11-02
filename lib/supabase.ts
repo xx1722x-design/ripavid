@@ -201,13 +201,222 @@ export async function incrementGuestDownloadCount(ipAddress: string): Promise<{ 
   }
 }
 
+// Credit system functions for hybrid monetization
+export async function getUserCredits(userId: string): Promise<{ credits: number; error?: string }> {
+  try {
+    if (!supabaseUrl || !supabaseAnonKey || !supabase) {
+      console.warn('[Supabase] Client not configured. Returning default credits.');
+      return { credits: 0 };
+    }
+
+    const { data, error } = await supabase
+      .from('users')
+      .select('credits')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('[Supabase] Error fetching credits:', error);
+      return { credits: 0, error: error.message };
+    }
+
+    return { credits: data?.credits || 0 };
+  } catch (error) {
+    console.error('[Supabase] Error:', error);
+    return { credits: 0, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
+export async function deductUserCredits(userId: string, amount: number, reason: string): Promise<{ success: boolean; remainingCredits?: number; error?: string }> {
+  try {
+    if (!supabaseUrl || !supabaseAnonKey || !supabase) {
+      console.warn('[Supabase] Client not configured. Skipping credit deduction.');
+      return { success: true, remainingCredits: 999999 };
+    }
+
+    const { data: currentData, error: fetchError } = await supabase
+      .from('users')
+      .select('credits')
+      .eq('id', userId)
+      .single();
+
+    if (fetchError) {
+      console.error('[Supabase] Error fetching current credits:', fetchError);
+      return { success: false, error: fetchError.message };
+    }
+
+    const currentCredits = currentData?.credits || 0;
+    if (currentCredits < amount) {
+      return { success: false, error: 'Insufficient credits', remainingCredits: currentCredits };
+    }
+
+    const newCredits = currentCredits - amount;
+
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ credits: newCredits })
+      .eq('id', userId);
+
+    if (updateError) {
+      console.error('[Supabase] Error deducting credits:', updateError);
+      return { success: false, error: updateError.message };
+    }
+
+    await supabase
+      .from('credit_transactions')
+      .insert([{
+        user_id: userId,
+        amount: -amount,
+        reason: reason,
+        created_at: new Date().toISOString()
+      }]);
+
+    return { success: true, remainingCredits: newCredits };
+  } catch (error) {
+    console.error('[Supabase] Error:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
+export async function addUserCredits(userId: string, amount: number, reason: string): Promise<{ success: boolean; newCredits?: number; error?: string }> {
+  try {
+    if (!supabaseUrl || !supabaseAnonKey || !supabase) {
+      console.warn('[Supabase] Client not configured. Skipping credit addition.');
+      return { success: true, newCredits: 999999 };
+    }
+
+    const { data: currentData, error: fetchError } = await supabase
+      .from('users')
+      .select('credits')
+      .eq('id', userId)
+      .single();
+
+    if (fetchError) {
+      console.error('[Supabase] Error fetching current credits:', fetchError);
+      return { success: false, error: fetchError.message };
+    }
+
+    const currentCredits = currentData?.credits || 0;
+    const newCredits = currentCredits + amount;
+
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ credits: newCredits })
+      .eq('id', userId);
+
+    if (updateError) {
+      console.error('[Supabase] Error adding credits:', updateError);
+      return { success: false, error: updateError.message };
+    }
+
+    await supabase
+      .from('credit_transactions')
+      .insert([{
+        user_id: userId,
+        amount: amount,
+        reason: reason,
+        created_at: new Date().toISOString()
+      }]);
+
+    return { success: true, newCredits };
+  } catch (error) {
+    console.error('[Supabase] Error:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
+export async function getGuestCredits(ipAddress: string): Promise<{ credits: number; error?: string }> {
+  try {
+    if (!supabaseUrl || !supabaseAnonKey || !supabase) {
+      return { credits: 10 };
+    }
+
+    const { data, error } = await supabase
+      .from('guest_credits')
+      .select('credits')
+      .eq('ip_address', ipAddress)
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      console.error('[Supabase] Error fetching guest credits:', error);
+      return { credits: 10, error: error.message };
+    }
+
+    return { credits: data?.credits || 10 };
+  } catch (error) {
+    console.error('[Supabase] Error:', error);
+    return { credits: 10 };
+  }
+}
+
+export async function deductGuestCredits(ipAddress: string, amount: number): Promise<{ success: boolean; remainingCredits?: number; error?: string }> {
+  try {
+    if (!supabaseUrl || !supabaseAnonKey || !supabase) {
+      return { success: true, remainingCredits: 10 };
+    }
+
+    const { data: existingData, error: selectError } = await supabase
+      .from('guest_credits')
+      .select('credits')
+      .eq('ip_address', ipAddress)
+      .single();
+
+    if (selectError && selectError.code !== 'PGRST116') {
+      console.error('[Supabase] Error fetching guest credits:', selectError);
+      return { success: false, error: selectError.message };
+    }
+
+    const currentCredits = existingData?.credits || 10;
+    if (currentCredits < amount) {
+      return { success: false, error: 'Insufficient credits', remainingCredits: currentCredits };
+    }
+
+    const newCredits = currentCredits - amount;
+
+    if (existingData) {
+      const { error: updateError } = await supabase
+        .from('guest_credits')
+        .update({ credits: newCredits, last_used_at: new Date().toISOString() })
+        .eq('ip_address', ipAddress);
+
+      if (updateError) {
+        console.error('[Supabase] Error deducting guest credits:', updateError);
+        return { success: false, error: updateError.message };
+      }
+    } else {
+      const { error: insertError } = await supabase
+        .from('guest_credits')
+        .insert([{
+          ip_address: ipAddress,
+          credits: newCredits,
+          created_at: new Date().toISOString(),
+          last_used_at: new Date().toISOString()
+        }]);
+
+      if (insertError) {
+        console.error('[Supabase] Error inserting guest credits:', insertError);
+        return { success: false, error: insertError.message };
+      }
+    }
+
+    return { success: true, remainingCredits: newCredits };
+  } catch (error) {
+    console.error('[Supabase] Error:', error);
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+  }
+}
+
 // Supabase table schema (for reference, create manually in Supabase)
 export const SCHEMA_SQL = `
--- Users table (if not using Supabase Auth)
+-- Users table with credit system
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   email VARCHAR UNIQUE NOT NULL,
   tier VARCHAR DEFAULT 'free',
+  credits INT DEFAULT 30,
+  subscription_tier VARCHAR DEFAULT 'free',
+  subscription_end_date TIMESTAMP,
+  credits_last_refilled TIMESTAMP,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -235,9 +444,30 @@ CREATE TABLE IF NOT EXISTS guest_downloads (
   UNIQUE(ip_address, download_date)
 );
 
+-- Credit transactions table (for audit log)
+CREATE TABLE IF NOT EXISTS credit_transactions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  amount INT NOT NULL,
+  reason VARCHAR NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Guest credits table (for non-authenticated users)
+CREATE TABLE IF NOT EXISTS guest_credits (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  ip_address VARCHAR NOT NULL UNIQUE,
+  credits INT DEFAULT 10,
+  used_credits INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT NOW(),
+  last_used_at TIMESTAMP
+);
+
 -- Create indexes for faster queries
 CREATE INDEX idx_job_history_user_id ON job_history(user_id);
 CREATE INDEX idx_job_history_created_at ON job_history(created_at);
 CREATE INDEX idx_guest_downloads_ip ON guest_downloads(ip_address);
 CREATE INDEX idx_guest_downloads_date ON guest_downloads(download_date);
+CREATE INDEX idx_credit_transactions_user_id ON credit_transactions(user_id);
+CREATE INDEX idx_guest_credits_ip ON guest_credits(ip_address);
 `;

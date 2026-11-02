@@ -110,7 +110,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       return;
     }
 
-    // For logged-in free users, verify backend tier check
     setIsWaiting(true);
     setWaitingHeight(height);
     setLoadingQuality(resolution);
@@ -123,6 +122,50 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
     }, 100);
 
     try {
+      // ⚡ CRITICAL: Check credit balance BEFORE video download
+      // This is the first gate - if credits insufficient, stop immediately
+      try {
+        const creditDeductRes = await fetch('/api/credits/deduct', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: 10, reason: 'Video download' })
+        });
+
+        // 402 Payment Required = insufficient credits or guest limit exceeded
+        if (creditDeductRes.status === 402) {
+          const creditData = await creditDeductRes.json().catch(() => ({}));
+          console.warn('[VideoResult] Insufficient credits:', creditData);
+
+          setIsWaiting(false);
+          setLoadingQuality(null);
+
+          // Show login/payment prompt for guests or payment upgrade for free users
+          if (creditData.shouldPromptLogin) {
+            onShowDailyLimitBanner?.();
+          } else {
+            setShowPaymentModal(true);
+          }
+          return; // ABORT - do not proceed with video download
+        }
+
+        if (!creditDeductRes.ok) {
+          const creditError = await creditDeductRes.json().catch(() => ({}));
+          throw new Error(creditError.error || 'Failed to deduct credits');
+        }
+
+        const creditData = await creditDeductRes.json();
+        console.log('[VideoResult] Credits deducted. Remaining:', creditData.remainingCredits);
+      } catch (creditError) {
+        console.error('[VideoResult] Credit deduction failed:', creditError);
+        setIsWaiting(false);
+        setLoadingQuality(null);
+
+        // If credit system fails, show generic error instead of risking unlimited downloads
+        onError?.('Payment verification failed. Please try again.');
+        return;
+      }
+
+      // ✅ ONLY IF CREDITS APPROVED - proceed with download
       // Verify the download is allowed by making a HEAD request
       let response: Response | null = null;
       try {
@@ -135,15 +178,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         throw new Error(`Connection error: ${errorMsg}`);
       }
 
-      // If 403, show daily limit banner
-      if (response?.status === 403) {
-        setIsWaiting(false);
-        setLoadingQuality(null);
-        onShowDailyLimitBanner?.();
-        return;
-      }
-
-      // If not ok, try to get error message
+      // If not ok, handle errors
       if (!response.ok) {
         let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
         try {
@@ -153,10 +188,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           }
         } catch {
           // JSON parse failed, use status message
-        }
-        // Mark 403 errors explicitly so they don't trigger error box
-        if (response.status === 403) {
-          throw new Error('DAILY_LIMIT_EXCEEDED');
         }
         throw new Error(errorMessage);
       }
@@ -177,14 +208,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       setLoadingQuality(null);
 
       const errorMessage = error instanceof Error ? error.message : 'Failed to prepare download. Please try again.';
-
-      // Show banner for 403 errors
-      if (errorMessage === 'DAILY_LIMIT_EXCEEDED') {
-        onShowDailyLimitBanner?.();
-        return;
-      }
-
-      // Only call onError for non-403 errors
       onError?.(errorMessage);
     }
   };
