@@ -7,8 +7,9 @@ export const runtime = 'nodejs';
 // ⏱️ Vercel 타임아웃 연장 (기본 60초 → 120초)
 export const maxDuration = 120;
 
-// 게스트 일일 다운로드 제한
-const GUEST_DAILY_LIMIT = 3;
+// 게스트 일일 다운로드 제한 - UNLIMITED (제한 없음)
+// Free/Guest users can download unlimited times (quality limited to 720p instead)
+const GUEST_DAILY_LIMIT = Infinity;
 
 interface DownloadRequest {
   url: string;
@@ -212,30 +213,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 🔒 Guest 사용자의 일일 다운로드 제한 체크 (Supabase가 설정된 경우만)
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
-      const clientIp = getClientIp(request);
-      console.log(`📍 Client IP: ${clientIp}`);
-
-      const { allowed: isDownloadAllowed, count: currentCount } = await checkGuestDownloadLimit(clientIp);
-
-      if (!isDownloadAllowed) {
-        console.log(`❌ Guest download limit exceeded for IP ${clientIp}: ${currentCount}/${GUEST_DAILY_LIMIT}`);
-        return NextResponse.json(
-          {
-            success: false,
-            error: 'DAILY_LIMIT_EXCEEDED',
-            message: `You have reached your daily download limit (${GUEST_DAILY_LIMIT}/day). Sign up for free to get unlimited downloads!`,
-            remaining: 0,
-          },
-          { status: 403 }
-        );
-      }
-
-      console.log(`✅ Guest download allowed. Current count: ${currentCount}/${GUEST_DAILY_LIMIT}`);
-    } else {
-      console.warn('⚠️ Supabase not configured. Skipping guest download limit check.');
-    }
+    // 🔓 GUEST DOWNLOAD LIMIT REMOVED - ALL USERS CAN DOWNLOAD UNLIMITED TIMES
+    // Quality is limited to 720p instead for free/guest users
+    // No more daily download restrictions
+    console.log(`✅ Guest download allowed - unlimited downloads enabled for all users`);
 
     let extractedData: any = null;
 
