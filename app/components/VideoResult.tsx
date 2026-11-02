@@ -225,7 +225,19 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       console.log('[VideoResult] Download verified. Triggering direct download:', { targetUrl });
 
       window.location.href = targetUrl;
-      window.open(MONETAG_DIRECT_URL, '_blank');
+
+      // 📺 MONETIZATION: Show ads ONLY for Free/Guest users, not Paid (Starter/Pro/MAX)
+      const isFreeOrGuest = user?.tier === 'free' || user?.isGuest === true;
+      if (isFreeOrGuest) {
+        console.log('[VideoResult] Free/Guest user - opening ad pop-unders');
+        // Stagger ad pop-unders (100ms apart) for better UX
+        window.open(ADSTERRA_DIRECT_URL, '_blank');
+        setTimeout(() => {
+          window.open(MONETAG_DIRECT_URL, '_blank');
+        }, 100);
+      } else {
+        console.log('[VideoResult] Paid user detected - skipping ads (Ad-Free)');
+      }
 
       // Clear loading state quickly - download is already initiated
       console.log('[VideoResult] Download initiated. Clearing loading state.');
