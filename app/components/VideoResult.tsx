@@ -178,35 +178,31 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         });
       }
 
-      // ✅ ONLY IF CREDITS APPROVED - proceed with download
-      // Verify the download is allowed by making a HEAD request with 60-second timeout
-      let response: Response | null = null;
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 second timeout
+      // ✅ DOWNLOAD INITIATION - Actual Blob fetch with loading state synced to download start
+      console.log('[VideoResult] Starting download stream fetch:', { height, resolution });
 
-        try {
-          response = await fetch(
-            `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`,
-            {
-              method: 'HEAD',
-              signal: controller.signal
-            }
-          );
-          clearTimeout(timeoutId);
-        } catch (fetchError) {
-          clearTimeout(timeoutId);
-          if (fetchError instanceof Error && fetchError.name === 'AbortError') {
-            throw new Error('Download preparation timed out. Please try again.');
-          }
-          const errorMsg = fetchError instanceof Error ? fetchError.message : 'Network request failed';
-          throw new Error(`Connection error: ${errorMsg}`);
-        }
+      const downloadUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
+
+      // Fetch with 60-second timeout to get actual file stream (NOT just HEAD check)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 60000);
+
+      let response: Response;
+      try {
+        response = await fetch(downloadUrl, {
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
       } catch (fetchError) {
-        throw fetchError;
+        clearTimeout(timeoutId);
+        if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+          throw new Error('Download preparation timed out after 60 seconds. Please try again.');
+        }
+        const errorMsg = fetchError instanceof Error ? fetchError.message : 'Network request failed';
+        throw new Error(`Connection error: ${errorMsg}`);
       }
 
-      // If not ok, handle errors
+      // Check if response is valid
       if (!response.ok) {
         let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
         try {
@@ -220,21 +216,45 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         throw new Error(errorMessage);
       }
 
-      // Otherwise proceed with download + open Monetag ad in new tab
-      const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
-      console.log('[VideoResult] Triggering download:', { targetUrl, height, resolution });
+      // Get filename from content-disposition header
+      const contentDisposition = response.headers.get('content-disposition') || '';
+      const filenameMatch = contentDisposition.match(/filename[^;=\n]*=(["\']?)([^"\';]*)\1/);
+      const filename = filenameMatch?.[2] || 'download';
 
-      window.location.href = targetUrl;
+      // Convert response to Blob - THIS is where actual download begins
+      console.log('[VideoResult] Streaming response as Blob. Tab spinner should now be visible.');
+      const blob = await response.blob();
+      console.log('[VideoResult] Blob received:', { size: blob.size, type: blob.type });
+
+      // Create download link and trigger actual browser download
+      // This is the moment that triggers the "save dialog" and tab loading spinner
+      const downloadLink = document.createElement('a');
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = filename;
+      document.body.appendChild(downloadLink);
+
+      console.log('[VideoResult] Triggering browser download now - spinner should remain visible');
+      downloadLink.click(); // This triggers the actual download dialog
+
+      // Clean up the blob URL after click
+      setTimeout(() => {
+        URL.revokeObjectURL(downloadLink.href);
+        document.body.removeChild(downloadLink);
+        console.log('[VideoResult] Cleaned up download link');
+      }, 100);
+
+      // Open affiliate ad in new tab
       window.open(MONETAG_DIRECT_URL, '_blank');
 
-      // IMPORTANT: Keep loading spinner visible until download actually starts (8+ seconds)
-      // User needs to see "Preparing download..." while browser processes the file
-      console.log('[VideoResult] Download triggered. Spinner will remain for 8 seconds.');
+      // CRITICAL: Keep spinner visible for 3+ more seconds AFTER download button click
+      // Browser needs time to show save dialog and connect to download stream
+      // During this time, user sees tab spinner + screen "Preparing..." in sync
+      console.log('[VideoResult] Download dialog triggered. Keeping spinner for 3 more seconds.');
       setTimeout(() => {
-        console.log('[VideoResult] Clearing loading state after download initiation');
+        console.log('[VideoResult] Download clearly initiated. Clearing loading state now.');
         setIsWaiting(false);
         setLoadingQuality(null);
-      }, 8000); // 8 seconds - enough time for browser to start file download
+      }, 3000); // 3 more seconds after click = perfect sync with tab spinner
 
     } catch (error) {
       console.error('Download verification failed:', error);
