@@ -298,6 +298,10 @@ export default function Home() {
               language={language}
               originalUrl={originalUrl}
               onError={(errorMessage) => setError(errorMessage)}
+              onShowDailyLimitBanner={() => {
+                // Handle daily limit exceeded (if needed)
+                console.log('[Page] Daily limit banner requested');
+              }}
             />
           </div>
         )}

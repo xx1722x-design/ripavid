@@ -299,7 +299,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
               return (
                 <div key={`free-${index}`} className="relative group">
                   <button
-                    onClick={() => !isDisabled && handleDownloadClick(height, resolution)}
+                    onClick={async () => !isDisabled && await handleDownloadClick(height, resolution)}
                     disabled={isWaiting || isDisabled}
                     className={`text-xs font-bold px-5 py-2 rounded-full transition-all cursor-pointer flex items-center gap-2 shadow-md transform ${
                       isDisabled
@@ -357,10 +357,10 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
               return (
                 <div key={`premium-${index}`} className="relative group">
                   <button
-                    onClick={() => {
+                    onClick={async () => {
                       if (isDisabled) return;
                       if (isPro) {
-                        handleDownloadClick(height, resolution);
+                        await handleDownloadClick(height, resolution);
                       } else {
                         setShowPaymentModal(true);
                       }
