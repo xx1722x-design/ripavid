@@ -140,8 +140,8 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         </div>
 
         {/* Section Header */}
-        <div className="text-center mb-16 mt-4">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
+        <div className="text-center mb-12 mt-2">
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
             Simple, Transparent Pricing
           </h2>
           <p className="text-lg text-zinc-400 max-w-2xl mx-auto">
@@ -150,7 +150,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         </div>
 
         {/* Billing Period Toggle */}
-        <div className="flex justify-center items-center gap-6 mb-16">
+        <div className="flex justify-center items-center gap-6 mb-12">
           <button
             onClick={() => setBillingPeriod('monthly')}
             className={`px-6 py-3 font-semibold rounded-lg transition-all ${
@@ -193,7 +193,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {/* Free Plan */}
-          <div className="relative p-6 sm:p-8 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col justify-between h-full">
+          <div className="relative p-5 sm:p-6 border border-zinc-700 rounded-2xl bg-zinc-900/50 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col justify-between h-full">
             <div>
               <div className="mb-2">
                 <h3 className="text-2xl font-bold text-white mb-0.5">{t.freePlanTitle || 'Free'}</h3>
@@ -240,7 +240,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </div>
 
           {/* Starter Plan - Light Users */}
-          <div className="relative p-6 sm:p-8 border-2 border-green-500/40 rounded-2xl bg-gradient-to-br from-green-900/20 to-emerald-900/20 hover:from-green-900/40 hover:to-emerald-900/40 transition-all duration-300 flex flex-col justify-between h-full overflow-visible">
+          <div className="relative p-5 sm:p-6 border-2 border-green-500/40 rounded-2xl bg-gradient-to-br from-green-900/20 to-emerald-900/20 hover:from-green-900/40 hover:to-emerald-900/40 transition-all duration-300 flex flex-col justify-between h-full overflow-visible">
             <div className="absolute -top-3 left-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold z-10">
               POPULAR
             </div>
@@ -285,7 +285,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </div>
 
           {/* Pro Plan - Featured */}
-          <div className="relative p-6 sm:p-8 border-2 border-cyan-500 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-blue-900/20 hover:from-cyan-900/40 hover:to-blue-900/40 transition-all duration-300 md:scale-105 flex flex-col justify-between h-full overflow-visible">
+          <div className="relative p-5 sm:p-6 border-2 border-cyan-500 rounded-2xl bg-gradient-to-br from-cyan-900/20 to-blue-900/20 hover:from-cyan-900/40 hover:to-blue-900/40 transition-all duration-300 md:scale-105 flex flex-col justify-between h-full overflow-visible">
             <div className="absolute -top-3 left-6 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-1 rounded-full text-xs sm:text-sm font-bold z-10">
               {t.proMostPopular || 'MOST POPULAR'}
             </div>
@@ -337,7 +337,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </div>
 
           {/* MAX Plan - Ultimate */}
-          <div className="relative p-6 sm:p-8 border-2 border-amber-500/60 rounded-2xl bg-gradient-to-br from-amber-900/20 to-orange-900/20 hover:from-amber-900/40 hover:to-orange-900/40 transition-all duration-300 flex flex-col justify-between h-full overflow-visible">
+          <div className="relative p-5 sm:p-6 border-2 border-amber-500/60 rounded-2xl bg-gradient-to-br from-amber-900/20 to-orange-900/20 hover:from-amber-900/40 hover:to-orange-900/40 transition-all duration-300 flex flex-col justify-between h-full overflow-visible">
             <div className="absolute -top-3 left-6 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-1 rounded-full text-xs sm:text-sm font-bold z-10">
               ULTIMATE
             </div>
