@@ -108,7 +108,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     : 'Billed monthly';
 
   return (
-    <div id="pricing" className="w-full py-24 px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
+    <div id="pricing" className="w-full py-32 px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
       <div className="max-w-6xl mx-auto">
         {/* Domain Approval Pending Message */}
         {showApprovalMessage && (
@@ -197,7 +197,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
             <div>
               <div className="mb-2">
                 <h3 className="text-2xl font-bold text-white mb-0.5">{t.freePlanTitle || 'Free'}</h3>
-                <p className="text-zinc-400 text-sm">{t.freePlanDescription || 'Perfect for basic content imports'}</p>
+                <p className="text-cyan-300 text-sm">{t.freePlanDescription || 'Ad-supported unlimited downloads'}</p>
               </div>
 
               <div className="mb-3 pb-3 border-b border-zinc-700">
@@ -209,8 +209,8 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
               <ul className="space-y-1.5 sm:space-y-2">
                 {[
                   t.freeFeature1 || 'Up to 720p quality',
-                  t.freeFeature2 || 'Standard content imports (3 per day)',
-                  t.freeFeature3 || 'Basic video fetching'
+                  t.freeFeature2 || 'Unlimited downloads (with ads)',
+                  t.freeFeature3 || 'No registration required'
                 ].map((feature) => (
                   <li key={feature} className="flex items-start gap-2 sm:gap-3">
                     <Check className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
