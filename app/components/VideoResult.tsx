@@ -134,8 +134,8 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
     }, 100);
 
     try {
-      // ⚡ OPTIONAL: Check credit balance (but don't block download if service unavailable)
-      // Free/Guest users can download without credit system if it's misconfigured
+      // ⚡ CREDIT VALIDATION - Non-blocking (credit system failure won't stop downloads)
+      // ONLY 402 (Payment Required) blocks download. Everything else: warn and proceed.
       try {
         const creditsRequired = getDownloadCredits(height);
         const creditDeductRes = await fetch('/api/credits/deduct', {
@@ -144,10 +144,10 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           body: JSON.stringify({ amount: creditsRequired, reason: `Video download (${resolution})` })
         });
 
-        // 402 Payment Required = insufficient credits or guest limit exceeded
+        // ONLY BLOCK on 402 (user actually can't afford this download)
         if (creditDeductRes.status === 402) {
           const creditData = await creditDeductRes.json().catch(() => ({}));
-          console.warn('[VideoResult] Insufficient credits:', creditData);
+          console.log('[VideoResult] 402 Payment Required - blocking download:', creditData);
 
           // Show login/payment prompt for guests or payment upgrade for free users
           if (creditData.shouldPromptLogin) {
@@ -155,30 +155,27 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           } else {
             setShowPaymentModal(true);
           }
-          return; // ABORT - do not proceed with video download
+          return; // ABORT - legitimate payment block
         }
 
-        // 500 or other server errors: Log warning but DON'T block download
-        // Free/Guest users have unlimited downloads, so credit system failure shouldn't stop them
-        if (!creditDeductRes.ok) {
-          const creditError = await creditDeductRes.json().catch(() => ({ error: creditDeductRes.statusText }));
-          console.warn('[VideoResult] Credit service error (non-fatal):', {
-            status: creditDeductRes.status,
-            error: creditError.error,
-            message: 'Proceeding with download anyway - credit system unavailable'
-          });
-          // Continue with download despite credit system error
+        // ALL OTHER STATUSES (including 500): Log but DON'T block
+        if (creditDeductRes.ok) {
+          const creditData = await creditDeductRes.json().catch(() => ({}));
+          console.log('[VideoResult] Credits deducted successfully. Remaining:', creditData.remainingCredits);
         } else {
-          const creditData = await creditDeductRes.json();
-          console.log('[VideoResult] Credits deducted. Remaining:', creditData.remainingCredits);
+          // 500, 503, or any server error: Log as warning but continue
+          console.warn(`[VideoResult] Credit API returned ${creditDeductRes.status} (non-fatal):`, {
+            status: creditDeductRes.status,
+            statusText: creditDeductRes.statusText,
+            action: 'Ignoring error and proceeding with download (Free/Guest unlimited)'
+          });
         }
       } catch (creditError) {
-        // Network error or parsing failure: Log but allow download to proceed
-        console.warn('[VideoResult] Credit system check failed (non-fatal):', {
+        // Network error, timeout, or any exception: Log but NEVER block download
+        console.warn('[VideoResult] Credit system unavailable (non-fatal):', {
           error: creditError instanceof Error ? creditError.message : String(creditError),
-          message: 'Proceeding with download - credit service may be unavailable'
+          action: 'Proceeding with download - credit service down'
         });
-        // Continue with download despite credit system error
       }
 
       // ✅ ONLY IF CREDITS APPROVED - proceed with download
