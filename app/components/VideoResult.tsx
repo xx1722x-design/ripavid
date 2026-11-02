@@ -76,6 +76,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const [hoveredResolution, setHoveredResolution] = useState<string | null>(null);
   const [lastDownloadTime, setLastDownloadTime] = useState(0);
   const [showQualityUpgrade, setShowQualityUpgrade] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
   const waitingContainerRef = useRef<HTMLDivElement>(null);
   const { user, isGuest } = useAuth();
 
@@ -227,6 +228,12 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
     } catch (error) {
       console.error('Download verification failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to prepare download. Please try again.';
+
+      // CRITICAL: Display error on screen so user sees what went wrong
+      setDownloadError(`❌ Download Error: ${errorMessage}`);
+      console.error('[VideoResult] Error trap caught:', { error, message: errorMessage });
+
+      // Also call parent error handler for logging
       onError?.(errorMessage);
     } finally {
       // CRITICAL: Always reset loading state, no matter what happens
@@ -266,8 +273,27 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-gradient-to-br from-zinc-900 dark:from-zinc-900 light:from-gray-50 to-black dark:to-black light:to-white border border-zinc-700 dark:border-zinc-700 light:border-gray-200 rounded-xl p-8 mt-8 shadow-2xl">
-      <div className="flex justify-between items-start mb-6">
+    <div className="w-full max-w-2xl mx-auto">
+      {/* ERROR BANNER - Display download errors prominently */}
+      {downloadError && (
+        <div className="w-full mb-6 p-4 bg-gradient-to-r from-red-900/60 to-red-800/60 border-2 border-red-500/70 rounded-lg shadow-lg shadow-red-500/20 flex items-start justify-between">
+          <div className="flex-1">
+            <p className="text-red-200 font-semibold text-sm">{downloadError}</p>
+            <p className="text-red-300 text-xs mt-1">Please try again or use a different quality.</p>
+          </div>
+          <button
+            onClick={() => setDownloadError(null)}
+            className="ml-4 text-red-300 hover:text-red-100 transition-colors flex-shrink-0"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      <div className="w-full bg-gradient-to-br from-zinc-900 dark:from-zinc-900 light:from-gray-50 to-black dark:to-black light:to-white border border-zinc-700 dark:border-zinc-700 light:border-gray-200 rounded-xl p-8 shadow-2xl">
+        <div className="flex justify-between items-start mb-6">
         <div className="flex-1">
           <h3 className="text-xl font-bold text-white dark:text-white light:text-gray-900 mb-2 break-words">
             {title || 'Video Ready'}
@@ -478,6 +504,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           window.location.href = '/pricing?plan=starter';
         }}
       />
+      </div>
     </div>
   );
 }
