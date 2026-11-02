@@ -112,18 +112,21 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
 
   // Pricing Structure
+  // All plans: 2 months free when billed yearly (16.7% discount = 10 months payment)
   // Starter: $4.99/month or $3.33/month when billed yearly ($39.99/year)
   const starterPrice = billingPeriod === 'yearly' ? '$3.33' : '$4.99';
   const starterBilledText = billingPeriod === 'yearly' ? 'Billed $39.99 yearly' : 'Billed monthly';
 
-  const proPrice = '$19';
+  // Pro: $19/month or ~$15.83/month when billed yearly ($190/year = 10 months)
+  const proPrice = billingPeriod === 'yearly' ? '$15.83' : '$19';
   const proBilledText = billingPeriod === 'yearly'
-    ? 'Billed $150 yearly'
+    ? 'Billed $190 yearly (2 months free)'
     : 'Billed monthly';
 
-  const maxPrice = '$49';
+  // MAX: $49/month or ~$40.83/month when billed yearly ($490/year = 10 months)
+  const maxPrice = billingPeriod === 'yearly' ? '$40.83' : '$49';
   const maxBilledText = billingPeriod === 'yearly'
-    ? 'Billed $390 yearly'
+    ? 'Billed $490 yearly (2 months free)'
     : 'Billed monthly';
 
   return (
