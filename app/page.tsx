@@ -71,7 +71,7 @@ export default function Home() {
   // Ref for Pricing Section (for smooth scroll from Hero Banner)
   const pricingSectionRef = useRef<HTMLDivElement>(null);
   const scrollToPricing = () => {
-    pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
   // Ref for VideoResult (for smooth scroll when formats appear)
@@ -438,7 +438,7 @@ export default function Home() {
 
         {/* Pro Pricing Section */}
         {!result && (
-          <div ref={pricingSectionRef}>
+          <div ref={pricingSectionRef} className="w-full scroll-mt-24 py-24">
             {/* @ts-ignore */}
             <ProPricingSection language={language} onScrollToDownloader={scrollToDownloader} onOpenRRRModal={() => setShowRRRModal(true)} onOpenPricingModal={() => setShowPricingModal(true)} />
           </div>

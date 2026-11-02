@@ -98,7 +98,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     : 'Billed monthly';
 
   return (
-    <div id="pricing" className="w-full py-20 px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
+    <div id="pricing" className="w-full py-24 px-4 bg-gradient-to-b from-black via-zinc-900 to-black">
       <div className="max-w-6xl mx-auto">
         {/* Domain Approval Pending Message */}
         {showApprovalMessage && (
