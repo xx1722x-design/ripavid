@@ -9,9 +9,23 @@ import PaymentUpgradeModal from './PaymentUpgradeModal';
 import QualityUpgradeModal from './QualityUpgradeModal';
 import { useAuth } from '@/app/context/AuthContext';
 
-// On-click pop-under advertisement links
-const ADSTERRA_DIRECT_URL = "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550";
-const MONETAG_DIRECT_URL = "https://uplcm.com/4/12146496";
+// 📺 Advertisement Link Pool (Rotation Strategy)
+// Adsterra pool (3 links for rotation)
+const ADSTERRA_LINKS = [
+  "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550",
+  "https://asiafilm.org/4/bff26ca04065dbbfa36dcee7776780ab",
+  "https://asiafilm.org/4/935a5b936cb4b6c0027a9d48b0051d73"
+];
+
+// Monetag pool (3 links for rotation)
+const MONETAG_LINKS = [
+  "https://uplcm.com/4/12146496",
+  "https://uplcm.com/4/12177623",
+  "https://uplcm.com/4/12177628"
+];
+
+// Global ad rotation state (tracks which link to show next)
+let adRotationIndex = 0;
 
 interface Format {
   quality?: string;
@@ -83,6 +97,13 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   // Safely initialize translations with proper fallback
   const safeLanguage = (language && typeof language === 'string') ? language : 'en';
   const t = translations[safeLanguage as keyof typeof translations] ?? translations['en'];
+
+  // 📺 Advertisement Rotation Helper - Distributes ad pool across downloads
+  const getNextAdLink = (pool: string[]): string => {
+    const link = pool[adRotationIndex % pool.length];
+    adRotationIndex++; // Increment for next call
+    return link;
+  };
 
   // Extract numeric height from resolution string (e.g., "720p" -> 720) - DEFINE FIRST
   const getHeightFromResolution = (res: string): number => {
@@ -226,17 +247,24 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
 
       window.location.href = targetUrl;
 
-      // 📺 MONETIZATION: Show ads ONLY for Free/Guest users, not Paid (Starter/Pro/MAX)
+      // 📺 MONETIZATION: Show ads ONLY for Free/Guest users (YouTube Premium model)
       const isFreeOrGuest = user?.tier === 'free' || user?.isGuest === true;
       if (isFreeOrGuest) {
-        console.log('[VideoResult] Free/Guest user - opening ad pop-unders');
+        console.log('[VideoResult] Free/Guest user - opening rotated ad pool (Adsterra + Monetag)');
+        // Get next ad links from rotation pool
+        const adsterraLink = getNextAdLink(ADSTERRA_LINKS);
+        const monetagLink = getNextAdLink(MONETAG_LINKS);
+
+        console.log('[Ad Pool] Rotation index:', { adRotationIndex, adsterraLink, monetagLink });
+
         // Stagger ad pop-unders (100ms apart) for better UX
-        window.open(ADSTERRA_DIRECT_URL, '_blank');
+        // Pop-under strategy: opens in background, doesn't interrupt download
+        window.open(adsterraLink, '_blank');
         setTimeout(() => {
-          window.open(MONETAG_DIRECT_URL, '_blank');
+          window.open(monetagLink, '_blank');
         }, 100);
       } else {
-        console.log('[VideoResult] Paid user detected - skipping ads (Ad-Free)');
+        console.log('[VideoResult] Paid user detected - skipping ads (Ad-Free guarantee)');
       }
 
       // Clear loading state quickly - download is already initiated
