@@ -44,8 +44,6 @@ function DashboardContent() {
   const [initialUrl, setInitialUrl] = useState('');
   const [contentError, setContentError] = useState<Error | null>(null);
   const [showRRRModal, setShowRRRModal] = useState(false);
-  const [showDailyLimitBanner, setShowDailyLimitBanner] = useState(false);
-  const [guestDownloadCount, setGuestDownloadCount] = useState(0);
 
   // Extract URL parameters safely using client-side method
   useEffect(() => {
@@ -95,18 +93,6 @@ function DashboardContent() {
     }
   }, []);
 
-  // Fetch guest download count on mount (for non-authenticated users)
-  useEffect(() => {
-    if (isGuest) {
-      fetch('/api/guest-downloads/count')
-        .then((res) => res.json())
-        .then((data) => setGuestDownloadCount(data.count || 0))
-        .catch((err) => {
-          console.warn('[Dashboard] Failed to fetch guest download count:', err);
-          setGuestDownloadCount(0);
-        });
-    }
-  }, [isGuest]);
 
   try {
     return (
@@ -144,23 +130,6 @@ function DashboardContent() {
               </div>
 
               {/* Guest Download Counter Badge */}
-              {isGuest && (
-                <div className={`ml-auto mr-auto hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-lg border font-bold ${
-                  guestDownloadCount >= 3
-                    ? 'bg-orange-500/25 border-orange-400 shadow-lg shadow-orange-500/20'
-                    : 'bg-cyan-500/25 border-cyan-400 shadow-lg shadow-cyan-500/20'
-                }`}>
-                  <span className={`text-base font-extrabold whitespace-nowrap ${
-                    guestDownloadCount >= 3
-                      ? 'text-orange-200'
-                      : 'text-cyan-100'
-                  }`}>
-                    {guestDownloadCount >= 3
-                      ? `Import Limit Reached (${guestDownloadCount}/3)`
-                      : `${3 - guestDownloadCount}/${3} Downloads Left`}
-                  </span>
-                </div>
-              )}
             </div>
 
             {isAuthenticated && (
@@ -180,22 +149,6 @@ function DashboardContent() {
               </button>
             )}
 
-            {/* Mobile Guest Download Counter Badge */}
-            {isGuest && !isAuthenticated && (
-              <div className={`sm:hidden flex items-center gap-1.5 px-3 py-2 rounded-lg border font-bold ${
-                guestDownloadCount >= 3
-                  ? 'bg-orange-500/25 border-orange-400 shadow-lg shadow-orange-500/20'
-                  : 'bg-cyan-500/25 border-cyan-400 shadow-lg shadow-cyan-500/20'
-              }`}>
-                <span className={`text-sm font-extrabold whitespace-nowrap ${
-                  guestDownloadCount >= 3
-                    ? 'text-orange-200'
-                    : 'text-cyan-100'
-                }`}>
-                  {guestDownloadCount >= 3 ? `${guestDownloadCount}/3` : `${3 - guestDownloadCount}/3`}
-                </span>
-              </div>
-            )}
           </div>
         </div>
 
@@ -210,13 +163,6 @@ function DashboardContent() {
                 console.error('[Dashboard] UserDashboard error:', err);
                 setContentError(err);
               }}
-              onShowDailyLimitBanner={() => {
-                setShowDailyLimitBanner(true);
-                fetch('/api/guest-downloads/count')
-                  .then((res) => res.json())
-                  .then((data) => setGuestDownloadCount(data.count || 3))
-                  .catch(() => setGuestDownloadCount(3));
-              }}
             />
           </Suspense>
         </div>
@@ -230,35 +176,6 @@ function DashboardContent() {
         {/* RRR Trick Modal */}
         <RRRTrickModal isOpen={showRRRModal} onClose={() => setShowRRRModal(false)} language={language} />
 
-        {/* Daily Limit Banner */}
-        {showDailyLimitBanner && isGuest && (
-          <div className="fixed bottom-0 left-0 right-0 z-40 px-4 py-4 bg-gradient-to-r from-amber-900/40 to-red-900/40 border-t border-amber-400 backdrop-blur-sm">
-            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex-grow">
-                <p className="text-sm sm:text-base text-amber-200 font-semibold mb-2">
-                  Daily limit reached! Sign in for 3x more downloads.
-                </p>
-                <p className="text-xs sm:text-sm text-amber-100/80">
-                  Login to get <strong>3 free downloads per day</strong> + save unlimited history!
-                </p>
-              </div>
-              <div className="flex gap-2 w-full sm:w-auto">
-                <a
-                  href="/auth/signup"
-                  className="flex-1 sm:flex-none px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm rounded-lg transition-all text-center"
-                >
-                  Sign Up Free
-                </a>
-                <a
-                  href="/auth/login"
-                  className="flex-1 sm:flex-none px-4 py-2 bg-white/10 hover:bg-white/20 text-gray-200 font-semibold text-xs sm:text-sm rounded-lg transition-all border border-white/20 text-center"
-                >
-                  Sign In
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     );
   } catch (fatalError) {

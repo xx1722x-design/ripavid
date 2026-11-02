@@ -88,8 +88,8 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
                   <td className="py-4 px-4 text-zinc-200 font-medium">Download Limit</td>
-                  <td className="text-center py-4 px-4 text-zinc-400">1 per day</td>
-                  <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-emerald-300 font-bold">3 per day ↑</td>
+                  <td className="text-center py-4 px-4 text-zinc-400">Unlimited (ads)</td>
+                  <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-emerald-300 font-bold">Unlimited ✓</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">Unlimited ✓</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">Unlimited ✓</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">Unlimited ✓</td>
@@ -165,7 +165,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
               <p className="text-sm text-zinc-300 mb-4">No Sign-up Required</p>
               <ul className="space-y-2 text-sm text-zinc-200 mb-6">
                 <li><span className="text-emerald-300 font-bold">✓</span> Maximum 720p quality</li>
-                <li><span className="text-zinc-500">✗</span> 1 download per day only</li>
+                <li><span className="text-emerald-300 font-bold">✓</span> Unlimited downloads (with ads)</li>
                 <li><span className="text-zinc-500">✗</span> No download history</li>
               </ul>
             </div>
@@ -177,7 +177,7 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
               <p className="text-sm text-zinc-300 mb-4">Free Account (3x More Downloads!)</p>
               <ul className="space-y-2 text-sm text-zinc-200 mb-6">
                 <li><span className="text-emerald-300 font-bold">✓</span> Maximum 720p quality</li>
-                <li><span className="text-emerald-300 font-bold">✓</span> 3 downloads per day (vs 1 guest)</li>
+                <li><span className="text-emerald-300 font-bold">✓</span> Unlimited downloads (with ads)</li>
                 <li><span className="text-emerald-300 font-bold">✓</span> Lifetime download history</li>
               </ul>
               <button onClick={() => router.push('/auth/signup')} className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-lg transition-all shadow-lg hover:shadow-blue-500/30">

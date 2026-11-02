@@ -59,8 +59,6 @@ export default function Home() {
   });
   const [showRRRModal, setShowRRRModal] = useState(false);
   const [showPricingModal, setShowPricingModal] = useState(false);
-  const [guestDownloadCount, setGuestDownloadCount] = useState(0);
-  const [showDailyLimitBanner, setShowDailyLimitBanner] = useState(false);
 
   // Ref for UrlForm (for smooth scroll from Pricing section)
   const urlFormRef = useRef<HTMLDivElement>(null);
@@ -122,18 +120,6 @@ export default function Home() {
     return () => window.removeEventListener('languageChanged', handleStorageChange);
   }, []);
 
-  // Fetch guest download count on mount (for non-authenticated users)
-  useEffect(() => {
-    if (isGuest) {
-      fetch('/api/guest-downloads/count')
-        .then((res) => res.json())
-        .then((data) => setGuestDownloadCount(data.count || 0))
-        .catch((err) => {
-          console.warn('Failed to fetch guest download count:', err);
-          setGuestDownloadCount(0);
-        });
-    }
-  }, [isGuest]);
 
   // Auto-submit when initialUrl is available (rrr redirect entry)
   useEffect(() => {
@@ -183,25 +169,8 @@ export default function Home() {
           body: JSON.stringify({ url: trimmedUrl }),
         });
 
-        // 403 에러 - 인라인 배너로 표시
-        if (response.status === 403) {
-          console.log('Daily limit exceeded - showing banner');
-          setIsLoading(false);
-          setShowDailyLimitBanner(true);
-          return;
-        }
-
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
-
-          // 추가 체크: DAILY_LIMIT_EXCEEDED 문자열도 감지
-          if (errorData.error === 'DAILY_LIMIT_EXCEEDED') {
-            console.log('DAILY_LIMIT_EXCEEDED detected - showing banner');
-            setIsLoading(false);
-            setShowDailyLimitBanner(true);
-            return;
-          }
-
           throw new Error(errorData.error || `Server error: ${response.status}`);
         }
 
@@ -209,14 +178,6 @@ export default function Home() {
         setResult(data);
         console.log('Video extracted successfully:', data);
       } catch (err) {
-        // 403 에러는 여기서도 걸러내기
-        if (err instanceof Error && (err.message.includes('403') || err.message.includes('DAILY_LIMIT_EXCEEDED'))) {
-          console.log('403 caught in error handler - showing banner');
-          setIsLoading(false);
-          setShowDailyLimitBanner(true);
-          return;
-        }
-
         setError(err instanceof Error ? err.message : 'Failed to extract video. Please try again.');
         console.error('Download error:', err);
       } finally {
@@ -310,46 +271,6 @@ export default function Home() {
           />
         </div>
 
-        {/* Guest Download Counter (for non-authenticated users) */}
-        {isGuest && (
-          <div className="w-full max-w-3xl mx-auto mb-4 px-4">
-            <div className="inline-flex items-center gap-2 px-3 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
-              <span className="text-xs sm:text-sm text-cyan-300 font-semibold">
-                Guest: {guestDownloadCount}/3 used today
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Daily Limit Exceeded Banner */}
-        {showDailyLimitBanner && isGuest && (
-          <div className="w-full max-w-3xl mx-auto mb-4 px-4">
-            <div className="w-full bg-gradient-to-r from-amber-900/40 to-red-900/40 border-l-4 border-amber-400 rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex-grow">
-                <p className="text-sm sm:text-base text-amber-200 font-semibold mb-2">
-                  Daily limit reached! Sign in for 3x more downloads.
-                </p>
-                <p className="text-xs sm:text-sm text-amber-100/80">
-                  Login to get <strong>3 free downloads per day</strong> + save unlimited history!
-                </p>
-              </div>
-              <div className="flex gap-2 w-full sm:w-auto">
-                <a
-                  href="/auth/signup"
-                  className="flex-1 sm:flex-none px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm rounded-lg transition-all text-center"
-                >
-                  Sign Up Free
-                </a>
-                <a
-                  href="/auth/login"
-                  className="flex-1 sm:flex-none px-4 py-2 bg-white/10 hover:bg-white/20 text-gray-200 font-semibold text-xs sm:text-sm rounded-lg transition-all border border-white/20 text-center"
-                >
-                  Sign In
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* URL Input Form */}
         <div ref={urlFormRef}>
@@ -377,13 +298,6 @@ export default function Home() {
               language={language}
               originalUrl={originalUrl}
               onError={(errorMessage) => setError(errorMessage)}
-              onShowDailyLimitBanner={() => {
-                setShowDailyLimitBanner(true);
-                fetch('/api/guest-downloads/count')
-                  .then((res) => res.json())
-                  .then((data) => setGuestDownloadCount(data.count || 3))
-                  .catch(() => setGuestDownloadCount(3));
-              }}
             />
           </div>
         )}
