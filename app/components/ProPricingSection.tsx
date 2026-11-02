@@ -240,15 +240,16 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </div>
 
           {/* Starter Plan - Light Users */}
-          <div className="relative p-5 sm:p-6 border-2 border-green-500/40 rounded-2xl bg-gradient-to-br from-green-900/20 to-emerald-900/20 hover:from-green-900/40 hover:to-emerald-900/40 transition-all duration-300 flex flex-col justify-between h-full overflow-visible">
-            <div className="absolute -top-3 left-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-0.5 rounded-full text-xs font-bold z-10">
-              POPULAR
+          <div className="relative p-5 sm:p-6 border-2 border-green-500/50 rounded-2xl bg-gradient-to-br from-green-900/30 to-emerald-900/30 hover:from-green-900/50 hover:to-emerald-900/50 transition-all duration-300 flex flex-col justify-between h-full overflow-visible shadow-lg shadow-green-500/10">
+            <div className="absolute -top-3 left-6 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-1 rounded-full text-xs font-bold z-10 shadow-lg">
+              ⭐ MOST POPULAR
             </div>
 
             <div>
               <div className="mb-2">
                 <h3 className="text-2xl font-bold text-white mb-0.5">Starter</h3>
-                <p className="text-green-300 text-sm">Ad-free downloads</p>
+                <p className="text-green-300 text-sm font-semibold">☕ Just a coffee! No ads + Fast downloads</p>
+                <p className="text-xs text-zinc-400 mt-1">Popular choice for casual creators</p>
               </div>
 
               <div className="mb-3 pb-3 border-b border-green-500/30">
