@@ -69,8 +69,8 @@ export default function Home() {
   // Ref for Pricing Section (for smooth scroll from Hero Banner)
   const pricingSectionRef = useRef<HTMLDivElement>(null);
   const scrollToPricing = () => {
-    // Scroll to pricing section with minimal offset
-    pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Scroll to pricing section with center alignment for perfect card visibility
+    pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
   // Ref for VideoResult (for smooth scroll when formats appear)
@@ -353,7 +353,7 @@ export default function Home() {
 
         {/* Pro Pricing Section */}
         {!result && (
-          <div ref={pricingSectionRef} className="w-full scroll-mt-28 pt-8">
+          <div ref={pricingSectionRef} className="w-full scroll-mt-10 pt-4">
             {/* @ts-ignore */}
             <ProPricingSection language={language} onScrollToDownloader={scrollToDownloader} onOpenRRRModal={() => setShowRRRModal(true)} onOpenPricingModal={() => setShowPricingModal(true)} />
           </div>
