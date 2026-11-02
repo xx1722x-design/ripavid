@@ -134,8 +134,8 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
     }, 100);
 
     try {
-      // ⚡ CRITICAL: Check credit balance BEFORE video download
-      // This is the first gate - if credits insufficient, stop immediately
+      // ⚡ OPTIONAL: Check credit balance (but don't block download if service unavailable)
+      // Free/Guest users can download without credit system if it's misconfigured
       try {
         const creditsRequired = getDownloadCredits(height);
         const creditDeductRes = await fetch('/api/credits/deduct', {
@@ -158,19 +158,27 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
           return; // ABORT - do not proceed with video download
         }
 
+        // 500 or other server errors: Log warning but DON'T block download
+        // Free/Guest users have unlimited downloads, so credit system failure shouldn't stop them
         if (!creditDeductRes.ok) {
-          const creditError = await creditDeductRes.json().catch(() => ({}));
-          throw new Error(creditError.error || 'Failed to deduct credits');
+          const creditError = await creditDeductRes.json().catch(() => ({ error: creditDeductRes.statusText }));
+          console.warn('[VideoResult] Credit service error (non-fatal):', {
+            status: creditDeductRes.status,
+            error: creditError.error,
+            message: 'Proceeding with download anyway - credit system unavailable'
+          });
+          // Continue with download despite credit system error
+        } else {
+          const creditData = await creditDeductRes.json();
+          console.log('[VideoResult] Credits deducted. Remaining:', creditData.remainingCredits);
         }
-
-        const creditData = await creditDeductRes.json();
-        console.log('[VideoResult] Credits deducted. Remaining:', creditData.remainingCredits);
       } catch (creditError) {
-        console.error('[VideoResult] Credit deduction failed:', creditError);
-
-        // If credit system fails, show generic error instead of risking unlimited downloads
-        onError?.('Payment verification failed. Please try again.');
-        return;
+        // Network error or parsing failure: Log but allow download to proceed
+        console.warn('[VideoResult] Credit system check failed (non-fatal):', {
+          error: creditError instanceof Error ? creditError.message : String(creditError),
+          message: 'Proceeding with download - credit service may be unavailable'
+        });
+        // Continue with download despite credit system error
       }
 
       // ✅ ONLY IF CREDITS APPROVED - proceed with download
