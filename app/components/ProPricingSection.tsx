@@ -93,7 +93,8 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
   };
 
   // Pricing Structure
-  const starterPrice = billingPeriod === 'yearly' ? '$39.99' : '$4.99';
+  // Starter: $4.99/month or $3.33/month when billed yearly ($39.99/year)
+  const starterPrice = billingPeriod === 'yearly' ? '$3.33' : '$4.99';
   const starterBilledText = billingPeriod === 'yearly' ? 'Billed $39.99 yearly' : 'Billed monthly';
 
   const proPrice = '$19';
