@@ -5,6 +5,7 @@ import { translations } from '../locales';
 import TipSlider from './TipSlider';
 import AffiliateBanner from './AffiliateBanner';
 import LocalizationTools from './LocalizationTools';
+import PaymentUpgradeModal from './PaymentUpgradeModal';
 import { useAuth } from '@/app/context/AuthContext';
 
 // On-click pop-under advertisement links
@@ -69,6 +70,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const [isWaiting, setIsWaiting] = useState(false);
   const [waitingHeight, setWaitingHeight] = useState(720);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [remainingCredits, setRemainingCredits] = useState(0);
   const [loadingQuality, setLoadingQuality] = useState<string | null>(null);
   const [hoveredResolution, setHoveredResolution] = useState<string | null>(null);
   const waitingContainerRef = useRef<HTMLDivElement>(null);
@@ -138,6 +140,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
 
           setIsWaiting(false);
           setLoadingQuality(null);
+          setRemainingCredits(creditData.remainingCredits || 0);
 
           // Show login/payment prompt for guests or payment upgrade for free users
           if (creditData.shouldPromptLogin) {
@@ -404,6 +407,13 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         </div>
       </div>
       )}
+
+      {/* Payment Upgrade Modal - Shown when credits insufficient */}
+      <PaymentUpgradeModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        remainingCredits={remainingCredits}
+      />
     </div>
   );
 }

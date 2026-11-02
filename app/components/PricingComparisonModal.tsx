@@ -59,6 +59,10 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                     <div className="text-violet-300 drop-shadow-md">🚀 Pro Pass</div>
                     <div className="text-xs text-zinc-300">(Premium)</div>
                   </th>
+                  <th className="text-center py-4 px-4 font-bold">
+                    <div className="text-amber-300 drop-shadow-md">🌟 MAX</div>
+                    <div className="text-xs text-zinc-300">(Ultimate)</div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -67,11 +71,13 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="text-center py-4 px-4 text-zinc-300">720p</td>
                   <td className="text-center py-4 px-4 text-zinc-300 border-l border-r border-blue-500/20">720p</td>
                   <td className="text-center py-4 px-4 font-bold text-violet-200">1080p • 2K • 4K</td>
+                  <td className="text-center py-4 px-4 font-bold text-amber-200">1080p • 2K • 4K</td>
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
                   <td className="py-4 px-4 text-zinc-200 font-medium">Download Limit</td>
                   <td className="text-center py-4 px-4 text-zinc-400">1 per day</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-emerald-300 font-bold">3 per day ↑</td>
+                  <td className="text-center py-4 px-4 font-bold text-emerald-300">Unlimited ✓</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">Unlimited ✓</td>
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
@@ -81,11 +87,13 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                     <span className="text-emerald-300 font-bold">Lifetime Saved ✓</span>
                   </td>
                   <td className="text-center py-4 px-4 text-emerald-300 font-bold">Lifetime Saved ✓</td>
+                  <td className="text-center py-4 px-4 text-emerald-300 font-bold">Lifetime Saved ✓</td>
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
                   <td className="py-4 px-4 text-zinc-200 font-medium">AI Subtitle Extraction (SRT)</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
+                  <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (21 Languages)</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (21 Languages)</td>
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
@@ -93,11 +101,13 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (Auto-Sync)</td>
+                  <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (Auto-Sync)</td>
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
                   <td className="py-4 px-4 text-zinc-200 font-medium">Viral Clip Timestamp Curation</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
+                  <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (9:16 Format)</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (9:16 Format)</td>
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
@@ -105,17 +115,20 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (40+ Voices)</td>
+                  <td className="text-center py-4 px-4 font-bold text-emerald-300">✓ (40+ Voices)</td>
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
                   <td className="py-4 px-4 text-zinc-200 font-medium">Subtitle Burn-in & Overlay</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓</td>
+                  <td className="text-center py-4 px-4 font-bold text-emerald-300">✓</td>
                 </tr>
                 <tr className="border-b border-cyan-500/20 hover:bg-cyan-500/5 transition-all">
                   <td className="py-4 px-4 text-zinc-200 font-medium">Batch Download (Multi-language)</td>
                   <td className="text-center py-4 px-4 text-zinc-500">✗</td>
                   <td className="text-center py-4 px-4 border-l border-r border-blue-500/20 text-zinc-500">✗</td>
+                  <td className="text-center py-4 px-4 font-bold text-emerald-300">✓</td>
                   <td className="text-center py-4 px-4 font-bold text-emerald-300">✓</td>
                 </tr>
               </tbody>
@@ -166,6 +179,22 @@ export default function PricingComparisonModal({ isOpen, onClose }: PricingCompa
               </ul>
               <button className="w-full bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-500 hover:to-pink-500 text-white font-bold py-2 rounded-lg transition-all transform hover:scale-105 shadow-lg shadow-violet-500/30">
                 Upgrade to Pro ✨
+              </button>
+            </div>
+
+            {/* MAX Card */}
+            <div className="bg-zinc-950/80 border-2 border-amber-400/40 rounded-xl p-6 shadow-lg shadow-amber-500/20 hover:border-amber-400/60 transition-all">
+              <div className="text-2xl mb-2">🌟</div>
+              <h3 className="text-lg font-bold text-amber-300 drop-shadow-md mb-1">MAX</h3>
+              <p className="text-sm text-zinc-300 mb-4">Ultimate Creator Plan</p>
+              <ul className="space-y-2 text-sm text-zinc-200 mb-6">
+                <li><span className="text-emerald-300 font-bold">✓</span> Everything in Pro</li>
+                <li><span className="text-emerald-300 font-bold">✓</span> ElevenLabs AI Dubbing (40+ Voices)</li>
+                <li><span className="text-emerald-300 font-bold">✓</span> Batch Download (Multi-language)</li>
+                <li><span className="text-emerald-300 font-bold">✓</span> Priority Server Processing</li>
+              </ul>
+              <button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold py-2 rounded-lg transition-all transform hover:scale-105 shadow-lg shadow-amber-500/30">
+                Upgrade to MAX 🌟
               </button>
             </div>
           </div>
