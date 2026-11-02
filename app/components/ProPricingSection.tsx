@@ -140,7 +140,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         </div>
 
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 mt-4">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
             Simple, Transparent Pricing
           </h2>

@@ -438,7 +438,7 @@ export default function Home() {
 
         {/* Pro Pricing Section */}
         {!result && (
-          <div ref={pricingSectionRef} className="w-full scroll-mt-32 py-32 min-h-screen flex items-center">
+          <div ref={pricingSectionRef} className="w-full scroll-mt-40 pt-20">
             {/* @ts-ignore */}
             <ProPricingSection language={language} onScrollToDownloader={scrollToDownloader} onOpenRRRModal={() => setShowRRRModal(true)} onOpenPricingModal={() => setShowPricingModal(true)} />
           </div>
