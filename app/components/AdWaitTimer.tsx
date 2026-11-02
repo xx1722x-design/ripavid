@@ -10,11 +10,14 @@ interface AdWaitTimerProps {
 }
 
 export default function AdWaitTimer({ isOpen, onSkip, onUpgrade }: AdWaitTimerProps) {
-  const [remaining, setRemaining] = useState(15);
+  const [remaining, setRemaining] = useState(5);
   const router = useRouter();
 
   useEffect(() => {
     if (!isOpen) return;
+
+    // Reset timer when modal opens
+    setRemaining(5);
 
     const interval = setInterval(() => {
       setRemaining((prev) => {
@@ -42,14 +45,14 @@ export default function AdWaitTimer({ isOpen, onSkip, onUpgrade }: AdWaitTimerPr
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-24 h-24 rounded-full border-4 border-yellow-500/50 bg-yellow-900/20 mb-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-yellow-300">{remaining}</div>
+              <div className="text-5xl font-bold text-yellow-300 font-mono">{remaining}</div>
               <div className="text-xs text-yellow-200">seconds</div>
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold text-white mb-3">☕ Ad Watching</h2>
-          <p className="text-sm text-zinc-300 mb-2">Free users watch a quick ad before download</p>
-          <p className="text-xs text-yellow-300 font-semibold">Your download will start automatically...</p>
+          <h2 className="text-2xl font-bold text-white mb-3">☕ Processing Your Download</h2>
+          <p className="text-sm text-zinc-300 mb-2">Preparing your file...</p>
+          <p className="text-sm text-yellow-300 font-semibold">Starting download in <span className="font-mono font-bold text-yellow-200">{remaining}s</span>...</p>
         </div>
 
         {/* Upgrade Nudge */}
@@ -66,16 +69,18 @@ export default function AdWaitTimer({ isOpen, onSkip, onUpgrade }: AdWaitTimerPr
             onClick={onUpgrade}
             className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-bold py-2 rounded-lg transition-all transform hover:scale-105"
           >
-            Upgrade to Starter (Save 15 seconds!)
+            Upgrade to Starter (Skip the wait!)
           </button>
         </div>
 
-        {/* Skip Button */}
+        {/* Wait Button - Disabled during countdown */}
         <button
-          onClick={onSkip}
-          className="w-full py-2 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg transition-colors"
+          disabled={true}
+          className="w-full py-3 bg-zinc-700/50 text-white font-semibold rounded-lg transition-colors cursor-not-allowed flex items-center justify-center gap-2"
         >
-          Continue Waiting ({remaining}s)
+          <span className="inline-block w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
+          Processing... ({remaining}s)
+          <span className="inline-block w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
         </button>
 
         <style>{`

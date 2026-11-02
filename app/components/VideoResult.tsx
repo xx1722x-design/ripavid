@@ -6,6 +6,8 @@ import TipSlider from './TipSlider';
 import AffiliateBanner from './AffiliateBanner';
 import LocalizationTools from './LocalizationTools';
 import PaymentUpgradeModal from './PaymentUpgradeModal';
+import AdWaitTimer from './AdWaitTimer';
+import QualityUpgradeModal from './QualityUpgradeModal';
 import { useAuth } from '@/app/context/AuthContext';
 
 // On-click pop-under advertisement links
@@ -73,9 +75,13 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   const [remainingCredits, setRemainingCredits] = useState(0);
   const [loadingQuality, setLoadingQuality] = useState<string | null>(null);
   const [hoveredResolution, setHoveredResolution] = useState<string | null>(null);
-  const [lastDownloadTime, setLastDownloadTime] = useState(0); // [BOT DEFENSE 2] Track last download click
+  const [lastDownloadTime, setLastDownloadTime] = useState(0);
+  const [showAdWaitTimer, setShowAdWaitTimer] = useState(false);
+  const [adTimerHeight, setAdTimerHeight] = useState(720);
+  const [adTimerResolution, setAdTimerResolution] = useState('720p');
+  const [showQualityUpgrade, setShowQualityUpgrade] = useState(false);
   const waitingContainerRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
 
   // Safely initialize translations with proper fallback
   const safeLanguage = (language && typeof language === 'string') ? language : 'en';
@@ -118,21 +124,7 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
 
   const maxResolution = getMaxResolution();
 
-  const handleDownloadClick = async (height: number, resolution: string) => {
-    // [BOT DEFENSE 2] Human Verification: Debounce rapid clicks (1.5 second cooldown)
-    const now = Date.now();
-    if (now - lastDownloadTime < 1500) {
-      console.warn('[BotDefense] Rapid click detected. Ignoring request.');
-      return;
-    }
-    setLastDownloadTime(now);
-
-    // Check if height > 720p and user is not Pro
-    if (height > 720 && user?.tier !== 'pro') {
-      setShowPaymentModal(true);
-      return;
-    }
-
+  const executeDownload = async (height: number, resolution: string) => {
     setIsWaiting(true);
     setWaitingHeight(height);
     setLoadingQuality(resolution);
@@ -235,6 +227,35 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       const errorMessage = error instanceof Error ? error.message : 'Failed to prepare download. Please try again.';
       onError?.(errorMessage);
     }
+  };
+
+  const handleDownloadClick = async (height: number, resolution: string) => {
+    // Debounce rapid clicks (1.5 second cooldown)
+    const now = Date.now();
+    if (now - lastDownloadTime < 1500) {
+      console.warn('[BotDefense] Rapid click detected. Ignoring request.');
+      return;
+    }
+    setLastDownloadTime(now);
+
+    // Check if height > 720p and user is not Pro
+    if (height > 720 && user?.tier !== 'pro') {
+      setShowQualityUpgrade(true);
+      setAdTimerHeight(height);
+      setAdTimerResolution(resolution);
+      return;
+    }
+
+    // Free/Guest users: Show 5-second ad-wait timer, then execute download
+    if ((isGuest || user?.tier === 'free') && !isWaiting) {
+      setAdTimerHeight(height);
+      setAdTimerResolution(resolution);
+      setShowAdWaitTimer(true);
+      return;
+    }
+
+    // Otherwise execute download immediately
+    await executeDownload(height, resolution);
   };
 
   return (
@@ -435,6 +456,33 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         isOpen={showPaymentModal}
         onClose={() => setShowPaymentModal(false)}
         remainingCredits={remainingCredits}
+      />
+
+      {/* Ad Wait Timer - Free users must wait 5 seconds before download */}
+      <AdWaitTimer
+        isOpen={showAdWaitTimer}
+        onSkip={async () => {
+          setShowAdWaitTimer(false);
+          await executeDownload(adTimerHeight, adTimerResolution);
+        }}
+        onUpgrade={() => {
+          setShowAdWaitTimer(false);
+          window.location.href = '/pricing?plan=starter';
+        }}
+      />
+
+      {/* Quality Upgrade Modal - Show when user tries to download 1080p+ without Starter */}
+      <QualityUpgradeModal
+        isOpen={showQualityUpgrade}
+        onClose={() => setShowQualityUpgrade(false)}
+        onContinue={async () => {
+          setShowQualityUpgrade(false);
+          await handleDownloadClick(720, '720p');
+        }}
+        onUpgrade={() => {
+          setShowQualityUpgrade(false);
+          window.location.href = '/pricing?plan=starter';
+        }}
       />
     </div>
   );
