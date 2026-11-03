@@ -177,6 +177,10 @@ export default function Home() {
         const data: VideoData = await response.json();
         setResult(data);
         console.log('Video extracted successfully:', data);
+
+        // 🔴 CRITICAL: Reset button state immediately when results appear
+        // This ensures main button returns to normal state as soon as formats load
+        setIsLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to extract video. Please try again.');
         console.error('Download error:', err);
@@ -188,6 +192,17 @@ export default function Home() {
       console.error('Unexpected error in handleRipVideo:', outerErr);
       setIsLoading(false);
     }
+  };
+
+  // 🔄 Clear all states - reset form for new download
+  const handleClear = () => {
+    setResult(null);
+    setError('');
+    setSelectedPlatform('');
+    setOriginalUrl('');
+    setInitialUrl('');
+    setIsLoading(false);
+    console.log('[Page] Cleared all states - ready for new download');
   };
 
   // Safely initialize translations with proper fallback
@@ -282,6 +297,7 @@ export default function Home() {
             initialUrl={initialUrl}
             autoSubmit={!!initialUrl}
             onError={(errorMessage) => setError(errorMessage)}
+            onClear={handleClear}
           />
         </div>
 

@@ -14,6 +14,7 @@ interface UrlFormProps {
   initialUrl?: string;
   autoSubmit?: boolean;
   onError?: (error: string) => void;
+  onClear?: () => void;
 }
 
 type Platform = 'auto' | 'douyin' | 'xiaohongshu' | 'youtube' | 'instagram';
@@ -26,7 +27,7 @@ const PLATFORM_LABELS: Record<Platform, { icon: string }> = {
   instagram: { icon: '📷' },
 };
 
-export default function UrlForm({ onSubmit, isLoading, language = 'en', initialUrl = '', autoSubmit = false, onError }: UrlFormProps) {
+export default function UrlForm({ onSubmit, isLoading, language = 'en', initialUrl = '', autoSubmit = false, onError, onClear }: UrlFormProps) {
   // Safely initialize language with default
   const safeLanguage = (language && typeof language === 'string') ? language : 'en';
 
@@ -180,28 +181,46 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
             disabled={isLoading}
             className="w-full px-6 py-4 sm:px-8 sm:py-6 h-14 sm:h-16 bg-zinc-800 dark:bg-zinc-800 light:bg-white border-2 border-zinc-600 dark:border-zinc-600 light:border-gray-300 rounded-xl text-base sm:text-lg md:text-xl font-semibold text-gray-100 dark:text-white light:text-gray-900 placeholder-gray-500 dark:placeholder-gray-400 light:placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
           />
-          <button
-            type="submit"
-            disabled={isLoading || localProcessing}
-            className="w-full px-8 py-6 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold text-lg rounded-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
-          >
-            {isLoading || localProcessing ? (
-              <>
-                <svg className="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                {t.downloadingText}
-              </>
-            ) : (
-              <>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m0 0l-2-1m2 1v2.5M14 4l-2 1m0 0l-2-1m2 1v2.5" />
-                </svg>
-                {t.import}
-              </>
-            )}
-          </button>
+          <div className="flex gap-4">
+            <button
+              type="submit"
+              disabled={isLoading || localProcessing}
+              className="flex-1 px-8 py-6 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold text-lg rounded-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
+            >
+              {isLoading || localProcessing ? (
+                <>
+                  <svg className="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  {t.downloadingText}
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m0 0l-2-1m2 1v2.5M14 4l-2 1m0 0l-2-1m2 1v2.5" />
+                  </svg>
+                  {t.import}
+                </>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setUrl('');
+                setError('');
+                setLocalProcessing(false);
+                onClear?.();
+              }}
+              className="px-6 py-6 bg-zinc-800/50 dark:bg-zinc-800/50 light:bg-gray-200/50 hover:bg-zinc-700/50 dark:hover:bg-zinc-700/50 light:hover:bg-gray-300/50 text-zinc-300 dark:text-zinc-300 light:text-gray-700 font-semibold rounded-xl transition-all border-2 border-zinc-700 dark:border-zinc-700 light:border-gray-300 hover:border-zinc-600 dark:hover:border-zinc-600 light:hover:border-gray-400 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
+              title="Clear all inputs and reset the form"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span className="hidden sm:inline">Clear</span>
+            </button>
+          </div>
         </div>
 
         {error && (
