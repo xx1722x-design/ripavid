@@ -135,19 +135,24 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
     }
 
     try {
+      console.log('[UrlForm] Submitting URL → calling parent onSubmit');
       await onSubmit(url);
+      console.log('[UrlForm] onSubmit completed → ad will open, button state resetting in 1500ms');
+
       // Open Adsterra ad in new tab after successful submission
       window.open(ADSTERRA_DIRECT_URL, '_blank');
 
-      // ⏱️ Reset loading state after delay to sync with API and ad popup completion
+      // ⏱️ Reset loading state after brief delay to sync with API and ad popup completion
+      // Parent will also reset isLoading, so both localProcessing and isLoading = false
       setTimeout(() => {
         setLocalProcessing(false);
-        console.log('[UrlForm] Processing complete. Resetting button state.');
+        console.log('[UrlForm] 1500ms elapsed → localProcessing forced to false');
       }, 1500);
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : '❌ Failed to process video. Please try again.';
       setError(errMsg);
       setLocalProcessing(false);
+      console.log('[UrlForm] Error caught → localProcessing immediately set to false');
     }
   };
 
@@ -207,10 +212,11 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
             <button
               type="button"
               onClick={() => {
-                console.log('[UrlForm] Clear button clicked - resetting all states');
+                console.log('[UrlForm] Clear button clicked - FULL RESET');
                 setUrl('');
                 setError('');
                 setLocalProcessing(false);
+                console.log('[UrlForm] Local states reset → calling onClear to reset parent');
                 onClear?.();
               }}
               className="px-6 py-6 bg-zinc-800/50 dark:bg-zinc-800/50 light:bg-gray-200/50 hover:bg-zinc-700/50 dark:hover:bg-zinc-700/50 light:hover:bg-gray-300/50 text-zinc-300 dark:text-zinc-300 light:text-gray-700 font-semibold rounded-xl transition-all border-2 border-zinc-700 dark:border-zinc-700 light:border-gray-300 hover:border-zinc-600 dark:hover:border-zinc-600 light:hover:border-gray-400 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"

@@ -181,6 +181,7 @@ export default function Home() {
         // 🔴 CRITICAL: Reset button state immediately when results appear
         // This ensures main button returns to normal state as soon as formats load
         setIsLoading(false);
+        console.log('[Page] Result loaded → Button returned to Import state immediately');
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to extract video. Please try again.');
         console.error('Download error:', err);
