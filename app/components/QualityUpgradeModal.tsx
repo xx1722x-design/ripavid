@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/app/context/AuthContext';
 
 interface QualityUpgradeModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface QualityUpgradeModalProps {
 
 export default function QualityUpgradeModal({ isOpen, onClose, onContinue, onUpgrade }: QualityUpgradeModalProps) {
   const router = useRouter();
+  const { user, isGuest } = useAuth() || { user: null, isGuest: true };
 
   if (!isOpen) return null;
 
@@ -59,7 +61,20 @@ export default function QualityUpgradeModal({ isOpen, onClose, onContinue, onUpg
           <button
             onClick={() => {
               onUpgrade?.();
-              router.push('/pricing?plan=starter');
+              // Route based on authentication status
+              if (isGuest) {
+                // Guest user: redirect to login
+                console.log('[QualityUpgradeModal] Guest user → redirecting to /auth/login');
+                router.push('/auth/login');
+              } else if (user) {
+                // Authenticated user: redirect to home with pricing modal
+                console.log('[QualityUpgradeModal] Authenticated user → redirecting to home for pricing');
+                router.push('/?showPricing=true');
+              } else {
+                // Fallback: redirect to login
+                console.log('[QualityUpgradeModal] Unknown state → redirecting to /auth/login');
+                router.push('/auth/login');
+              }
             }}
             className="w-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-bold py-3 rounded-lg transition-all transform hover:scale-105"
           >

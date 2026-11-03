@@ -101,9 +101,18 @@ export default function Home() {
 
     window.addEventListener('languageChanged', handleStorageChange);
 
-    // Detect URL parameter for auto-redirect UX
+    // Detect URL parameters for auto-redirect UX
     try {
       const params = new URLSearchParams(window.location.search);
+
+      // Check if user is being redirected from upgrade modal to show pricing
+      const showPricing = params.get('showPricing');
+      if (showPricing === 'true') {
+        console.log('[Page] showPricing parameter detected → opening pricing modal');
+        setShowPricingModal(true);
+      }
+
+      // Detect URL parameter for auto-redirect UX (RRR shortcut)
       const urlParam = params.get('url');
       if (urlParam) {
         const decodedUrl = decodeURIComponent(urlParam);
