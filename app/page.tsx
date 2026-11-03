@@ -309,7 +309,7 @@ export default function Home() {
         </div>
 
 
-        {/* URL Input Form & Quick Tips Guide - ALWAYS VISIBLE */}
+        {/* URL Input Form */}
         <div ref={urlFormRef}>
           {/* @ts-ignore */}
           <UrlForm
@@ -320,33 +320,34 @@ export default function Home() {
             autoSubmit={!!initialUrl}
             onError={(errorMessage) => setError(errorMessage)}
           />
+        </div>
 
-          {/* Quick Tips Guide - ALWAYS RENDERED (NO CONDITIONAL) - Essential F5 Refresh Guidance */}
-          {/* This MUST be visible whether user accesses directly, via rrr shortcut, or during Processing state */}
-          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-            <div className="bg-zinc-800/30 dark:bg-zinc-800/30 light:bg-gray-200/30 border border-zinc-700/50 dark:border-zinc-700/50 light:border-gray-300/50 rounded-xl px-6 py-5 backdrop-blur-sm">
-              <div className="flex items-start gap-3 mb-4">
-                <span className="text-2xl">💡</span>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-zinc-200 dark:text-zinc-200 light:text-gray-800 mb-3">
-                    Quick Tips
-                  </h3>
-                  <ul className="space-y-2 text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600">
-                    <li className="flex items-start gap-2">
-                      <span className="text-cyan-400 mt-0.5">•</span>
-                      <span>Add <code className="bg-zinc-900 dark:bg-zinc-900 light:bg-gray-100 px-2 py-0.5 rounded font-mono text-xs text-cyan-300">'rrr'</code> before youtube.com in your browser's address bar and press Enter.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-cyan-400 mt-0.5">•</span>
-                      <span>Or paste a link from 10 platforms (YouTube, TikTok, Instagram, Xiaohongshu, etc.) here and click '<span className="font-semibold text-cyan-300">Import</span>'.</span>
-                    </li>
-                  </ul>
-                  <div className="mt-4 pt-4 border-t border-zinc-700/50 dark:border-zinc-700/50 light:border-gray-300/50">
-                    <p className="text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600 flex items-center gap-2">
-                      <span>🔄</span>
-                      <span>To download another video, please refresh <span className="font-mono bg-zinc-900 dark:bg-zinc-900 light:bg-gray-100 px-2 py-0.5 rounded text-xs text-cyan-300">(F5)</span> the page.</span>
-                    </p>
-                  </div>
+        {/* Quick Tips Guide - PERMANENTLY FIXED (NO CONDITIONS, NEVER HIDDEN) */}
+        {/* CRITICAL: This is rendered at the SAME LEVEL as VideoResult, not nested inside UrlForm */}
+        {/* Regardless of result, loading, or initial state - this ALWAYS appears */}
+        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+          <div className="bg-zinc-800/30 dark:bg-zinc-800/30 light:bg-gray-200/30 border border-zinc-700/50 dark:border-zinc-700/50 light:border-gray-300/50 rounded-xl px-6 py-5 backdrop-blur-sm">
+            <div className="flex items-start gap-3 mb-4">
+              <span className="text-2xl">💡</span>
+              <div className="flex-1">
+                <h3 className="font-semibold text-zinc-200 dark:text-zinc-200 light:text-gray-800 mb-3">
+                  Quick Tips
+                </h3>
+                <ul className="space-y-2 text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600">
+                  <li className="flex items-start gap-2">
+                    <span className="text-cyan-400 mt-0.5">•</span>
+                    <span>Add <code className="bg-zinc-900 dark:bg-zinc-900 light:bg-gray-100 px-2 py-0.5 rounded font-mono text-xs text-cyan-300">'rrr'</code> before youtube.com in your browser's address bar and press Enter.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-cyan-400 mt-0.5">•</span>
+                    <span>Or paste a link from 10 platforms (YouTube, TikTok, Instagram, Xiaohongshu, etc.) here and click '<span className="font-semibold text-cyan-300">Import</span>'.</span>
+                  </li>
+                </ul>
+                <div className="mt-4 pt-4 border-t border-zinc-700/50 dark:border-zinc-700/50 light:border-gray-300/50">
+                  <p className="text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600 flex items-center gap-2">
+                    <span>🔄</span>
+                    <span>To download another video, please refresh <span className="font-mono bg-zinc-900 dark:bg-zinc-900 light:bg-gray-100 px-2 py-0.5 rounded text-xs text-cyan-300">(F5)</span> the page.</span>
+                  </p>
                 </div>
               </div>
             </div>
