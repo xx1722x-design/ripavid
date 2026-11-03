@@ -156,48 +156,56 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
     }, 100);
 
     try {
-      // ⚡ CREDIT VALIDATION - Non-blocking (credit system failure won't stop downloads)
-      // ONLY 402 (Payment Required) blocks download. Everything else: warn and proceed.
-      try {
-        const creditsRequired = getDownloadCredits(height);
-        const creditDeductRes = await fetch('/api/credits/deduct', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ amount: creditsRequired, reason: `Video download (${resolution})` })
-        });
+      // ⚡ CREDIT VALIDATION - Skip for Free/Guest users (Unlimited downloads policy)
+      // Free/Guest users get UNLIMITED downloads - no credit checking needed
+      const isFreeOrGuest = user?.tier === 'free' || user?.isGuest === true;
 
-        // ONLY BLOCK on 402 (user actually can't afford this download)
-        if (creditDeductRes.status === 402) {
-          const creditData = await creditDeductRes.json().catch(() => ({}));
-          console.log('[VideoResult] 402 Payment Required - blocking download:', creditData);
+      if (isFreeOrGuest) {
+        // ✅ FREE/GUEST: Skip all credit checks - unlimited downloads
+        console.log('[VideoResult] Free/Guest user detected - skipping credit validation (unlimited downloads)');
+      } else {
+        // 💳 PAID USERS: Perform credit deduction
+        try {
+          const creditsRequired = getDownloadCredits(height);
+          const creditDeductRes = await fetch('/api/credits/deduct', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: creditsRequired, reason: `Video download (${resolution})` })
+          });
 
-          // Show login/payment prompt for guests or payment upgrade for free users
-          if (creditData.shouldPromptLogin) {
-            onShowDailyLimitBanner?.();
-          } else {
-            setShowPaymentModal(true);
+          // ONLY BLOCK on 402 (user actually can't afford this download)
+          if (creditDeductRes.status === 402) {
+            const creditData = await creditDeductRes.json().catch(() => ({}));
+            console.log('[VideoResult] 402 Payment Required - blocking download:', creditData);
+
+            // Show login/payment prompt for guests or payment upgrade for free users
+            if (creditData.shouldPromptLogin) {
+              onShowDailyLimitBanner?.();
+            } else {
+              setShowPaymentModal(true);
+            }
+            return; // ABORT - legitimate payment block
           }
-          return; // ABORT - legitimate payment block
-        }
 
-        // ALL OTHER STATUSES (including 500): Log but DON'T block
-        if (creditDeductRes.ok) {
-          const creditData = await creditDeductRes.json().catch(() => ({}));
-          console.log('[VideoResult] Credits deducted successfully. Remaining:', creditData.remainingCredits);
-        } else {
-          // 500, 503, or any server error: Log as warning but continue
-          console.warn(`[VideoResult] Credit API returned ${creditDeductRes.status} (non-fatal):`, {
-            status: creditDeductRes.status,
-            statusText: creditDeductRes.statusText,
-            action: 'Ignoring error and proceeding with download (Free/Guest unlimited)'
+          // ALL OTHER STATUSES (including 500): Log but DON'T block
+          if (creditDeductRes.ok) {
+            const creditData = await creditDeductRes.json().catch(() => ({}));
+            console.log('[VideoResult] Credits deducted successfully. Remaining:', creditData.remainingCredits);
+          } else {
+            // 500, 503, or any server error: Log as warning but continue
+            console.warn(`[VideoResult] Credit API returned ${creditDeductRes.status} (non-fatal):`, {
+              status: creditDeductRes.status,
+              statusText: creditDeductRes.statusText,
+              action: 'Ignoring error and proceeding with download (Paid user)'
+            });
+          }
+        } catch (creditError) {
+          // Network error, timeout, or any exception: Log but NEVER block download
+          console.warn('[VideoResult] Credit system unavailable (non-fatal):', {
+            error: creditError instanceof Error ? creditError.message : String(creditError),
+            action: 'Proceeding with download - credit service down'
           });
         }
-      } catch (creditError) {
-        // Network error, timeout, or any exception: Log but NEVER block download
-        console.warn('[VideoResult] Credit system unavailable (non-fatal):', {
-          error: creditError instanceof Error ? creditError.message : String(creditError),
-          action: 'Proceeding with download - credit service down'
-        });
       }
 
       // ✅ SIMPLE & STABLE: Quick verification then direct download
@@ -249,8 +257,8 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       window.location.href = targetUrl;
 
       // 📺 MONETIZATION: Show ads ONLY for Free/Guest users (YouTube Premium model)
-      const isFreeOrGuest = user?.tier === 'free' || user?.isGuest === true;
-      if (isFreeOrGuest) {
+      const isUserFreeOrGuest = user?.tier === 'free' || user?.isGuest === true;
+      if (isUserFreeOrGuest) {
         console.log('[VideoResult] Free/Guest user - opening rotated ad pool (Adsterra + Monetag)');
         // Get next ad links from rotation pool
         const adsterraLink = getNextAdLink(ADSTERRA_LINKS);
