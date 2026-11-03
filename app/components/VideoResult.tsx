@@ -8,6 +8,7 @@ import LocalizationTools from './LocalizationTools';
 import PaymentUpgradeModal from './PaymentUpgradeModal';
 import QualityUpgradeModal from './QualityUpgradeModal';
 import { useAuth } from '@/app/context/AuthContext';
+import { GUMROAD_LINKS } from '@/lib/gumroad-constants';
 
 // 📺 Advertisement Link Pool (Rotation Strategy)
 // Direct ad links - verified accurate
@@ -608,7 +609,8 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         }}
         onUpgrade={() => {
           setShowQualityUpgrade(false);
-          window.location.href = '/pricing?plan=starter';
+          console.log('[VideoResult] Quality upgrade attempted → redirecting to Gumroad');
+          window.location.href = GUMROAD_LINKS.STARTER_MONTHLY;
         }}
       />
       </div>

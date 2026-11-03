@@ -1,15 +1,19 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/app/context/AuthContext';
+import { GUMROAD_LINKS } from '@/lib/gumroad-constants';
 
 interface PaymentUpgradeModalProps {
   isOpen: boolean;
   onClose: () => void;
   remainingCredits?: number;
+  onShowLoginModal?: () => void;
 }
 
-export default function PaymentUpgradeModal({ isOpen, onClose, remainingCredits = 0 }: PaymentUpgradeModalProps) {
+export default function PaymentUpgradeModal({ isOpen, onClose, remainingCredits = 0, onShowLoginModal }: PaymentUpgradeModalProps) {
   const router = useRouter();
+  const { isGuest } = useAuth() || { isGuest: true };
 
   if (!isOpen) return null;
 
@@ -47,7 +51,15 @@ export default function PaymentUpgradeModal({ isOpen, onClose, remainingCredits 
         <div className="p-6 sm:p-8 space-y-4">
           {/* Starter Plan */}
           <button
-            onClick={() => router.push('/pricing?plan=starter')}
+            onClick={() => {
+              if (isGuest) {
+                console.log('[PaymentUpgradeModal] Guest user detected → showing login modal');
+                onShowLoginModal?.();
+              } else {
+                console.log('[PaymentUpgradeModal] Redirecting to Gumroad Starter Monthly');
+                window.location.href = GUMROAD_LINKS.STARTER_MONTHLY;
+              }
+            }}
             className="w-full p-5 bg-gradient-to-r from-green-950/40 to-emerald-950/40 border-2 border-green-500/50 hover:border-green-400/80 rounded-xl transition-all hover:shadow-lg hover:shadow-green-500/30 transform hover:scale-105"
           >
             <div className="flex items-center justify-between">
@@ -65,7 +77,15 @@ export default function PaymentUpgradeModal({ isOpen, onClose, remainingCredits 
 
           {/* Pro Plan */}
           <button
-            onClick={() => router.push('/pricing?plan=pro')}
+            onClick={() => {
+              if (isGuest) {
+                console.log('[PaymentUpgradeModal] Guest user detected → showing login modal');
+                onShowLoginModal?.();
+              } else {
+                console.log('[PaymentUpgradeModal] Redirecting to Gumroad Pro Monthly');
+                window.location.href = GUMROAD_LINKS.PRO_MONTHLY;
+              }
+            }}
             className="w-full p-5 bg-gradient-to-r from-violet-950/40 to-pink-950/40 border-2 border-violet-500/50 hover:border-violet-400/80 rounded-xl transition-all hover:shadow-lg hover:shadow-violet-500/30 transform hover:scale-105"
           >
             <div className="flex items-center justify-between">
@@ -83,7 +103,15 @@ export default function PaymentUpgradeModal({ isOpen, onClose, remainingCredits 
 
           {/* MAX Plan - HIGHLIGHTED AS ANCHOR */}
           <button
-            onClick={() => router.push('/pricing?plan=max')}
+            onClick={() => {
+              if (isGuest) {
+                console.log('[PaymentUpgradeModal] Guest user detected → showing login modal');
+                onShowLoginModal?.();
+              } else {
+                console.log('[PaymentUpgradeModal] Redirecting to Gumroad MAX Monthly');
+                window.location.href = GUMROAD_LINKS.MAX_MONTHLY;
+              }
+            }}
             className="w-full p-5 bg-gradient-to-r from-amber-950/40 to-orange-950/40 border-2 border-amber-500/60 hover:border-amber-400/80 rounded-xl transition-all hover:shadow-lg hover:shadow-amber-500/40 transform hover:scale-105 ring-2 ring-amber-500/20"
           >
             <div className="flex items-center justify-between">
