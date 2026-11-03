@@ -276,10 +276,13 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         console.log('[VideoResult] Paid user detected - skipping ads (Ad-Free guarantee)');
       }
 
-      // Clear loading state quickly - download is already initiated
-      console.log('[VideoResult] Download initiated. Clearing loading state.');
-      setIsWaiting(false);
-      setLoadingQuality(null);
+      // ⏱️ Clear loading state with slight delay to ensure ad popups complete
+      // (window.location.href and window.open() are non-blocking, so we need a brief wait)
+      setTimeout(() => {
+        console.log('[VideoResult] Download complete. Resetting UI state.');
+        setIsWaiting(false);
+        setLoadingQuality(null);
+      }, 1500); // 1.5 seconds to ensure all async operations (download + ads) finish
 
     } catch (error) {
       console.error('Download verification failed:', error);
