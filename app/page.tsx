@@ -309,7 +309,7 @@ export default function Home() {
         </div>
 
 
-        {/* URL Input Form */}
+        {/* URL Input Form & Quick Tips Guide - ALWAYS VISIBLE */}
         <div ref={urlFormRef}>
           {/* @ts-ignore */}
           <UrlForm
@@ -321,7 +321,8 @@ export default function Home() {
             onError={(errorMessage) => setError(errorMessage)}
           />
 
-          {/* Quick Tips Guide - Elegant UX Information */}
+          {/* Quick Tips Guide - ALWAYS RENDERED (NO CONDITIONAL) - Essential F5 Refresh Guidance */}
+          {/* This MUST be visible whether user accesses directly, via rrr shortcut, or during Processing state */}
           <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
             <div className="bg-zinc-800/30 dark:bg-zinc-800/30 light:bg-gray-200/30 border border-zinc-700/50 dark:border-zinc-700/50 light:border-gray-300/50 rounded-xl px-6 py-5 backdrop-blur-sm">
               <div className="flex items-start gap-3 mb-4">
