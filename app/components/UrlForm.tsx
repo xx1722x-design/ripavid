@@ -37,6 +37,7 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
   const [error, setError] = useState('');
   const [platform, setPlatform] = useState<Platform>('auto');
   const [hasAutoSubmitted, setHasAutoSubmitted] = useState(false);
+  const [localProcessing, setLocalProcessing] = useState(false);
 
   // DEFINE handleAutoSubmit BEFORE useEffect that calls it
   const handleAutoSubmit = async (urlToSubmit: string) => {
@@ -114,10 +115,12 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
+    setLocalProcessing(true);
 
     if (!url.trim()) {
       const errMsg = '❌ URL is empty. Please enter a valid video URL.';
       setError(errMsg);
+      setLocalProcessing(false);
       return;
     }
 
@@ -126,6 +129,7 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
     } catch {
       const errMsg = '❌ Invalid URL format. Please enter a valid video URL (e.g., https://www.youtube.com/watch?v=...)';
       setError(errMsg);
+      setLocalProcessing(false);
       return;
     }
 
@@ -133,9 +137,16 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
       await onSubmit(url);
       // Open Adsterra ad in new tab after successful submission
       window.open(ADSTERRA_DIRECT_URL, '_blank');
+
+      // ⏱️ Reset loading state after delay to sync with API and ad popup completion
+      setTimeout(() => {
+        setLocalProcessing(false);
+        console.log('[UrlForm] Processing complete. Resetting button state.');
+      }, 1500);
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : '❌ Failed to process video. Please try again.';
       setError(errMsg);
+      setLocalProcessing(false);
     }
   };
 
@@ -171,10 +182,10 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
           />
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || localProcessing}
             className="w-full px-8 py-6 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white font-bold text-lg rounded-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
           >
-            {isLoading ? (
+            {isLoading || localProcessing ? (
               <>
                 <svg className="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
