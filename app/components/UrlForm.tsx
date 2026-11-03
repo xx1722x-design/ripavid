@@ -207,6 +207,7 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
             <button
               type="button"
               onClick={() => {
+                console.log('[UrlForm] Clear button clicked - resetting all states');
                 setUrl('');
                 setError('');
                 setLocalProcessing(false);

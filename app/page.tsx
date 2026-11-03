@@ -196,13 +196,15 @@ export default function Home() {
 
   // 🔄 Clear all states - reset form for new download
   const handleClear = () => {
+    console.log('[Page] handleClear - Resetting ALL states to initial');
+    // 🔴 FORCE: Set isLoading to false immediately (critical for button state)
+    setIsLoading(false);
     setResult(null);
     setError('');
     setSelectedPlatform('');
     setOriginalUrl('');
     setInitialUrl('');
-    setIsLoading(false);
-    console.log('[Page] Cleared all states - ready for new download');
+    console.log('[Page] All states cleared - Button should be normal now');
   };
 
   // Safely initialize translations with proper fallback
