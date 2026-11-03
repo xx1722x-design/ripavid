@@ -14,7 +14,6 @@ interface UrlFormProps {
   initialUrl?: string;
   autoSubmit?: boolean;
   onError?: (error: string) => void;
-  onClear?: () => void;
 }
 
 type Platform = 'auto' | 'douyin' | 'xiaohongshu' | 'youtube' | 'instagram';
@@ -27,7 +26,7 @@ const PLATFORM_LABELS: Record<Platform, { icon: string }> = {
   instagram: { icon: '📷' },
 };
 
-export default function UrlForm({ onSubmit, isLoading, language = 'en', initialUrl = '', autoSubmit = false, onError, onClear }: UrlFormProps) {
+export default function UrlForm({ onSubmit, isLoading, language = 'en', initialUrl = '', autoSubmit = false, onError }: UrlFormProps) {
   // Safely initialize language with default
   const safeLanguage = (language && typeof language === 'string') ? language : 'en';
 
@@ -208,33 +207,6 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
                   {t.import}
                 </>
               )}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                console.log('[UrlForm] ========== CLEAR BUTTON CLICKED ==========');
-                console.log('[UrlForm] Step 1: Clearing local component states');
-                setUrl('');
-                setError('');
-                setLocalProcessing(false);
-                console.log('[UrlForm] ✓ URL cleared, Error cleared, localProcessing = false');
-
-                console.log('[UrlForm] Step 2: Calling parent onClear callback to reset parent states');
-                if (onClear) {
-                  console.log('[UrlForm] onClear callback FOUND - executing now');
-                  onClear();
-                } else {
-                  console.error('[UrlForm] ❌ ERROR: onClear callback is UNDEFINED!');
-                }
-                console.log('[UrlForm] ========== CLEAR BUTTON EXECUTION COMPLETE ==========');
-              }}
-              className="px-6 py-6 bg-zinc-800/50 dark:bg-zinc-800/50 light:bg-gray-200/50 hover:bg-zinc-700/50 dark:hover:bg-zinc-700/50 light:hover:bg-gray-300/50 text-zinc-300 dark:text-zinc-300 light:text-gray-700 font-semibold rounded-xl transition-all border-2 border-zinc-700 dark:border-zinc-700 light:border-gray-300 hover:border-zinc-600 dark:hover:border-zinc-600 light:hover:border-gray-400 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
-              title="Clear all inputs and reset the form"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              <span className="hidden sm:inline">Clear</span>
             </button>
           </div>
         </div>
