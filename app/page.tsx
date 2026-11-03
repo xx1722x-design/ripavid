@@ -175,13 +175,18 @@ export default function Home() {
         }
 
         const data: VideoData = await response.json();
+        console.log('[Page] ========== API RESPONSE RECEIVED ==========');
+        console.log('[Page] Video extracted successfully:', data);
+
         setResult(data);
-        console.log('Video extracted successfully:', data);
+        console.log('[Page] ✓ setResult(data) called - VideoResult modal will render');
 
         // 🔴 CRITICAL: Reset button state immediately when results appear
         // This ensures main button returns to normal state as soon as formats load
+        console.log('[Page] CRITICAL: Setting isLoading = false IMMEDIATELY');
         setIsLoading(false);
-        console.log('[Page] Result loaded → Button returned to Import state immediately');
+        console.log('[Page] ✓ isLoading set to false - Button MUST show "Import" now, NOT "Processing..."');
+        console.log('[Page] ========== API RESPONSE HANDLING COMPLETE ==========');
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to extract video. Please try again.');
         console.error('Download error:', err);
@@ -197,15 +202,29 @@ export default function Home() {
 
   // 🔄 Clear all states - reset form for new download
   const handleClear = () => {
-    console.log('[Page] handleClear - Resetting ALL states to initial');
-    // 🔴 FORCE: Set isLoading to false immediately (critical for button state)
+    console.log('[Page] ========== PAGE HANDLECLEAR CALLED ==========');
+    console.log('[Page] About to reset ALL parent states for Complete UI Reset');
+
+    // 🔴 FORCE 1: Set isLoading to false FIRST (critical for button state)
+    console.log('[Page] Step 1: Force setIsLoading(false) - IMMEDIATELY');
     setIsLoading(false);
+    console.log('[Page] ✓ isLoading set to false - Button should show "Import" now');
+
+    // 🔴 FORCE 2: Clear result (closes VideoResult modal)
+    console.log('[Page] Step 2: Force setResult(null) - Close VideoResult modal');
     setResult(null);
+    console.log('[Page] ✓ Result cleared - VideoResult modal should unmount');
+
+    // Reset other states
+    console.log('[Page] Step 3: Resetting other component states');
     setError('');
     setSelectedPlatform('');
     setOriginalUrl('');
     setInitialUrl('');
-    console.log('[Page] All states cleared - Button should be normal now');
+    console.log('[Page] ✓ All states reset: error, selectedPlatform, originalUrl, initialUrl');
+
+    console.log('[Page] ========== PAGE HANDLECLEAR COMPLETE ==========');
+    console.log('[Page] Summary: isLoading=false, result=null, form pristine ✨');
   };
 
   // Safely initialize translations with proper fallback

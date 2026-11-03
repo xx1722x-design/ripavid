@@ -212,12 +212,21 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
             <button
               type="button"
               onClick={() => {
-                console.log('[UrlForm] Clear button clicked - FULL RESET');
+                console.log('[UrlForm] ========== CLEAR BUTTON CLICKED ==========');
+                console.log('[UrlForm] Step 1: Clearing local component states');
                 setUrl('');
                 setError('');
                 setLocalProcessing(false);
-                console.log('[UrlForm] Local states reset → calling onClear to reset parent');
-                onClear?.();
+                console.log('[UrlForm] ✓ URL cleared, Error cleared, localProcessing = false');
+
+                console.log('[UrlForm] Step 2: Calling parent onClear callback to reset parent states');
+                if (onClear) {
+                  console.log('[UrlForm] onClear callback FOUND - executing now');
+                  onClear();
+                } else {
+                  console.error('[UrlForm] ❌ ERROR: onClear callback is UNDEFINED!');
+                }
+                console.log('[UrlForm] ========== CLEAR BUTTON EXECUTION COMPLETE ==========');
               }}
               className="px-6 py-6 bg-zinc-800/50 dark:bg-zinc-800/50 light:bg-gray-200/50 hover:bg-zinc-700/50 dark:hover:bg-zinc-700/50 light:hover:bg-gray-300/50 text-zinc-300 dark:text-zinc-300 light:text-gray-700 font-semibold rounded-xl transition-all border-2 border-zinc-700 dark:border-zinc-700 light:border-gray-300 hover:border-zinc-600 dark:hover:border-zinc-600 light:hover:border-gray-400 shadow-lg flex items-center justify-center gap-2 whitespace-nowrap"
               title="Clear all inputs and reset the form"
