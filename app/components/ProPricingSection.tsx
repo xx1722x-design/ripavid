@@ -19,11 +19,19 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
   const [showApprovalMessage, setShowApprovalMessage] = useState(false);
   const [showPaymentMethodModal, setShowPaymentMethodModal] = useState(false);
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('yearly');
+  const [showWaitlistToast, setShowWaitlistToast] = useState(false);
 
   const t = translations[language as keyof typeof translations] || translations['en'];
 
   const handleFreeClick = () => {
     onScrollToDownloader?.();
+  };
+
+  const handleWaitlistClick = () => {
+    setShowWaitlistToast(true);
+    setTimeout(() => {
+      setShowWaitlistToast(false);
+    }, 4000);
   };
 
   // Gumroad URL Mapping by Plan & Billing Period
@@ -328,15 +336,18 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
               <ul className="space-y-1">
                 {[
-                  t.proFeature1 || '👑 1080p & 4K Unlimited Imports (Asia platforms incl.)',
-                  t.proFeature2 || '👑 AI Subtitle Extraction (SRT)',
-                  t.proFeature3 || '👑 1-Click Multi-language Translation (20+ languages)',
-                  t.proFeature4 || '👑 Viral Shorts Timestamp Curation',
-                  t.proFeature5 || '👑 Auto SEO Title & Tags Generation'
+                  { text: '👑 1080p & 4K Unlimited Imports (Supported Platforms)', upcoming: false },
+                  { text: '👑 AI Subtitle Extraction (SRT)', upcoming: true },
+                  { text: '👑 1-Click Multi-language Translation (20+ languages)', upcoming: true },
+                  { text: '👑 Viral Shorts Timestamp Curation', upcoming: true },
+                  { text: '👑 Auto SEO Title & Tags Generation', upcoming: true }
                 ].map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 sm:gap-3">
+                  <li key={feature.text} className="flex items-start gap-2 sm:gap-3">
                     <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-zinc-300 text-xs sm:text-sm">{feature}</span>
+                    <span className={`text-xs sm:text-sm ${feature.upcoming ? 'text-zinc-400 line-through opacity-60' : 'text-zinc-300'}`}>
+                      {feature.text}
+                      {feature.upcoming && <span className="italic text-zinc-500 ml-1">(Coming Soon)</span>}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -349,11 +360,10 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                 </button>
               ) : (
                 <button
-                  onClick={() => handleGumroadCheckout('pro')}
-                  disabled={isLoading}
-                  className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
+                  onClick={handleWaitlistClick}
+                  className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
                 >
-                  {isLoading ? 'Loading...' : 'Upgrade Now'}
+                  Join Waitlist
                 </button>
               )}
             </div>
@@ -380,14 +390,17 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
               <ul className="space-y-1">
                 {[
-                  'Everything in Pro',
-                  'ElevenLabs AI Dubbing (40+ Voices)',
-                  'Batch Download (Multi-language)',
-                  'Priority Server Processing'
+                  { text: 'Everything in Pro', upcoming: false },
+                  { text: 'ElevenLabs AI Dubbing (40+ Voices)', upcoming: true },
+                  { text: 'Batch Download (Multi-language)', upcoming: true },
+                  { text: 'Priority Server Processing', upcoming: true }
                 ].map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 sm:gap-3">
+                  <li key={feature.text} className="flex items-start gap-2 sm:gap-3">
                     <Check className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-zinc-300 text-xs sm:text-sm">{feature}</span>
+                    <span className={`text-xs sm:text-sm ${feature.upcoming ? 'text-zinc-400 line-through opacity-60' : 'text-zinc-300'}`}>
+                      {feature.text}
+                      {feature.upcoming && <span className="italic text-zinc-500 ml-1">(Coming Soon)</span>}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -395,11 +408,10 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
             <div className="flex-shrink-0 pt-3 sm:pt-4 mt-3">
               <button
-                onClick={() => handleGumroadCheckout('max')}
-                disabled={isLoading}
-                className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 disabled:opacity-50 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
+                onClick={handleWaitlistClick}
+                className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
               >
-                {isLoading ? 'Loading...' : 'Upgrade to MAX'}
+                Join Waitlist
               </button>
             </div>
           </div>
@@ -422,6 +434,14 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </p>
         </div>
       </div>
+
+      {/* Waitlist Toast Notification */}
+      {showWaitlistToast && (
+        <div className="fixed bottom-4 right-4 z-50 bg-gradient-to-r from-indigo-900/95 to-purple-900/95 border border-indigo-500/50 text-indigo-100 px-6 py-4 rounded-lg shadow-xl max-w-sm animate-in fade-in slide-in-from-right-4">
+          <p className="font-semibold text-sm mb-1">✨ Waitlist Saved!</p>
+          <p className="text-xs">These advanced AI creator features are currently in development! We've noted your interest for early access.</p>
+        </div>
+      )}
 
       {/* Hybrid Payment Method Selection Modal */}
       {showPaymentMethodModal && (
