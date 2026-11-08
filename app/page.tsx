@@ -21,6 +21,7 @@ import RRRTipBanner from './components/RRRTipBanner';
 import RRRTrickModal from './components/RRRTrickModal';
 import PricingComparisonModal from './components/PricingComparisonModal';
 import QuickTagsSection from './components/QuickTagsSection';
+import CometestBanner from './components/CometestBanner';
 import { useAuth } from '@/app/context/AuthContext';
 import { translations, getTranslations } from './locales';
 
@@ -338,6 +339,9 @@ export default function Home() {
             onError={(errorMessage) => setError(errorMessage)}
           />
         </div>
+
+        {/* Cometest Cross-Promotion Banner */}
+        <CometestBanner />
 
         {/* Quick Tips Guide - PERMANENTLY FIXED (NO CONDITIONS, NEVER HIDDEN) */}
         {/* CRITICAL: This is rendered at the SAME LEVEL as VideoResult, not nested inside UrlForm */}
