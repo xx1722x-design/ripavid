@@ -2,6 +2,7 @@
 
 import { useState, FormEvent, useEffect } from 'react';
 import { translations } from '../locales';
+import { useAuth } from '@/app/context/AuthContext';
 
 // 📺 Advertisement Link Pool (Adsterra only - Random Rotation Strategy)
 const ADSTERRA_LINKS = [
@@ -55,6 +56,7 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
   // Safely access translations
   const t = translations[safeLanguage as keyof typeof translations] ?? translations['en'];
 
+  const { user, isGuest } = useAuth();
   const [url, setUrl] = useState(initialUrl);
   const [error, setError] = useState('');
   const [platform, setPlatform] = useState<Platform>('auto');
@@ -92,10 +94,15 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
 
       try {
         await onSubmit(trimmedUrl);
-        // 📺 Open 3 random ads from pool after successful submission (Free/Guest users)
-        const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
-        openAdsInNewWindows(randomAds);
-        console.log('[UrlForm] Opened 3 random ads for URL analysis:', randomAds);
+        // 📺 Open 3 random ads from pool after successful submission (Free/Guest users only)
+        const isUserFreeOrGuest = user?.tier === 'free' || isGuest === true;
+        if (isUserFreeOrGuest) {
+          const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
+          openAdsInNewWindows(randomAds);
+          console.log('[UrlForm] Free/Guest user - opened 3 random ads for URL analysis:', randomAds);
+        } else {
+          console.log('[UrlForm] Paid user (Starter/Pro/Max) - skipping ads (Ad-Free guarantee)');
+        }
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : '❌ Failed to process video. Please try again.';
         setError(errMsg);
@@ -162,10 +169,15 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
       await onSubmit(url);
       console.log('[UrlForm] onSubmit completed → ads will open, button state resetting in 1500ms');
 
-      // 📺 Open 3 random ads from pool after successful submission (Free/Guest users)
-      const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
-      openAdsInNewWindows(randomAds);
-      console.log('[UrlForm] Opened 3 random ads for URL submission:', randomAds);
+      // 📺 Open 3 random ads from pool after successful submission (Free/Guest users only)
+      const isUserFreeOrGuest = user?.tier === 'free' || isGuest === true;
+      if (isUserFreeOrGuest) {
+        const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
+        openAdsInNewWindows(randomAds);
+        console.log('[UrlForm] Free/Guest user - opened 3 random ads for URL submission:', randomAds);
+      } else {
+        console.log('[UrlForm] Paid user (Starter/Pro/Max) - skipping ads (Ad-Free guarantee)');
+      }
 
       // ⏱️ Reset loading state after brief delay to sync with API and ad popup completion
       // Parent will also reset isLoading, so both localProcessing and isLoading = false
