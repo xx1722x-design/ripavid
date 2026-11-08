@@ -69,8 +69,15 @@ export default function Home() {
   // Ref for Pricing Section (for smooth scroll from Hero Banner)
   const pricingSectionRef = useRef<HTMLDivElement>(null);
   const scrollToPricing = () => {
-    // Scroll to pricing section with center alignment for perfect card visibility
-    pricingSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Scroll to pricing section end to ensure bottom "Compare all features" link is visible
+    if (pricingSectionRef.current) {
+      const element = pricingSectionRef.current;
+      const targetScroll = element.offsetTop + element.offsetHeight - window.innerHeight + 40;
+      window.scrollTo({
+        top: Math.max(0, targetScroll),
+        behavior: 'smooth'
+      });
+    }
   };
 
   // Ref for VideoResult (for smooth scroll when formats appear)
