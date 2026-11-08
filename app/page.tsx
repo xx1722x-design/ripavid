@@ -277,10 +277,10 @@ export default function Home() {
                 : t.title}
             </span>
           </h1>
-          <p className="text-base sm:text-lg text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-1">
+          <p className="text-base sm:text-lg text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-1 break-keep">
             {t.subtitle}
           </p>
-          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-500 light:text-gray-500">
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-500 light:text-gray-500 break-keep">
             {t.subtext}
           </p>
         </div>
