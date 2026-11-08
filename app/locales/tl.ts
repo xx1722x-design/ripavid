@@ -1,8 +1,8 @@
 export const tlTranslations = {
   continueWithGoogle: 'Magpatuloy sa Google',
   logout: 'Mag-logout',
-  title: 'I-download ang mga Video nang Madali',
-  subtitle: 'I-download ang mga video mula sa YouTube, TikTok, Instagram at marami pang iba sa loob lamang ng ilang segundo',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'Mabilis, simple, at ganap na libre. Walang pangangailangan para mag-sign up.',
   selectPlatform: 'Piliin ang Platform',
   autoDetect: 'Awtomatikong Pagkilala',
@@ -83,7 +83,7 @@ export const tlTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',

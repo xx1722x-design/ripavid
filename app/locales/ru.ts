@@ -1,8 +1,8 @@
 export const ruTranslations = {
   continueWithGoogle: 'Продолжить с Google',
   logout: 'Выход',
-  title: 'Легко скачивайте видео',
-  subtitle: 'Скачивайте видео с YouTube, TikTok, Instagram и многого другого за считанные секунды',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'Быстро, просто и совершенно бесплатно. Регистрация не требуется.',
   selectPlatform: 'Выбрать платформу',
   autoDetect: 'Автоматическое определение',
@@ -83,7 +83,7 @@ export const ruTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',

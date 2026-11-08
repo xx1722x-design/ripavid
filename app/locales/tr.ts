@@ -1,8 +1,8 @@
 export const trTranslations = {
   continueWithGoogle: 'Google ile devam et',
   logout: 'Çıkış yap',
-  title: 'Videoları Kolayca İndir',
-  subtitle: 'YouTube, TikTok, Instagram ve daha fazlasından videoları saniyeler içinde indirin',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'Hızlı, basit ve tamamen ücretsiz. Kaydolmaya gerek yok.',
   selectPlatform: 'Platform Seç',
   autoDetect: 'Otomatik Algılama',
@@ -83,7 +83,7 @@ export const trTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',

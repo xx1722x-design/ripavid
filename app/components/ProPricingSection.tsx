@@ -316,7 +316,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
             <div>
               <div className="mb-1.5">
                 <h3 className="text-2xl font-bold text-white mb-0.5">{t.proPlanTitle || 'Pro'}</h3>
-                <p className="text-cyan-300 text-sm">{t.proPlanDescription || 'Professional content localization suite'}</p>
+                <p className="text-cyan-300 text-sm">{t.proPlanDescription || 'Professional video download suite'}</p>
               </div>
 
               <div className="mb-2 pb-2 border-b border-cyan-500/30">

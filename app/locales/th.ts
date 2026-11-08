@@ -1,8 +1,8 @@
 export const thTranslations = {
   continueWithGoogle: 'ดำเนินการต่อด้วย Google',
   logout: 'ออกจากระบบ',
-  title: 'ดาวน์โหลดวิดีโออย่างง่ายดาย',
-  subtitle: 'ดาวน์โหลดวิดีโอจาก YouTube, TikTok, Instagram และอีกมากมายในเพียงไม่กี่วินาที',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'รวดเร็ว ง่าย และฟรีทั้งหมด ไม่จำเป็นต้องลงทะเบียน',
   selectPlatform: 'เลือกแพลตฟอร์ม',
   autoDetect: 'ตรวจหาอัตโนมัติ',
@@ -83,7 +83,7 @@ export const thTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',

@@ -1,8 +1,8 @@
 export const hiTranslations = {
   continueWithGoogle: 'Google के साथ जारी रखें',
   logout: 'लॉग आउट',
-  title: 'वीडियो आसानी से डाउनलोड करें',
-  subtitle: 'YouTube, TikTok, Instagram और अधिक से वीडियो को कुछ ही सेकंड में डाउनलोड करें',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'तेज़, सरल और पूरी तरह से मुफ़्त। कोई पंजीकरण आवश्यक नहीं।',
   selectPlatform: 'प्लेटफॉर्म चुनें',
   autoDetect: 'स्वचालित पहचान',
@@ -83,7 +83,7 @@ export const hiTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',

@@ -1,8 +1,8 @@
 export const nlTranslations = {
   continueWithGoogle: 'Doorgaan met Google',
   logout: 'Afmelden',
-  title: 'Import Video\'s Gemakkelijk',
-  subtitle: 'Import video\'s van YouTube, TikTok, Instagram en meer in enkele seconden',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'Snel, eenvoudig en volledig gratis. Geen registratie vereist.',
   selectPlatform: 'Platform kiezen',
   autoDetect: 'Automatische detectie',
@@ -83,7 +83,7 @@ export const nlTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',

@@ -1,8 +1,8 @@
 export const jaTranslations = {
   continueWithGoogle: 'Googleで1秒で始める',
   logout: 'ログアウト',
-  title: 'グローバル市場へ拡大',
-  subtitle: 'クリエイター向けの専門的なコンテンツローカライゼーションおよび再利用プラットフォーム',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'コンテンツをインポートし、ローカライズし、複数の市場に配布。AI吹き替えと翻訳機能は近日対応予定。',
   selectPlatform: 'コンテンツソースを選択',
   autoDetect: '自動検出',
@@ -83,7 +83,7 @@ export const jaTranslations = {
   loading: '支払いを読み込み中...',
   // Pro Pass Modal
   proPassModalTitle: '4Kと無制限ダウンロードのロック解除!',
-  proPassModalSubtitle: '毎日時間を節約している10万人のクリエイターに参加してください。',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: '月間',
   proPassMonthlyPrice: '月額 $4.99',
   proPassMonthlyBilled: '毎月請求',

@@ -1,8 +1,8 @@
 export const koTranslations = {
   continueWithGoogle: 'Google로 1초 만에 시작하기',
   logout: '로그아웃',
-  title: '글로벌 시장으로 확대하세요',
-  subtitle: '크리에이터를 위한 전문 콘텐츠 현지화 및 재가공 플랫폼',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: '콘텐츠를 불러오고, 현지화하며, 여러 시장에 배포하세요. AI 더빙 및 번역 기능 곧 출시.',
   selectPlatform: '콘텐츠 소스 선택',
   autoDetect: '자동 감지',
@@ -83,7 +83,7 @@ export const koTranslations = {
   loading: '결제 로딩중...',
   // Pro Pass Modal
   proPassModalTitle: '4K & 무제한 다운로드 잠금 해제!',
-  proPassModalSubtitle: '매일 시간을 절약하는 10만 명의 크리에이터들과 함께하세요.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: '월간',
   proPassMonthlyPrice: '월 $4.99',
   proPassMonthlyBilled: '매달 청구',

@@ -1,8 +1,8 @@
 export const viTranslations = {
   continueWithGoogle: 'Tiếp tục với Google',
   logout: 'Đăng xuất',
-  title: 'Tải xuống video dễ dàng',
-  subtitle: 'Tải xuống video từ YouTube, TikTok, Instagram và nhiều hơn nữa trong vài giây',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'Nhanh, đơn giản và hoàn toàn miễn phí. Không cần đăng ký.',
   selectPlatform: 'Chọn nền tảng',
   autoDetect: 'Tự động phát hiện',
@@ -83,7 +83,7 @@ export const viTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',

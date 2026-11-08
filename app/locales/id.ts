@@ -1,8 +1,8 @@
 export const idTranslations = {
   continueWithGoogle: 'Lanjutkan dengan Google',
   logout: 'Keluar',
-  title: 'Unduh Video dengan Mudah',
-  subtitle: 'Unduh video dari YouTube, TikTok, Instagram dan lainnya dalam hitungan detik',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'Cepat, sederhana, dan sepenuhnya gratis. Tidak perlu mendaftar.',
   selectPlatform: 'Pilih Platform',
   autoDetect: 'Deteksi Otomatis',
@@ -83,7 +83,7 @@ export const idTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',

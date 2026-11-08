@@ -1,8 +1,8 @@
 export const zhTWTranslations = {
   continueWithGoogle: '使用Google繼續',
   logout: '登出',
-  title: '輕鬆下載所有影片',
-  subtitle: '從YouTube、TikTok、Instagram等多個平台在幾秒內下載影片',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: '快速、簡單、完全免費。無需註冊。',
   selectPlatform: '選擇平台',
   autoDetect: '自動偵測',
@@ -83,7 +83,7 @@ export const zhTWTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',

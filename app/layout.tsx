@@ -18,9 +18,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RipAVid - Download Videos Instantly",
-  description: "Fast and simple video downloader for Douyin, Xiaohongshu, and more. No sign-up required.",
-  keywords: "video downloader, douyin, xiaohongshu, tiktok, instagram",
+  title: "RipAVid - Free No Watermark Video Downloader for Xiaohongshu, Douyin, YouTube, Bilibili",
+  description: "Download any video without watermark instantly from YouTube, TikTok, Instagram, Douyin, Xiaohongshu, Bilibili and 10+ platforms. Fast, free, and secure video downloader for creators.",
+  keywords: "video downloader, no watermark, youtube downloader, tiktok downloader, instagram downloader, douyin downloader, xiaohongshu downloader, bilibili downloader, free video downloader",
   viewport: {
     width: "device-width",
     initialScale: 1,
@@ -31,6 +31,26 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "RipAVid",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://ripavid.com",
+    title: "RipAVid - Free No Watermark Video Downloader",
+    description: "Download any video without watermark instantly from YouTube, TikTok, Instagram, Douyin, Xiaohongshu, Bilibili and more.",
+    images: [
+      {
+        url: "https://ripavid.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "RipAVid - Free Global Video Downloader",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RipAVid - Free No Watermark Video Downloader",
+    description: "Download videos without watermark from 10+ platforms instantly.",
   },
   other: {
     "monetag": "9cbfb4a387cd0dce13c3dbc35123a72c",

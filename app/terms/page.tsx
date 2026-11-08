@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Service - RipAVid",
-  description: "Terms of Service for RipAVid content localization platform",
+  description: "Terms of Service for RipAVid video download platform",
 };
 
 export default function TermsPage() {
@@ -25,7 +25,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-bold mt-8 mb-4">2. Description of Service</h2>
             <p className="text-zinc-300 leading-relaxed">
-              RipAVid is a Software-as-a-Service (SaaS) platform that utilizes artificial intelligence, including Google'"'"'s Generative AI APIs and YouTube Transcript APIs, to provide content localization and repurposing services. Our Service enables users to import video content from multiple platforms, extract subtitles, generate translations, and optimize content for global distribution. The Service includes both free and paid subscription tiers with varying levels of functionality and feature access.
+              RipAVid is a Software-as-a-Service (SaaS) platform that utilizes artificial intelligence, including Google'"'"'s Generative AI APIs and YouTube Transcript APIs, to provide video download and repurposing services. Our Service enables users to import video content from multiple platforms, extract subtitles, generate translations, and optimize content for global distribution. The Service includes both free and paid subscription tiers with varying levels of functionality and feature access.
             </p>
           </section>
 

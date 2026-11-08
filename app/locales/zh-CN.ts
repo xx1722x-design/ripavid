@@ -1,8 +1,8 @@
 export const zhCNTranslations = {
   continueWithGoogle: '使用Google继续',
   logout: '登出',
-  title: '轻松下载所有视频',
-  subtitle: '从YouTube、TikTok、Instagram等多个平台在几秒内下载视频',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: '快速、简单、完全免费。无需注册。',
   selectPlatform: '选择平台',
   autoDetect: '自动检测',
@@ -83,7 +83,7 @@ export const zhCNTranslations = {
   loading: '加载支付...',
   // Pro Pass Modal
   proPassModalTitle: '解锁4K和无限下载!',
-  proPassModalSubtitle: '加入每天为您节省时间的10万名创意工作者。',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: '月度',
   proPassMonthlyPrice: '每月 $4.99',
   proPassMonthlyBilled: '按月计费',

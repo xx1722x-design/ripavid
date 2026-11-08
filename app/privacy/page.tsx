@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy - RipAVid",
-  description: "Privacy Policy for RipAVid content localization platform",
+  description: "Privacy Policy for RipAVid video download platform",
 };
 
 export default function PrivacyPage() {

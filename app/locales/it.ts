@@ -1,8 +1,8 @@
 export const itTranslations = {
   continueWithGoogle: 'Continua con Google',
   logout: 'Disconnetti',
-  title: 'Scarica video facilmente',
-  subtitle: 'Scarica video da YouTube, TikTok, Instagram e molto altro in pochi secondi',
+  title: 'Download Any Video Without Watermark Instantly',
+  subtitle: 'Download Any Video Without Watermark Instantly',
   subtext: 'Veloce, semplice e completamente gratuito. Nessuna registrazione richiesta.',
   selectPlatform: 'Seleziona piattaforma',
   autoDetect: 'Rilevamento automatico',
@@ -83,7 +83,7 @@ export const itTranslations = {
   loading: 'Loading payment...',
   // Pro Pass Modal
   proPassModalTitle: 'Unlock 4K & Unlimited Downloads!',
-  proPassModalSubtitle: 'Join 100,000+ creators saving time every day.',
+  proPassModalSubtitle: 'Download Any Video Without Watermark Instantly',
   proPassMonthlyLabel: 'Monthly',
   proPassMonthlyPrice: '$4.99 / mo',
   proPassMonthlyBilled: 'Billed monthly',
