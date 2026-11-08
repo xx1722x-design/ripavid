@@ -10,20 +10,23 @@ import QualityUpgradeModal from './QualityUpgradeModal';
 import { useAuth } from '@/app/context/AuthContext';
 import { GUMROAD_LINKS } from '@/lib/gumroad-constants';
 
-// 📺 Advertisement Link Pool (Rotation Strategy)
-// Direct ad links - verified accurate
-// Adsterra pool (3 links for rotation)
+// 📺 Advertisement Link Pool (Random Rotation Strategy)
+// Adsterra pool (5 links)
 const ADSTERRA_LINKS = [
   "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550",
   "https://asiafilm.org/4/bff26ca04065dbbfa36dcee7776780ab",
-  "https://asiafilm.org/4/935a5b936cb4b6c0027a9d48b0051d73"
+  "https://asiafilm.org/4/935a5b936cb4b6c0027a9d48b0051d73",
+  "https://asiafilm.org/4/d75b5a9ea5aa11e8f07dbaca14a011c3",
+  "https://asiafilm.org/4/2017236decc3fe62e65ec74f66a04c01"
 ];
 
-// Monetag pool (3 links for rotation) - CORRECTED
+// Monetag pool (5 links)
 const MONETAG_LINKS = [
   "https://uplcm.com/4/12146496",
   "https://uplcm.com/4/12177679",
-  "https://uplcm.com/4/12177680"
+  "https://uplcm.com/4/12177680",
+  "https://uplcm.com/4/12216208",
+  "https://uplcm.com/4/12216212"
 ];
 
 // Global ad rotation state (tracks which link to show next)

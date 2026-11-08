@@ -3,9 +3,34 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { translations } from '../locales';
 
-// On-click pop-under advertisement links
-const ADSTERRA_DIRECT_URL = "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550";
-const MONETAG_DIRECT_URL = "https://uplcm.com/4/12146496";
+// 📺 Advertisement Link Pool (Random Rotation Strategy)
+// Adsterra pool (5 links)
+const ADSTERRA_LINKS = [
+  "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550",
+  "https://asiafilm.org/4/bff26ca04065dbbfa36dcee7776780ab",
+  "https://asiafilm.org/4/935a5b936cb4b6c0027a9d48b0051d73",
+  "https://asiafilm.org/4/d75b5a9ea5aa11e8f07dbaca14a011c3",
+  "https://asiafilm.org/4/2017236decc3fe62e65ec74f66a04c01"
+];
+
+// Monetag pool (5 links)
+const MONETAG_LINKS = [
+  "https://uplcm.com/4/12146496",
+  "https://uplcm.com/4/12177679",
+  "https://uplcm.com/4/12177680",
+  "https://uplcm.com/4/12216208",
+  "https://uplcm.com/4/12216212"
+];
+
+// Global ad rotation state
+let adRotationIndex = 0;
+
+// Helper to get next ad from pool
+const getNextAdLink = (pool: string[]): string => {
+  const link = pool[adRotationIndex % pool.length];
+  adRotationIndex++;
+  return link;
+};
 
 interface UrlFormProps {
   onSubmit: (url: string) => Promise<void>;
@@ -70,8 +95,11 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
 
       try {
         await onSubmit(trimmedUrl);
-        // Open Adsterra ad in new tab after successful submission
-        window.open(ADSTERRA_DIRECT_URL, '_blank');
+        // Open ads from rotation pool after successful submission
+        window.open(getNextAdLink(ADSTERRA_LINKS), '_blank');
+        setTimeout(() => {
+          window.open(getNextAdLink(MONETAG_LINKS), '_blank');
+        }, 100);
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : '❌ Failed to process video. Please try again.';
         setError(errMsg);
@@ -136,10 +164,13 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
     try {
       console.log('[UrlForm] Submitting URL → calling parent onSubmit');
       await onSubmit(url);
-      console.log('[UrlForm] onSubmit completed → ad will open, button state resetting in 1500ms');
+      console.log('[UrlForm] onSubmit completed → ads will open, button state resetting in 1500ms');
 
-      // Open Adsterra ad in new tab after successful submission
-      window.open(ADSTERRA_DIRECT_URL, '_blank');
+      // Open ads from rotation pool after successful submission
+      window.open(getNextAdLink(ADSTERRA_LINKS), '_blank');
+      setTimeout(() => {
+        window.open(getNextAdLink(MONETAG_LINKS), '_blank');
+      }, 100);
 
       // ⏱️ Reset loading state after brief delay to sync with API and ad popup completion
       // Parent will also reset isLoading, so both localProcessing and isLoading = false
