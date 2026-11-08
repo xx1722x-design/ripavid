@@ -256,16 +256,16 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       console.log('[VideoResult] Download verified. Triggering direct download:', { targetUrl });
 
       // 📺 MONETIZATION: Show ads ONLY for Free/Guest users (YouTube Premium model)
-      // Open ads BEFORE download to avoid browser popup blocking
+      // Open ad BEFORE download to avoid browser popup blocking
       const isUserFreeOrGuest = user?.tier === 'free' || user?.isGuest === true;
       if (isUserFreeOrGuest) {
-        console.log('[VideoResult] Free/Guest user - opening 3 random ads from pool (Adsterra)');
-        // Get 3 random ad links from pool (no duplicates)
-        const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
+        console.log('[VideoResult] Free/Guest user - opening 1 random ad from pool (Adsterra)');
+        // Get 1 random ad link from pool
+        const randomAds = getRandomAds(ADSTERRA_LINKS, 1);
 
-        console.log('[Ad Pool] Opened random ads:', randomAds);
+        console.log('[Ad Pool] Opened random ad:', randomAds[0]);
 
-        // Pop-under strategy: opens all 3 ads in background before download
+        // Pop-under strategy: opens ad in background before download
         openAdsInNewWindows(randomAds);
       } else {
         console.log('[VideoResult] Paid user detected - skipping ads (Ad-Free guarantee)');

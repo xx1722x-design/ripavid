@@ -94,12 +94,12 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
 
       try {
         await onSubmit(trimmedUrl);
-        // 📺 Open 3 random ads from pool after successful submission (Free/Guest users only)
+        // 📺 Open 1 random ad from pool after successful submission (Free/Guest users only)
         const isUserFreeOrGuest = user?.tier === 'free' || isGuest === true;
         if (isUserFreeOrGuest) {
-          const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
+          const randomAds = getRandomAds(ADSTERRA_LINKS, 1);
           openAdsInNewWindows(randomAds);
-          console.log('[UrlForm] Free/Guest user - opened 3 random ads for URL analysis:', randomAds);
+          console.log('[UrlForm] Free/Guest user - opened 1 random ad for URL analysis:', randomAds[0]);
         } else {
           console.log('[UrlForm] Paid user (Starter/Pro/Max) - skipping ads (Ad-Free guarantee)');
         }
@@ -169,12 +169,12 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
       await onSubmit(url);
       console.log('[UrlForm] onSubmit completed → ads will open, button state resetting in 1500ms');
 
-      // 📺 Open 3 random ads from pool after successful submission (Free/Guest users only)
+      // 📺 Open 1 random ad from pool after successful submission (Free/Guest users only)
       const isUserFreeOrGuest = user?.tier === 'free' || isGuest === true;
       if (isUserFreeOrGuest) {
-        const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
+        const randomAds = getRandomAds(ADSTERRA_LINKS, 1);
         openAdsInNewWindows(randomAds);
-        console.log('[UrlForm] Free/Guest user - opened 3 random ads for URL submission:', randomAds);
+        console.log('[UrlForm] Free/Guest user - opened 1 random ad for URL submission:', randomAds[0]);
       } else {
         console.log('[UrlForm] Paid user (Starter/Pro/Max) - skipping ads (Ad-Free guarantee)');
       }
