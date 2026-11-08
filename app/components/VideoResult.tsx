@@ -19,8 +19,22 @@ const ADSTERRA_LINKS = [
   "https://asiafilm.org/4/2017236decc3fe62e65ec74f66a04c01"
 ];
 
-// Global ad rotation state (tracks which link to show next)
-let adRotationIndex = 0;
+// Helper to get 3 random ads from pool (no duplicates) using Fisher-Yates shuffle
+const getRandomAds = (pool: string[], count: number = 3): string[] => {
+  const arr = [...pool];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, Math.min(count, pool.length));
+};
+
+// Helper to open multiple ads in new windows
+const openAdsInNewWindows = (adLinks: string[]): void => {
+  adLinks.forEach((link) => {
+    window.open(link, '_blank');
+  });
+};
 
 interface Format {
   quality?: string;
@@ -92,13 +106,6 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
   // Safely initialize translations with proper fallback
   const safeLanguage = (language && typeof language === 'string') ? language : 'en';
   const t = translations[safeLanguage as keyof typeof translations] ?? translations['en'];
-
-  // 📺 Advertisement Rotation Helper - Distributes ad pool across downloads
-  const getNextAdLink = (pool: string[]): string => {
-    const link = pool[adRotationIndex % pool.length];
-    adRotationIndex++; // Increment for next call
-    return link;
-  };
 
   // Extract numeric height from resolution string (e.g., "720p" -> 720) - DEFINE FIRST
   const getHeightFromResolution = (res: string): number => {
@@ -244,26 +251,28 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
         throw new Error(errorMessage);
       }
 
-      // Otherwise proceed with download + open Monetag ad in new tab
+      // Otherwise proceed with download
       const targetUrl = `/api/download-stream?url=${encodeURIComponent(originalUrl)}&height=${height}`;
       console.log('[VideoResult] Download verified. Triggering direct download:', { targetUrl });
 
-      window.location.href = targetUrl;
-
       // 📺 MONETIZATION: Show ads ONLY for Free/Guest users (YouTube Premium model)
+      // Open ads BEFORE download to avoid browser popup blocking
       const isUserFreeOrGuest = user?.tier === 'free' || user?.isGuest === true;
       if (isUserFreeOrGuest) {
-        console.log('[VideoResult] Free/Guest user - opening rotated ad pool (Adsterra)');
-        // Get next ad link from rotation pool
-        const adsterraLink = getNextAdLink(ADSTERRA_LINKS);
+        console.log('[VideoResult] Free/Guest user - opening 3 random ads from pool (Adsterra)');
+        // Get 3 random ad links from pool (no duplicates)
+        const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
 
-        console.log('[Ad Pool] Rotation index:', { adRotationIndex, adsterraLink });
+        console.log('[Ad Pool] Opened random ads:', randomAds);
 
-        // Pop-under strategy: opens in background, doesn't interrupt download
-        window.open(adsterraLink, '_blank');
+        // Pop-under strategy: opens all 3 ads in background before download
+        openAdsInNewWindows(randomAds);
       } else {
         console.log('[VideoResult] Paid user detected - skipping ads (Ad-Free guarantee)');
       }
+
+      // Initiate download after ads are queued
+      window.location.href = targetUrl;
 
       // ⏱️ Clear loading state with slight delay to ensure ad popups complete
       // (window.location.href and window.open() are non-blocking, so we need a brief wait)

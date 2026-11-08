@@ -12,14 +12,21 @@ const ADSTERRA_LINKS = [
   "https://asiafilm.org/4/2017236decc3fe62e65ec74f66a04c01"
 ];
 
-// Global ad rotation state
-let adRotationIndex = 0;
+// Helper to get 3 random ads from pool (no duplicates) using Fisher-Yates shuffle
+const getRandomAds = (pool: string[], count: number = 3): string[] => {
+  const arr = [...pool];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, Math.min(count, pool.length));
+};
 
-// Helper to get next ad from pool
-const getNextAdLink = (pool: string[]): string => {
-  const link = pool[adRotationIndex % pool.length];
-  adRotationIndex++;
-  return link;
+// Helper to open multiple ads in new windows
+const openAdsInNewWindows = (adLinks: string[]): void => {
+  adLinks.forEach((link) => {
+    window.open(link, '_blank');
+  });
 };
 
 interface UrlFormProps {
@@ -85,8 +92,10 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
 
       try {
         await onSubmit(trimmedUrl);
-        // Open ads from rotation pool after successful submission
-        window.open(getNextAdLink(ADSTERRA_LINKS), '_blank');
+        // 📺 Open 3 random ads from pool after successful submission (Free/Guest users)
+        const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
+        openAdsInNewWindows(randomAds);
+        console.log('[UrlForm] Opened 3 random ads for URL analysis:', randomAds);
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : '❌ Failed to process video. Please try again.';
         setError(errMsg);
@@ -153,8 +162,10 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
       await onSubmit(url);
       console.log('[UrlForm] onSubmit completed → ads will open, button state resetting in 1500ms');
 
-      // Open ads from rotation pool after successful submission
-      window.open(getNextAdLink(ADSTERRA_LINKS), '_blank');
+      // 📺 Open 3 random ads from pool after successful submission (Free/Guest users)
+      const randomAds = getRandomAds(ADSTERRA_LINKS, 3);
+      openAdsInNewWindows(randomAds);
+      console.log('[UrlForm] Opened 3 random ads for URL submission:', randomAds);
 
       // ⏱️ Reset loading state after brief delay to sync with API and ad popup completion
       // Parent will also reset isLoading, so both localProcessing and isLoading = false
