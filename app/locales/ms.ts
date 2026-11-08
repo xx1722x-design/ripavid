@@ -1,8 +1,8 @@
 export const msTranslations = {
   continueWithGoogle: 'Teruskan dengan Google',
   logout: 'Daftar keluar',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'Muat turun mana-mana video tanpa tera air serta-merta',
+  subtitle: 'Pemuat turun video yang cepat, selamat dan percuma untuk pencipta global',
   subtext: 'Pantas, mudah, dan sepenuhnya percuma. Tidak perlu mendaftar.',
   selectPlatform: 'Pilih Platform',
   autoDetect: 'Pengesanan Automatik',

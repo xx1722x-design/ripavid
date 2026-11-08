@@ -1,8 +1,8 @@
 export const nlTranslations = {
   continueWithGoogle: 'Doorgaan met Google',
   logout: 'Afmelden',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'Download direct elke video zonder watermerk',
+  subtitle: 'Snelle, veilige en gratis videodownloader voor globale makers',
   subtext: 'Snel, eenvoudig en volledig gratis. Geen registratie vereist.',
   selectPlatform: 'Platform kiezen',
   autoDetect: 'Automatische detectie',

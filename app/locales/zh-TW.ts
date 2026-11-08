@@ -1,8 +1,8 @@
 export const zhTWTranslations = {
   continueWithGoogle: '使用Google繼續',
   logout: '登出',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: '立即下載任何無浮水印的影片',
+  subtitle: '適合全球創作者的快速、安全且免費的視頻下載器',
   subtext: '快速、簡單、完全免費。無需註冊。',
   selectPlatform: '選擇平台',
   autoDetect: '自動偵測',

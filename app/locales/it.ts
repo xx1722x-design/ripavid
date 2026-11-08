@@ -1,8 +1,8 @@
 export const itTranslations = {
   continueWithGoogle: 'Continua con Google',
   logout: 'Disconnetti',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'Scarica qualsiasi video senza filigrana all\'istante',
+  subtitle: 'Scaricatore di video veloce, sicuro e gratuito per creatori globali',
   subtext: 'Veloce, semplice e completamente gratuito. Nessuna registrazione richiesta.',
   selectPlatform: 'Seleziona piattaforma',
   autoDetect: 'Rilevamento automatico',

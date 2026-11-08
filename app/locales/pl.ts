@@ -1,8 +1,8 @@
 export const plTranslations = {
   continueWithGoogle: 'Kontynuuj z Google',
   logout: 'Wyloguj się',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'Pobierz dowolny film bez znaku wodnego natychmiast',
+  subtitle: 'Szybka, bezpieczna i bezpłatna aplikacja do pobierania filmów dla globalnych twórców',
   subtext: 'Szybko, prosto i całkowicie za darmo. Nie jest wymagana rejestracja.',
   selectPlatform: 'Wybierz platformę',
   autoDetect: 'Automatyczne wykrywanie',

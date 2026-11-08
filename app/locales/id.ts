@@ -1,8 +1,8 @@
 export const idTranslations = {
   continueWithGoogle: 'Lanjutkan dengan Google',
   logout: 'Keluar',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'Unduh video apa pun tanpa watermark secara instan',
+  subtitle: 'Pengunduh video yang cepat, aman, dan gratis untuk kreator global',
   subtext: 'Cepat, sederhana, dan sepenuhnya gratis. Tidak perlu mendaftar.',
   selectPlatform: 'Pilih Platform',
   autoDetect: 'Deteksi Otomatis',

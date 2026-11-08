@@ -1,8 +1,8 @@
 export const viTranslations = {
   continueWithGoogle: 'Tiếp tục với Google',
   logout: 'Đăng xuất',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'Tải xuống bất kỳ video nào không có hình mờ ngay lập tức',
+  subtitle: 'Trình tải video nhanh, an toàn và miễn phí cho những người sáng tạo toàn cầu',
   subtext: 'Nhanh, đơn giản và hoàn toàn miễn phí. Không cần đăng ký.',
   selectPlatform: 'Chọn nền tảng',
   autoDetect: 'Tự động phát hiện',

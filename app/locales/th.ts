@@ -1,8 +1,8 @@
 export const thTranslations = {
   continueWithGoogle: 'ดำเนินการต่อด้วย Google',
   logout: 'ออกจากระบบ',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'ดาวน์โหลดวิดีโอใดๆ ได้ทันทีโดยไม่มีลายน้ำ',
+  subtitle: 'โปรแกรมดาวน์โหลดวิดีโอที่รวดเร็ว ปลอดภัย และฟรีสำหรับผู้สร้างทั่วโลก',
   subtext: 'รวดเร็ว ง่าย และฟรีทั้งหมด ไม่จำเป็นต้องลงทะเบียน',
   selectPlatform: 'เลือกแพลตฟอร์ม',
   autoDetect: 'ตรวจหาอัตโนมัติ',

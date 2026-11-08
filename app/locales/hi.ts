@@ -1,8 +1,8 @@
 export const hiTranslations = {
   continueWithGoogle: 'Google के साथ जारी रखें',
   logout: 'लॉग आउट',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'तुरंत किसी भी वीडियो को वॉटरमार्क के बिना डाउनलोड करें',
+  subtitle: 'वैश्विक निर्माताओं के लिए तेज़, सुरक्षित और मुफ़्त वीडियो डाउनलोडर',
   subtext: 'तेज़, सरल और पूरी तरह से मुफ़्त। कोई पंजीकरण आवश्यक नहीं।',
   selectPlatform: 'प्लेटफॉर्म चुनें',
   autoDetect: 'स्वचालित पहचान',

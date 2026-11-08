@@ -1,8 +1,8 @@
 export const tlTranslations = {
   continueWithGoogle: 'Magpatuloy sa Google',
   logout: 'Mag-logout',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'I-download ang anumang video nang walang watermark kaagad',
+  subtitle: 'Mabilis, ligtas at libreng video downloader para sa mga pandaigdigang creators',
   subtext: 'Mabilis, simple, at ganap na libre. Walang pangangailangan para mag-sign up.',
   selectPlatform: 'Piliin ang Platform',
   autoDetect: 'Awtomatikong Pagkilala',

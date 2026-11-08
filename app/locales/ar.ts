@@ -1,8 +1,8 @@
 export const arTranslations = {
   continueWithGoogle: 'متابعة مع Google',
   logout: 'تسجيل الخروج',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'قم بتنزيل أي فيديو بدون علامة مائية على الفور',
+  subtitle: 'محمل فيديو سريع وآمن ومجاني للمبدعين العالميين',
   subtext: 'سريع وبسيط وتماما مجاني. لا حاجة للتسجيل.',
   selectPlatform: 'اختر المنصة',
   autoDetect: 'الكشف التلقائي',

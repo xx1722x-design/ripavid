@@ -1,8 +1,8 @@
 export const trTranslations = {
   continueWithGoogle: 'Google ile devam et',
   logout: 'Çıkış yap',
-  title: 'Download Any Video Without Watermark Instantly',
-  subtitle: 'Download Any Video Without Watermark Instantly',
+  title: 'Herhangi bir videoyu filigransız olarak anında indirin',
+  subtitle: 'Küresel yaratıcılar için hızlı, güvenli ve ücretsiz video indirici',
   subtext: 'Hızlı, basit ve tamamen ücretsiz. Kaydolmaya gerek yok.',
   selectPlatform: 'Platform Seç',
   autoDetect: 'Otomatik Algılama',
