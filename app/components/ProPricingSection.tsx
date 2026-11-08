@@ -19,7 +19,6 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
   const [showApprovalMessage, setShowApprovalMessage] = useState(false);
   const [showPaymentMethodModal, setShowPaymentMethodModal] = useState(false);
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('yearly');
-  const [showWaitlistToast, setShowWaitlistToast] = useState(false);
 
   const t = translations[language as keyof typeof translations] || translations['en'];
 
@@ -27,11 +26,8 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
     onScrollToDownloader?.();
   };
 
-  const handleWaitlistClick = () => {
-    setShowWaitlistToast(true);
-    setTimeout(() => {
-      setShowWaitlistToast(false);
-    }, 4000);
+  const handleComingSoonClick = () => {
+    alert('This tier is currently in development and will be available soon!');
   };
 
   // Gumroad URL Mapping by Plan & Billing Period
@@ -360,10 +356,10 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                 </button>
               ) : (
                 <button
-                  onClick={handleWaitlistClick}
+                  onClick={handleComingSoonClick}
                   className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
                 >
-                  Join Waitlist
+                  Upgrade Now
                 </button>
               )}
             </div>
@@ -408,10 +404,10 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
 
             <div className="flex-shrink-0 pt-3 sm:pt-4 mt-3">
               <button
-                onClick={handleWaitlistClick}
+                onClick={handleComingSoonClick}
                 className="w-full py-2.5 sm:py-3 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-semibold rounded-lg transition-all transform hover:scale-105 text-xs sm:text-sm"
               >
-                Join Waitlist
+                Upgrade to MAX
               </button>
             </div>
           </div>
@@ -434,14 +430,6 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
           </p>
         </div>
       </div>
-
-      {/* Waitlist Toast Notification */}
-      {showWaitlistToast && (
-        <div className="fixed bottom-4 right-4 z-50 bg-gradient-to-r from-indigo-900/95 to-purple-900/95 border border-indigo-500/50 text-indigo-100 px-6 py-4 rounded-lg shadow-xl max-w-sm animate-in fade-in slide-in-from-right-4">
-          <p className="font-semibold text-sm mb-1">✨ Waitlist Saved!</p>
-          <p className="text-xs">These advanced AI creator features are currently in development! We've noted your interest for early access.</p>
-        </div>
-      )}
 
       {/* Hybrid Payment Method Selection Modal */}
       {showPaymentMethodModal && (
