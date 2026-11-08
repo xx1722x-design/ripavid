@@ -10,23 +10,13 @@ import QualityUpgradeModal from './QualityUpgradeModal';
 import { useAuth } from '@/app/context/AuthContext';
 import { GUMROAD_LINKS } from '@/lib/gumroad-constants';
 
-// 📺 Advertisement Link Pool (Random Rotation Strategy)
-// Adsterra pool (5 links)
+// 📺 Advertisement Link Pool (Adsterra only - Random Rotation Strategy)
 const ADSTERRA_LINKS = [
   "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550",
   "https://asiafilm.org/4/bff26ca04065dbbfa36dcee7776780ab",
   "https://asiafilm.org/4/935a5b936cb4b6c0027a9d48b0051d73",
   "https://asiafilm.org/4/d75b5a9ea5aa11e8f07dbaca14a011c3",
   "https://asiafilm.org/4/2017236decc3fe62e65ec74f66a04c01"
-];
-
-// Monetag pool (5 links)
-const MONETAG_LINKS = [
-  "https://uplcm.com/4/12146496",
-  "https://uplcm.com/4/12177679",
-  "https://uplcm.com/4/12177680",
-  "https://uplcm.com/4/12216208",
-  "https://uplcm.com/4/12216212"
 ];
 
 // Global ad rotation state (tracks which link to show next)
@@ -263,19 +253,14 @@ export default function VideoResult({ title, thumbnail, duration, formats, onClo
       // 📺 MONETIZATION: Show ads ONLY for Free/Guest users (YouTube Premium model)
       const isUserFreeOrGuest = user?.tier === 'free' || user?.isGuest === true;
       if (isUserFreeOrGuest) {
-        console.log('[VideoResult] Free/Guest user - opening rotated ad pool (Adsterra + Monetag)');
-        // Get next ad links from rotation pool
+        console.log('[VideoResult] Free/Guest user - opening rotated ad pool (Adsterra)');
+        // Get next ad link from rotation pool
         const adsterraLink = getNextAdLink(ADSTERRA_LINKS);
-        const monetagLink = getNextAdLink(MONETAG_LINKS);
 
-        console.log('[Ad Pool] Rotation index:', { adRotationIndex, adsterraLink, monetagLink });
+        console.log('[Ad Pool] Rotation index:', { adRotationIndex, adsterraLink });
 
-        // Stagger ad pop-unders (100ms apart) for better UX
         // Pop-under strategy: opens in background, doesn't interrupt download
         window.open(adsterraLink, '_blank');
-        setTimeout(() => {
-          window.open(monetagLink, '_blank');
-        }, 100);
       } else {
         console.log('[VideoResult] Paid user detected - skipping ads (Ad-Free guarantee)');
       }

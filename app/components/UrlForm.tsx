@@ -3,23 +3,13 @@
 import { useState, FormEvent, useEffect } from 'react';
 import { translations } from '../locales';
 
-// 📺 Advertisement Link Pool (Random Rotation Strategy)
-// Adsterra pool (5 links)
+// 📺 Advertisement Link Pool (Adsterra only - Random Rotation Strategy)
 const ADSTERRA_LINKS = [
   "https://asiafilm.org/4/67f85b9984fffe2cc773a2aa6ba74550",
   "https://asiafilm.org/4/bff26ca04065dbbfa36dcee7776780ab",
   "https://asiafilm.org/4/935a5b936cb4b6c0027a9d48b0051d73",
   "https://asiafilm.org/4/d75b5a9ea5aa11e8f07dbaca14a011c3",
   "https://asiafilm.org/4/2017236decc3fe62e65ec74f66a04c01"
-];
-
-// Monetag pool (5 links)
-const MONETAG_LINKS = [
-  "https://uplcm.com/4/12146496",
-  "https://uplcm.com/4/12177679",
-  "https://uplcm.com/4/12177680",
-  "https://uplcm.com/4/12216208",
-  "https://uplcm.com/4/12216212"
 ];
 
 // Global ad rotation state
@@ -97,9 +87,6 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
         await onSubmit(trimmedUrl);
         // Open ads from rotation pool after successful submission
         window.open(getNextAdLink(ADSTERRA_LINKS), '_blank');
-        setTimeout(() => {
-          window.open(getNextAdLink(MONETAG_LINKS), '_blank');
-        }, 100);
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : '❌ Failed to process video. Please try again.';
         setError(errMsg);
@@ -168,9 +155,6 @@ export default function UrlForm({ onSubmit, isLoading, language = 'en', initialU
 
       // Open ads from rotation pool after successful submission
       window.open(getNextAdLink(ADSTERRA_LINKS), '_blank');
-      setTimeout(() => {
-        window.open(getNextAdLink(MONETAG_LINKS), '_blank');
-      }, 100);
 
       // ⏱️ Reset loading state after brief delay to sync with API and ad popup completion
       // Parent will also reset isLoading, so both localProcessing and isLoading = false

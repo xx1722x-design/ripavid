@@ -52,9 +52,7 @@ export const metadata: Metadata = {
     title: "RipAVid - Free No Watermark Video Downloader",
     description: "Download videos without watermark from 10+ platforms instantly.",
   },
-  other: {
-    "monetag": "9cbfb4a387cd0dce13c3dbc35123a72c",
-  },
+  other: {},
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
