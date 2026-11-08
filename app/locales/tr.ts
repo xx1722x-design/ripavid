@@ -94,7 +94,7 @@ export const trTranslations = {
   proPassOldPrice: '$4.99',
   proPassCtaBtnYearly: 'Continue with 1 Year Pro',
   proPassCtaBtnMonthly: 'Continue',
-  proPassSecurePayment: '🔒 Secure payments powered by Lemon Squeezy & NOWPayments. Cancel anytime.',
+  proPassSecurePayment: '🔒 Secure payments powered by Gumroad & NOWPayments. Cancel anytime.',
   proPassDisclaimer: 'Imports are strictly limited to the original video\'s maximum uploaded resolution. (e.g., You cannot download a 720p original video in 4K.)',
   // Resolution Selection
   resolutionNotAvailable: 'This resolution is not available because the original video was uploaded in {resolution}.',
@@ -129,4 +129,14 @@ export const trTranslations = {
   rrrWantImport: 'Bunu anında içe almak ister misiniz?',
   rrrToolName: 'RipAVid Hızlı İçe Aktarma Aracı',
   rrrExtractButton: 'MP4 Çıkart (1080p)',
+
+  // Hardcoded UI Strings
+  viewPlansComparison: 'View Plans & Features Comparison',
+  viewPlansSubtext: 'Choose what works best for your needs',
+  tryTypingPlaceholder: '👉 Try typing: https://www.rrryoutube.com/watch?v=...',
+  quickTipsTitle: 'Quick Tips',
+  rrrTipPrefix: 'Tip: Just add',
+  rrrTipSuffix: 'before youtube.com (or use',
+  rrrTipAlt: 'to download media instantly!',
+
 };

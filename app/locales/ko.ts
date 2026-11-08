@@ -177,4 +177,14 @@ export const koTranslations = {
   rrrWantImport: '이걸 즉시 불러오고 싶으신가요?',
   rrrToolName: 'RipAVid 빠른 불러오기 도구',
   rrrExtractButton: 'MP4 추출 (1080p)',
+
+  // Hardcoded UI Strings
+  viewPlansComparison: 'View Plans & Features Comparison',
+  viewPlansSubtext: 'Choose what works best for your needs',
+  tryTypingPlaceholder: '👉 Try typing: https://www.rrryoutube.com/watch?v=...',
+  quickTipsTitle: 'Quick Tips',
+  rrrTipPrefix: 'Tip: Just add',
+  rrrTipSuffix: 'before youtube.com (or use',
+  rrrTipAlt: 'to download media instantly!',
+
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { translations } from '../locales';
 import './PlatformSelector.css';
 
 export interface Platform {
@@ -27,18 +28,22 @@ interface PlatformSelectorProps {
   selectedPlatform?: string;
   onSelectPlatform: (platformId: string) => void;
   showLabel?: boolean;
+  language?: string;
 }
 
 export default function PlatformSelector({
   selectedPlatform,
   onSelectPlatform,
   showLabel = true,
+  language = 'en',
 }: PlatformSelectorProps) {
+  const safeLanguage = (language && typeof language === 'string') ? language : 'en';
+  const t = translations[safeLanguage as keyof typeof translations] || translations['en'];
   return (
     <div className="w-full flex flex-col">
       {showLabel && (
         <p className="text-sm font-semibold text-zinc-400 dark:text-zinc-400 light:text-gray-600 mb-2 text-center flex-shrink-0">
-          Select Platform
+          {t.selectPlatform || 'Select Platform'}
         </p>
       )}
       <div className="platform-selector-container">

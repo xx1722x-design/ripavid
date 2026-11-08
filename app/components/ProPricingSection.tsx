@@ -62,9 +62,9 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
       return;
     }
 
-    // TODO: Implement Lemon Squeezy checkout flow
-    console.log('Initiating Lemon Squeezy checkout for Fiat payments');
-    alert('Lemon Squeezy checkout will be available soon');
+    // TODO: Implement Gumroad checkout flow
+    console.log('Initiating Gumroad checkout for Fiat payments');
+    alert('Gumroad checkout will be available soon');
   };
 
   const initiateNOWPaymentsCheckout = async () => {
@@ -147,7 +147,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
             className="w-full bg-gradient-to-r from-indigo-900/30 via-purple-900/20 to-indigo-900/30 border border-indigo-500/30 rounded-lg p-4 text-center hover:border-indigo-400/50 hover:bg-indigo-900/40 transition-all duration-300 group cursor-pointer"
           >
             <p className="text-sm text-indigo-300">
-              💰 <span className="font-semibold">View Plans & Features Comparison</span> - Choose what works best for your needs
+              💰 <span className="font-semibold">{t.viewPlansComparison || 'View Plans & Features Comparison'}</span> - {t.viewPlansSubtext || 'Choose what works best for your needs'}
             </p>
           </button>
         </div>
@@ -418,7 +418,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
         {/* Trust Badge */}
         <div className="text-center mt-6">
           <p className="text-zinc-500 text-sm">
-            🔒 Secure payments powered by Lemon Squeezy & NOWPayments • Cancel anytime, no hidden fees
+            🔒 Secure payments powered by Gumroad & NOWPayments • Cancel anytime, no hidden fees
           </p>
         </div>
       </div>
@@ -465,7 +465,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                   Pay with credit/debit card or Apple Pay
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
-                  Powered by Lemon Squeezy
+                  Powered by Gumroad
                 </p>
               </div>
 
@@ -485,7 +485,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                   Google Pay, PayPal, and more
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
-                  Powered by Lemon Squeezy
+                  Powered by Gumroad
                 </p>
               </div>
 
@@ -505,7 +505,7 @@ export default function ProPricingSection({ language = 'en', onScrollToDownloade
                   Regional payment methods in your country
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500">
-                  Powered by Lemon Squeezy
+                  Powered by Gumroad
                 </p>
               </div>
 

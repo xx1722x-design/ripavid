@@ -314,6 +314,7 @@ export default function Home() {
             selectedPlatform={selectedPlatform}
             onSelectPlatform={setSelectedPlatform}
             showLabel={true}
+            language={language}
           />
         </div>
 
@@ -340,7 +341,7 @@ export default function Home() {
               <span className="text-2xl">💡</span>
               <div className="flex-1">
                 <h3 className="font-semibold text-zinc-200 dark:text-zinc-200 light:text-gray-800 mb-3">
-                  Quick Tips
+                  {t.quickTipsTitle || 'Quick Tips'}
                 </h3>
                 <ul className="space-y-2 text-sm text-zinc-400 dark:text-zinc-400 light:text-gray-600">
                   <li className="flex items-start gap-2">
@@ -349,7 +350,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-cyan-400 mt-0.5">•</span>
-                    <span>Or paste a link from 10 platforms (YouTube, TikTok, Instagram, Xiaohongshu, etc.) here and click '<span className="font-semibold text-cyan-300">Import</span>'.</span>
+                    <span>Or paste a link from 10 platforms (YouTube, TikTok, Instagram, Xiaohongshu, etc.) here and click '<span className="font-semibold text-cyan-300">Download</span>'.</span>
                   </li>
                 </ul>
                 <div className="mt-4 pt-4 border-t border-zinc-700/50 dark:border-zinc-700/50 light:border-gray-300/50">

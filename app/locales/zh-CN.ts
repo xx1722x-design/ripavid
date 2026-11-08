@@ -128,4 +128,14 @@ export const zhCNTranslations = {
   rrrWantImport: '想立即导入这个吗?',
   rrrToolName: 'RipAVid 快速导入工具',
   rrrExtractButton: '提取 MP4 (1080p)',
+
+  // Hardcoded UI Strings
+  viewPlansComparison: 'View Plans & Features Comparison',
+  viewPlansSubtext: 'Choose what works best for your needs',
+  tryTypingPlaceholder: '👉 Try typing: https://www.rrryoutube.com/watch?v=...',
+  quickTipsTitle: 'Quick Tips',
+  rrrTipPrefix: 'Tip: Just add',
+  rrrTipSuffix: 'before youtube.com (or use',
+  rrrTipAlt: 'to download media instantly!',
+
 };
