@@ -1,11 +1,33 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { getRandomAmazonLinks } from '../constants/amazonAffiliateLinks';
+
 interface AffiliateBannersProps {
   language?: string;
 }
 
+interface AmazonProduct {
+  id: number;
+  link: string;
+  emoji: string;
+}
+
 export default function AffiliateBanners({ language = 'en' }: AffiliateBannersProps) {
   const isCoupang = language === 'ko';
+  const [amazonProducts, setAmazonProducts] = useState<AmazonProduct[]>([]);
+
+  useEffect(() => {
+    if (!isCoupang) {
+      const randomLinks = getRandomAmazonLinks(4);
+      const products: AmazonProduct[] = randomLinks.map((link, index) => ({
+        id: index + 1,
+        link,
+        emoji: ['💎', '✨', '🌹', '💄'][index % 4],
+      }));
+      setAmazonProducts(products);
+    }
+  }, [isCoupang]);
 
   if (isCoupang) {
     // Korean market: Coupang 3-layer network
@@ -62,33 +84,10 @@ export default function AffiliateBanners({ language = 'en' }: AffiliateBannersPr
     );
   }
 
-  // Global market: Amazon Premium Beauty 2x2 Grid
-  const amazonProducts = [
-    {
-      id: 1,
-      name: 'Premium Beauty Product 1',
-      link: 'https://www.amazon.com/dp/B08MJZYW8P?tag=cometest20-20',
-      emoji: '💎'
-    },
-    {
-      id: 2,
-      name: 'Premium Skincare Exfoliator',
-      link: 'https://www.amazon.com/ELEMIS-Exfoliating-exfoliating-Non-abrasive-alternative/dp/B002OLQAQG?tag=cometest20-20',
-      emoji: '✨'
-    },
-    {
-      id: 3,
-      name: 'Premium Beauty Product 3',
-      link: 'https://www.amazon.com/dp/B07BMBQG73?tag=cometest20-20',
-      emoji: '🌹'
-    },
-    {
-      id: 4,
-      name: 'Premium Beauty Product 4',
-      link: 'https://www.amazon.com/dp/B0714LK2WT?tag=cometest20-20',
-      emoji: '💄'
-    }
-  ];
+  // Global market: Amazon Random Products 2x2 Grid
+  if (!isCoupang && amazonProducts.length === 0) {
+    return null; // Don't render until products are loaded
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto my-8 px-4">
@@ -109,7 +108,7 @@ export default function AffiliateBanners({ language = 'en' }: AffiliateBannersPr
                     {product.emoji}
                   </div>
                   <h3 className="text-center font-semibold text-white group-hover:text-pink-300 transition-colors">
-                    {product.name}
+                    Premium Product
                   </h3>
                   <button className="mt-4 px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-sm font-semibold rounded-lg transition-all transform group-hover:scale-105">
                     View Premium Beauty on Amazon
